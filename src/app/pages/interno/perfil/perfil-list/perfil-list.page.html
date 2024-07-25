@@ -1,0 +1,152 @@
+<app-header *ngIf="context !== 'select-lite'" [appType]="headerType" [appTitle]="title" [appSubtitle]="subtitle"
+  (appDismiss)="dismiss()" [minimizable]="context !== 'select-full'"></app-header>
+
+<ion-content>
+
+  <div class="main-block" [class]="{'main-block-page-list': context === 'page-list'}">
+
+    <div class="list-default">
+
+      <div class="list-default-action-buttons">
+
+        <app-action-buttons [parentContext]="context" [appExtraButtons]="extraButtons" (appPrint)="print($event)"
+          (appAdd)="form()" (appRefresh)="load()" (appBulk)="showBulkSelect()"></app-action-buttons>
+
+      </div>
+
+      <div class="list-default-header t-border-radius-0"
+        [class]="{'list-default-header-full': context === 'select-full' || context === 'modal-list'}">
+
+        <app-filters [(appSelectDatas)]="filtersSelectDatas" [appShow]="['perfilAtivo']" [(appFilters)]="filters"
+          (appFiltersChange)="load()" [parentContext]="context"></app-filters>
+
+      </div>
+
+      <div class="list-default-body">
+
+        <app-filters-selected [appSelect]="appSelect" [selectData]="state.selectData"></app-filters-selected>
+
+        <app-bulk-warning *ngIf="bulkSelect" (appExcluir)="excluirSelecionados()" (appSelecionaTodos)="selecionaTodos()"
+          [appExtraButtons]="bulkExtraButtons"></app-bulk-warning>
+
+        <div class="list-default-table">
+
+          <table>
+
+            <tr *ngIf="context !== 'select-lite'" class="list-default-table-header" appOrder
+              [(appOrderFilters)]="filters" [parentContext]="context" (appOrderFiltersChange)="load()">
+              <th style="min-width: 60px; width: 60px;" appOrderProperty="id">ID</th>
+              <th style="min-width: 140px;" appOrderProperty="nomeCompleto">Nome</th>
+              <th style="min-width: 130px; width: 130px;" appOrderProperty="documento">Documento</th>
+              <th style="min-width: 130px;" appOrderProperty="email">Email</th>
+              <th style="min-width: 110px; width: 110px;" appOrderProperty="telefone">Telefone</th>
+              <th style="min-width: 110px; width: 110px;" appOrderProperty="celular">Celular</th>
+              <th style="min-width: 100px; width: 100px;" appOrderProperty="dataInteracao">Interação</th>
+              <th style="min-width: 90px; width: 90px;" appOrderProperty="dataCadastro">Cadastro</th>
+              <th style="min-width: 70px; width: 70px;" appOrderProperty="ativo">Ativo</th>
+              <th style="width: 1px; padding: 0; text-align: center;"></th>
+            </tr>
+
+            <tr *ngIf="context === 'select-lite' && opcaoCadastrar && !bulkSelect"
+              class="list-default-table-add-button ion-activatable ripple-parent" (click)="form()" prevent-double-click>
+              <td colspan="100%">
+                <div>
+                  <span class="list-default-table-add-button-icon app-icon-plus"></span>
+                  <span>Cadastrar novo</span>
+                </div>
+              </td>
+              <ion-ripple-effect></ion-ripple-effect>
+            </tr>
+
+            <tr *ngIf="context !== 'page-list' && opcaoNenhum && !bulkSelect"
+              class="list-default-table-sel-nenhum-button ion-activatable ripple-parent" (click)="seleciona()">
+              <td colspan="100%" [class.text-center]="context === 'select-lite'">Selecionar nenhum</td>
+              <ion-ripple-effect></ion-ripple-effect>
+            </tr>
+
+            <ng-container *ngFor="let perfil of perfis; trackBy:appUtil.trackByFn(['id'])">
+
+              <tr class="list-default-table-line ion-activatable ripple-parent"
+                [class]="{'list-default-table-line-selected': some(state.selectData, 'id', perfil.id)}"
+                (click)="seleciona(perfil)" prevent-double-click>
+
+                <td class="list-default-table-checkbox">
+                  <div>
+                    <ion-checkbox *ngIf="bulkSelect" stop-propagation [(ngModel)]="perfil.selected"></ion-checkbox>
+                    <span class="badge-id">{{ perfil.id }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="display-flex align-center">
+                    <img *ngIf="perfil.fotoPerfilUrl" [src]="perfil.fotoPerfilUrl" alt="Foto Perfil"
+                      class="border-radius-50" style="object-fit: cover; width: 35px; height: 35px;">
+                    <div *ngIf="!perfil.fotoPerfilUrl" class="flex-center bg-color-dark border-radius-50"
+                      style="width: 35px; height: 35px;">
+                      <span class="app-icon-user color-white font-size-20"></span>
+                    </div>
+                    <span class="flex-1 margin-left-15">{{ perfil.nomeCompleto }}</span>
+                  </div>
+                </td>
+                <td *ngIf="context !== 'select-lite'">{{ perfil.documento }}</td>
+                <td *ngIf="context !== 'select-lite'" style="word-break: break-all;">{{ perfil.email }}</td>
+                <td *ngIf="context !== 'select-lite'">{{ perfil.telefone }}</td>
+                <td *ngIf="context !== 'select-lite'">{{ perfil.celular }}</td>
+                <td *ngIf="context !== 'select-lite'">
+                  {{ perfil.dataInteracao | date: 'dd/MM/yy HH:mm' }}
+                </td>
+                <td *ngIf="context !== 'select-lite'">
+                  {{ perfil.dataCadastro | date: 'dd/MM/yyyy':env.configs.DATE_ONLY_TIMEZONE }}
+                </td>
+                <td *ngIf="context !== 'select-lite'" class="text-center">
+                  <span
+                    [class]="perfil.ativo ? 'app-icon-check-1 color-success' : 'app-icon-cancel color-danger'"></span>
+                </td>
+
+                <td *ngIf="!bulkSelect" style="padding: 0;">
+                  <ion-buttons class="justify-end">
+                    <ion-button
+                      *ngIf="context !== 'select-lite' && perfil.pessoa === env.enums.PerfilPessoa.PF && !env.configs.IS_MDK_CLEAN_APP"
+                      class="list-default-table-button" fill="clear"
+                      [color]="perfil.usuarioId ? (perfil.usuario.contratoUsuarios.length ? 'success' : 'warning') : 'danger'"
+                      (click)="toggleAcesso(perfil)" stop-propagation
+                      [title]="perfil.usuarioId ? (perfil.usuario.contratoUsuarios.length ? 'Remover acesso (usuário se mantém)' : 'Gerar acesso (associação já existente)') : 'Gerar usuário de acesso'">
+                      <ion-icon slot="icon-only" name="key-outline"></ion-icon>
+                    </ion-button>
+                    <ion-button *ngIf="context === 'select-full' && !bulkSelect" class="list-default-table-button"
+                      fill="clear" color="dark" (click)="form(perfil)" stop-propagation title="Alterar">
+                      <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </td>
+
+                <ion-ripple-effect></ion-ripple-effect>
+
+              </tr>
+
+            </ng-container>
+
+          </table>
+
+          <p *ngIf="perfis && !perfis.length"
+            class="margin-top-0 margin-bottom-0 padding-top-50 padding-bottom-50 bg-color-white text-center">Nenhum
+            registro
+            encontrado.</p>
+
+          <app-loading *ngIf="!perfis"></app-loading>
+
+        </div>
+
+      </div>
+
+      <app-pager *ngIf="filters && perfisTotal && context !== 'select-lite'" [position]="isModal ? 'default' : 'fixed'"
+        [itemsCount]="perfisTotal?.total" [pager]="filters.pager" (appChange)="pagerChange()"></app-pager>
+
+      <app-footer *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-footer>
+
+    </div>
+
+  </div>
+
+  <app-taskbar *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-taskbar>
+
+</ion-content>

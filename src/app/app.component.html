@@ -1,0 +1,74 @@
+<ion-app>
+
+  <div [id]="tutorialPWAShowed ? '' : 'start-tutorial-pwa'"></div>
+
+  <ion-popover class="tutorial-pwa-popover" trigger="start-tutorial-pwa" mode="ios" triggerAction="hover"
+    [isOpen]="!tutorialPWAShowed" side="bottom" alignment="end" (didDismiss)="closePWATutorial()">
+    <ng-template>
+
+      <div class="padding-20 overflow-auto t-padding-10">
+
+        <div class="t-display-none">
+          <h5 class="text-center">Instale no seu PC</h5>
+          <p>Ganha mais espaço de trabalho, receba notificações e muito mais.</p>
+          <div>
+            <img src="assets/images/tutoriais/tutorial-pwa-desktop.jpg" alt="Tutorial PWA" class="display-block w-10">
+          </div>
+        </div>
+
+        <div class="display-none t-display-block">
+          <h5 class="text-center">Instalar App</h5>
+          <p>Ganha mais espaço de trabalho, receba notificações e muito mais.</p>
+          <div class="">
+            <div class="font-weight-600">Etapa 1</div>
+            <img [src]="'assets/images/tutoriais/tutorial-pwa-' + (platform.is('ios') ? 'ios' : 'and') + '-1.jpg'"
+              alt="Tutorial PWA 1" class="display-block w-10 margin-bottom-15">
+            <div class="font-weight-600">Etapa 2</div>
+            <img [src]="'assets/images/tutoriais/tutorial-pwa-' + (platform.is('ios') ? 'ios' : 'and') + '-2.jpg'"
+              alt="Tutorial PWA 2" class="display-block w-10">
+          </div>
+        </div>
+
+        <div class="margin-top-10 text-center">
+          <ion-button size="small" fill="clear" color="medium" (click)="closePWATutorial(true)">
+            Não exibir mais esta dica
+          </ion-button>
+        </div>
+
+      </div>
+
+    </ng-template>
+  </ion-popover>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+
+  <div *ngIf="authService.isAuth() && authService.getContrato().id" class="position-absolute"
+    style="top: 50%; right: -71px; z-index: 999999; transform: rotate(90deg);">
+    <app-bug-reporter></app-bug-reporter>
+  </div>
+
+  <div *ngIf="showAceiteCookies"
+    class="position-absolute w-10 bottom-0 padding-10-x padding-top-20 padding-bottom-20 bg-color-dark"
+    style="box-shadow: 0 0 10px #0000009c, 0 0 30px #ffffff9c; z-index: 999999;"
+    [class]="blinkLGPD ? 'animated big-pulse infinite' : ''">
+
+    <div class="centro-800 flex-center flex-wrap color-white">
+
+      <p class="margin-right-50 flex-1 t-flex-none t-w-10 t-margin-right-0 t-margin-bottom-30 t-text-center">
+        Ao continuar a navegação, você está de acordo com a utilização de cookies e local storage
+        devido aos recursos obrigatórios para operação da plataforma. Saiba mais nos nossos
+        <a (click)="politicaTermosFaqModal('termos')" class="text-underline cursor-pointer color-secondary">
+          Termos de Uso
+        </a> e
+        <a (click)="politicaTermosFaqModal('politica')" class="text-underline cursor-pointer color-secondary">
+          Política de Privacidade
+        </a>.
+      </p>
+
+      <ion-button (click)="aceitarCookies()" color="primary">Ok, continuar</ion-button>
+
+    </div>
+
+  </div>
+
+</ion-app>

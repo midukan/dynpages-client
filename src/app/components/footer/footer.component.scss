@@ -1,0 +1,13 @@
+:host {
+
+	display: block;
+
+	.logo-rodape {
+		display: block;
+		margin: 0 auto;
+		height: 20px;
+		filter: grayscale(100%) brightness(1000%) invert(67%);
+		opacity: 0.3;
+	}
+
+}

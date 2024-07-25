@@ -1,0 +1,64 @@
+:host {
+	display: block;
+	max-width: calc(100% - 290px);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 100;
+
+	.wrap {
+		display: flex;
+		// padding: 5px;
+
+		.taskbar-item {
+			display: flex;
+			align-items: center;
+			margin-left: 5px;
+			padding: 10px;
+			border-radius: 5px 5px 0 0;
+			overflow: hidden;
+			color: var(--ion-color-white);
+			cursor: pointer;
+			position: relative;
+			max-width: 220px;
+			box-shadow: #00000029 5px 5px 40px, #00000030 0 0 15px;
+			background: linear-gradient(to right, var(--ion-color-tertiary) 0%, var(--ion-color-tertiary) 100%);
+			border: 1px solid var(--ion-color-light-dark-shade);
+			border-bottom-width: 0;
+			// opacity: 0.9;
+
+			&:hover {
+				// opacity: 1;
+				outline: 18px solid #ffffff1f;
+				outline-offset: -18px;
+				border-color: var(--ion-color-light);
+			}
+		}
+	}
+
+	@media not screen and (min-width: 1200px) {
+		// position: static;
+		// max-width: 100%;
+
+		position: static;
+		max-width: 100%;
+		height: 40px;
+
+		.wrap {
+			position: fixed;
+			bottom: 57px;
+
+			.taskbar-item {
+				border-bottom-width: 1px;
+				border-radius: 5px;
+				max-width: 100px;
+				padding: 5px;
+				font-size: 10px;
+
+				.font-size-11 {
+					font-size: 9px;
+				}
+			}
+		}
+	}
+}

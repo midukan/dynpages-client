@@ -1,0 +1,20 @@
+<div modal-adjust-content>
+
+  <div class="bg-color-black">
+
+    <div class="w-10 position-relative" [style.height]="modalHeight + 'px'">
+
+      <div class="position-absolute app-icon-cancel font-size-30 color-white cursor-pointer z-index-2"
+        style="right: 15px; top: 15px; text-shadow: 0 0 5px #00000055;" (click)="dismiss()"></div>
+
+      <img *ngIf="type === 'image'" #img [src]="src" alt="Imagem ampliada" class="w-10 h-10 margin-auto-x display-block" style="object-fit: contain;">
+
+      <video *ngIf="type === 'video'" #video controls autoplay alt="Vídeo ampliado" class="w-10 h-10 margin-auto-x display-block" style="object-fit: contain;">
+        <source [src]="src" type="video/mp4">
+      </video>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,37 @@
+<ng-container *ngIf="validStart === true">
+
+  <ion-item [button]="!disabled" [color]="color ? color : null" (click)="selectModal('lite', $event)" class="app-select"
+    style="--ion-safe-area-right: 0;"
+    [class]="{'app-select-filled': isAppSelectFilled(), 'app-select-layout-form': layout === 'form', 'opacity-3_': disabled}"
+    [class.readonly]="disabled" prevent-double-click>
+
+    <div class="app-select-body">
+      <div class="app-select-label" [class]="{'app-select-label-filled': isAppSelectFilled()}">{{ label }} <span
+          *ngIf="required" class="aster-required">*</span></div>
+      <div class="app-select-value" [class]="{'app-select-value-filled': isAppSelectFilled()}"><span
+          *ngIf="showId && idContent()" class="badge-id">{{ idContent() }}</span> {{ textContent() }}</div>
+    </div>
+
+    <ion-button *ngIf="selectOption.modalViewOptions && !disableFull && totalAppSelectFilled()" slot="end" fill="clear"
+      shape="round" stop-propagation prevent-double-click style="margin-inline-start: 10px;"
+      [style]="{'--border-color': 'var(--ion-color-' + (color || 'light') +'-contrast)', '--color': 'var(--ion-color-' + (color || 'light') +'-contrast)'}"
+      (click)="viewModal($event)" title="Ver ou Alterar">
+      <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button *ngIf="!disableFull && !disabled" slot="end" fill="clear" shape="round" stop-propagation
+      prevent-double-click style="margin-inline-start: 0;"
+      [style]="{'--border-color': 'var(--ion-color-' + (color || 'light') +'-contrast)', '--color': 'var(--ion-color-' + (color || 'light') +'-contrast)'}"
+      (click)="selectModal('full', $event)" title="Busca Avançada">
+      <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+    </ion-button>
+
+    <app-tooltip *ngIf="tooltip && isContent()" slot="end" [content]="content"
+      style="margin: 3px 10px 0 0"></app-tooltip>
+    <app-tooltip *ngIf="tooltip && !isContent()" slot="end" style="margin: 3px 10px 0 0">{{ tooltip }}</app-tooltip>
+
+  </ion-item>
+
+</ng-container>
+
+<div *ngIf="validStart === false">Select com parâmetros inválidos!</div>

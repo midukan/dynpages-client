@@ -1,0 +1,155 @@
+<app-header appType="modal" [appTitle]="title" [appSubtitle]="subtitle" (appDismiss)="dismiss()" [minimizable]="false"
+  [maximizable]="true"></app-header>
+
+<ion-content>
+
+  <div> <!-- Resolve problema de 1px sobrando na modal -->
+
+    <div class="">
+
+      <div *ngIf="etapa === 1" class="display-flex flex-wrap">
+
+        <div class="w-5 padding-20 padding-right-30 t-w-10 t-margin-0 t-margin-bottom-30">
+
+          <h4 class="">Etapa {{ etapa }} de 2</h4>
+
+          <div class="warning-block" style="--app-background: var(--ion-color-warning)">
+            <p>● Selecione um arquivo de planilha .CSV (Excel). Você pode importar até {{ state.limiteRegistros }}
+              registros por vez.</p>
+            <p>● Não deve existir um cabeçalho com o nome dos campos na primeira linha.</p>
+            <p>● Os dados devem estar em UTF-8. Se não tem certeza, faça um envio de teste com 1 registro contendo um
+              nome
+              de cliente com acentuação e confirme se foi corretamente importada.</p>
+            <p>● Você pode baixar um arquivo de exemplo para montar o seu.
+              <span (click)="baixarMolde()" class="font-weight-600 cursor-pointer text-underline">
+                Baixar modelo.
+              </span>
+            </p>
+          </div>
+
+          <div class="overflow-hidden margin-bottom-30 padding-10-x_ bg-color-light_ border-radius-10_ font-weight-600">
+            <p>
+              Se já existir um registro com o mesmo
+              <span class="font-weight-600">{{ getUniqueNames() }}</span> ou estiver em branco na planilha,
+              a importação para este será ignorada.
+            </p>
+            <p>
+              Registros com dados inválidos não serão importados. Poderá verificar no final da importação.
+            </p>
+          </div>
+
+          <div class="flex-center padding-10-x color-light-shade t-font-size-70" style="font-size: 180px;">
+            <span class="app-icon-doc"></span>
+            <span class="app-icon-right-big font-size-40 animated infinite fadeOutRight t-font-size-30"></span>
+            <span class="app-icon-upload-cloud-outline"></span>
+          </div>
+
+        </div>
+
+        <div class="w-5 flex-center border-radius-10_ color-white t-w-10"
+          [class]="fileData ? 'bg-color-success' : 'bg-color-dark'">
+
+          <div class="padding-15 padding-top-30 padding-bottom-30 text-center">
+            <div class="margin-bottom-15">
+              <ion-button fill="outline" color="white" class="text-initial" style="--border-width: 1px;"
+                (click)="selecionarPlanilha()">
+                Selecionar planilha CSV
+              </ion-button>
+            </div>
+            <div class="font-weight-600">
+              <ng-container *ngIf="fileData">
+                <div>Arquivo "{{ fileData.name }}" selecionado.</div>
+                <div>Encontrado {{ registros?.length }} registros para importação.</div>
+              </ng-container>
+              <ng-container *ngIf="!fileData">Selecione um arquivo .csv (UTF-8)</ng-container>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="etapa === 2" class="">
+
+        <div class="padding-20">
+
+          <h4 class="">Etapa {{ etapa }} de 2</h4>
+
+          <div class="warning-block margin-bottom-20" style="--app-background: var(--ion-color-warning)">
+            <p>● Aponte corretamente os campos de acordo com as coluna de sua planilha.</p>
+            <p>● Mesmo utilizando nosso molde, verifique com atenção.</p>
+            <p>● Pressione o botão do meio do mouse sem girar (scroll) para movimentar-se pela planilha abaixo.</p>
+          </div>
+
+          <div class="w-10 overflow-auto">
+            <table class="tabela-registros">
+              <tr>
+                <td class="bg-color-dark"></td>
+                <td *ngFor="let _ of [].constructor(colunasDetectadas); let idx = index" style="min-width: 190px;">
+                  <ion-item
+                    [color]="(camposOrdem[idx] !== null) ? (hasDuplicatedOrdem(camposOrdem[idx]) ? 'danger' : 'dark') : 'light'"
+                    style="--border-radius: 0; --border-width: 0;">
+                    <ion-label position="stacked">Campo referência</ion-label>
+                    <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="camposOrdem[idx]">
+                      <ion-select-option [value]="null">IGNORAR</ion-select-option>
+                      <ion-select-option *ngFor="let field of fieldsArr" [value]="field[0]">
+                        {{ field[1] }}
+                      </ion-select-option>
+                    </ion-select>
+                    <app-tooltip *ngIf="state.fieldsTooltip[camposOrdem[idx]!]" slot="end">
+                      <div [innerHTML]="state.fieldsTooltip[camposOrdem[idx]!]"></div>
+                    </app-tooltip>
+                  </ion-item>
+                </td>
+              </tr>
+              <tr *ngFor="let registro of registros; let idx = index">
+                <td class="campo-registro">{{ (idx + 1) }}</td>
+                <td *ngFor="let campo of registro" class="campo-registro">{{ campo }}</td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+
+  <div
+    class="display-flex justify-between flex-wrap padding-10 bg-color-secondary color-white t-padding-top-30 t-padding-bottom-30">
+
+    <div class="t-w-10 t-text-center" [class.t-margin-bottom-30]="etapa >= 2">
+
+      <div *ngIf="etapa >= 2" class="margin-bottom-10">
+        <ion-button size="small" color="white" class="text-initial" [disabled]="etapa === 1" (click)="voltarEtapa()">
+          Etapa anterior
+        </ion-button>
+      </div>
+      <div *ngIf="etapa === 2" class="font-size-11">Você pode voltar e reenviar o arquivo.</div>
+
+    </div>
+
+    <div class="text-right t-w-10 t-text-center">
+
+      <div class="margin-bottom-10">
+        <ion-button size="small" color="white" class="text-initial" (click)="proximaEtapa()"
+          [disabled]="!registros?.length">
+          {{ (etapa === 2) ? 'Efetuar importação' : 'Próxima etapa' }}
+        </ion-button>
+      </div>
+      <div *ngIf="etapa === 1" class="font-size-11">Nela você poderá configurar a ordem dos campos.</div>
+      <div *ngIf="etapa === 2" class="font-size-11">
+        Ao avançar, os registros serão enviados para o {{ env.infos.appName }}.
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-footer>

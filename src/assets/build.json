@@ -1,0 +1,6 @@
+{
+  "build": {
+    "frontendCommit": "__replaceCGC__",
+    "frontendDate": "__replaceDate__"
+  }
+}

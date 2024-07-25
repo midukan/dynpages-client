@@ -1,0 +1,27 @@
+<div class="display-flex t-flex-wrap padding-right-5 t-padding-bottom-5">
+
+  <div *ngFor="let summary of summaries; let idx = index"
+    class="flex-1 padding-5 t-flex-none t-w-5 m-w-10_ t-max-w-10 padding-right-0 t-padding-bottom-0"
+    style="max-width: 400px;">
+
+    <div
+      class="block-inner ion-activatable ripple-parent position-relative padding-10 padding-bottom-5 border-radius-5 cursor-pointer t-padding-5"
+      [class]="summary.color ? ('color-' + summary.color) : 'bg-color-light color-black'"
+      [style.border]="summary.color ? '0px solid var(--ion-color-' + summary.color + ')' : '0px solid var(--ion-color-light-shade)'"
+      [style.background]="summary.active ? 'var(--app-color-bg-active)' : 'var(--ion-color-light)'"
+      [style.color]="summary.active ? 'var(--app-color-black)' : undefined" (click)="summaryClick(summary, idx)">
+
+      <div [innerHTML]="summary.label"></div>
+      <div class="display-flex justify-between align-center">
+        <div class="font-size-20 font-weight-600 t-font-size-17" [innerHTML]="summary.text"></div>
+        <div class="font-size-14 font-weight-600 t-donft-size-13" [innerHTML]="summary.note"
+          [title]="summary.noteTitle"></div>
+      </div>
+
+      <ion-ripple-effect class="border-radius-5"></ion-ripple-effect>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,149 @@
+:host {
+
+	--submenu-animate-time: 0.3s;
+
+	ion-content {
+		--background: var(--ion-color-tertiary);
+		--color: var(--ion-color-tertiary-contrast);
+	}
+
+	ion-toolbar {
+		// --background: var(--ion-color-white);
+		--background: var(--ion-color-tertiary);
+	}
+
+	ion-menu {
+
+		border-right: 0;
+
+		.submenu {
+
+			position: absolute;
+			z-index: 9;
+			left: 100%;
+			top: 70px;
+			bottom: 0;
+			width: 78%;
+			transition: left ease var(--submenu-animate-time);
+
+			&.show {
+				left: 22%;
+			}
+
+			ion-toolbar *,
+			ion-content * {
+				transition: opacity ease var(--submenu-animate-time);
+				opacity: 1;
+			}
+
+			&.show-opacity {
+
+				ion-toolbar *,
+				ion-content * {
+					opacity: 0;
+				}
+			}
+
+		}
+
+		.submenu-tpl {
+
+			height: 100%;
+
+			ion-content {
+				--background: var(--ion-color-tertiary-shade);
+				--color: var(--ion-color-tertiary-contrast);
+			}
+
+			ion-item {
+				--background: var(--ion-color-tertiary-shade);
+				--color: var(--ion-color-tertiary-contrast);
+			}
+
+		}
+
+		ion-list-header {
+
+			min-height: 25px;
+			margin-top: 30px;
+			font-weight: 600;
+			font-size: 17px;
+			--color: var(--ion-color-tertiary-contrast);
+			transition: font-size ease var(--submenu-animate-time), padding-left ease var(--submenu-animate-time);
+
+		}
+
+		ion-item {
+
+			transition: ease var(--submenu-animate-time) width;
+			transition: ease var(--submenu-animate-time) margin-left;
+
+			&::part(native) {
+				font-size: 13px;
+				font-weight: 450;
+			}
+
+			// --inner-border-width: 0;
+			--background: var(--ion-color-tertiary);
+			--color: var(--ion-color-tertiary-contrast);
+			border-radius: 3px;
+			// margin: 5px 10px 5px 10px;
+			// width: calc(100% - 20px);
+			border-bottom: 0px solid var(--ion-color-tertiary);
+
+			span {
+				margin-right: 15px;
+				font-size: 20px;
+			}
+
+			&::before {
+				display: none; // removendo pois não estava legal
+				content: " ";
+				height: 80%;
+				width: 8px;
+				// border-radius: 0px 4px 4px 0px;
+				border-radius: 3px;
+				position: absolute;
+				left: 0;
+				top: 10%;
+				z-index: 2;
+			}
+
+			&.active {
+
+				// --background: var(--ion-color-light) !important;
+				--background: var(--ion-color-white) !important;
+				--color: var(--ion-color-dark) !important;
+				border-radius: 3px 0 0 3px;
+				width: 95%;
+				margin-left: 5%;
+
+				&::before {
+					background-color: var(--ion-color-dark);
+				}
+
+				span {
+					color: var(--ion-color-dark);
+				}
+			}
+
+			&.submenu-show-item {
+				--background: var(--ion-color-tertiary-shade);
+				--color: var(--ion-color-tertiary-contrast);
+				margin-left: 5px;
+			}
+
+		}
+
+		.submenu-show {
+
+			ion-list-header {
+				padding-left: 5px;
+				font-size: 11px;
+			}
+
+		}
+
+	}
+
+}

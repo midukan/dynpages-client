@@ -1,0 +1,243 @@
+<app-header *ngIf="planoAtual !== null" appType="page" [appTitle]="title" [appSubtitle]="subtitle"></app-header>
+
+<ion-content>
+
+  <ng-container *ngIf="authService.getContrato()?.id">
+
+    <div *ngIf="planoAtual === null"
+      class="flex-center bg-color-tertiary padding-top-50 padding-bottom-30 t-padding-10-x"
+      style="flex-direction: column;">
+
+      <div class="display-flex flex-wrap justify-center margin-bottom-30">
+
+        <div class="display-flex align-center t-justify-center t-flex-wrap t-text-center">
+
+          <div class="margin-right-50 t-margin-right-0 t-margin-bottom-30 t-w-10">
+            <img src="assets/images/logo-branco.png" alt="Logo" class="display-block w-10 t-margin-auto-x"
+              style="max-width: 300px;">
+          </div>
+
+          <h1 class="margin-0 color-white font-weight-500">
+            <div class="font-size-23 font-weight-300 t-font-size-20">Agora para finalizar</div>
+            <div class="font-weight-600 font-size-13 t-font-size-11">configure e pague sua assinatura.</div>
+          </h1>
+
+        </div>
+
+      </div>
+
+      <div
+        class="flex-center w-10 margin-top-30 margin-bottom-30 color-white font-weight-600 font-size-14 font-visby-round t-font-size-11"
+        style="max-width: 460px;">
+
+        <div class="padding-10-x padding-5 border-radius-10 bg-color-success opacity-7 t-padding-5">
+          1. Usuário <span class="app-icon-check-1"></span>
+        </div>
+        <div class="bg-color-success flex-1" style="height: 5px;"></div>
+        <div class="padding-10-x padding-5 border-radius-10 bg-color-success opacity-7 t-padding-5">
+          2. Empresa <span class="app-icon-check-1"></span>
+        </div>
+        <div class="bg-color-success flex-1" style="height: 5px;"></div>
+        <div
+          class="padding-10-x padding-5 border-radius-10 bg-color-medium font-size-16 animated infinite pulse duration-1000 t-font-size-13 t-padding-5"
+          style="border: 6px solid var(--ion-color-success);border-right: 0;border-top: 0;border-bottom: 0;">
+          3. Plano
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="planos" class="main-block padding-20 t-padding-0">
+
+      <div *ngIf="planoAtual !== null" class="padding-top-50 margin-bottom-50 text-center">
+
+        <h2 class="font-size-30">Precisa alterar seu plano?</h2>
+        <p class="">Desde o plano gratuito até o mais completo para seu negócio.</p>
+
+      </div>
+
+      <div class="margin-bottom-30">
+        <app-planos modo="radio" [planoAtual]="planoAtual" [planoSel]="planoSel" [planoPeriodo]="planoPeriodo"
+          (planoSelecionado)="selecionaPlano($event.planoNum, $event.planoPeriodo)"></app-planos>
+      </div>
+
+      <div *ngIf="planoSel" id="resumo"
+        class="margin-bottom-50 padding-30 border-radius-30_ bg-color-light t-padding-10">
+
+        <div class="margin-bottom-30 text-center">
+          <h2 class="font-size-50 t-font-size-30">
+            Pagamento
+          </h2>
+          <p>Confirme ou altere seus dados, plano selecionado e forma de pagamento.</p>
+        </div>
+
+        <div class="display-flex flex-wrap gap-20 w-10 margin-bottom-30 color-dark">
+
+          <div class="flex-1 padding-20 border-radius-10 bg-color-white t-w-10 t-flex-none">
+            <h2 class="display-flex align-center justify-between font-size-25">
+              Meus dados
+              <ion-button size="small" fill="clear" color="secondary" class="margin-0 text-initial"
+                (click)="contratoPageService.modalForm([], authService.getContrato())">alterar</ion-button>
+            </h2>
+            <p>{{ authService.getContrato().nome }}</p>
+            <p>{{ authService.getContrato().documento }}</p>
+            <p>{{ authService.getContrato().responsavelNome }}</p>
+            <p>{{ authService.getContrato().responsavelDocumento }}</p>
+            <p>{{ authService.getContrato().responsavelEmail }}</p>
+            <p>{{ authService.getContrato().enderecoCEP }}</p>
+            <p>{{ authService.getContrato().enderecoBairro }}</p>
+            <p>
+              {{ authService.getContrato().enderecoLogradouro }},
+              {{ authService.getContrato().enderecoNumero }}{{ authService.getContrato().enderecoComplemento ? ', ' +
+              authService.getContrato().enderecoComplemento : '' }}
+            </p>
+            <p>{{ authService.getContrato().enderecoCidade.nomeCompleto}}</p>
+          </div>
+
+          <div class="flex-1 padding-20 border-radius-10 bg-color-white t-w-10 t-flex-none">
+            <h2 class="display-flex align-center justify-between font-size-25">
+              Plano selecionado
+              <ion-button size="small" fill="clear" color="secondary" class="margin-0 text-initial"
+                (click)="scrollToBlock('planos')">alterar</ion-button>
+            </h2>
+            <p>Pacote {{ env.enums.ContratoPlanoOpcaoStr['PLANO_' + planoSel] }}</p>
+            <p>Pagamento <span style="text-transform: lowercase;">{{ planoPeriodo }}</span></p>
+            <p *ngIf="authService.getContrato().planoDesconto">
+              Desconto:
+              <span class="font-weight-600">{{ authService.getContrato().planoDesconto | dinheiro:false }}%</span>
+            </p>
+            <p class="margin-bottom-0">
+              <span *ngIf="authService.getContrato().planoDesconto"
+                class="display-block font-weight-600 font-size-16 color-medium" style="text-decoration: line-through;">
+                {{ env.planos['PLANO_' + planoSel + '_VALOR_' + planoPeriodo] | dinheiro }}
+              </span>
+              <span class="font-weight-600 font-size-18">
+                {{ calculaPlanoValor() | dinheiro }}
+              </span>
+              <span style="text-transform: lowercase;">{{ planoPeriodo }}mente</span>
+            </p>
+            <p class="margin-top-0 color-medium">
+              (Relativo: {{ calculaPlanoProporcaoMensal() | dinheiro }} por mês)
+            </p>
+
+            <div *ngIf="contrato.planoOpcaoSubstituto" class="warning-block">
+
+              <h4 class="display-flex align-center justify-between margin-bottom-0">
+                Plano substituto
+                <ion-button size="small" fill="clear" color="secondary" class="margin-0 text-initial"
+                  (click)="cancelaSubstituicao()">cancelar</ion-button>
+              </h4>
+              <div class="font-size-11 color-medium">Será aplicado em
+                {{ contrato.licenca.dataBloqueio | date:'dd/MM/yy' }}.
+              </div>
+
+              <p>Pacote {{ env.enums.ContratoPlanoOpcaoStr[contrato.planoOpcaoSubstituto] }}</p>
+              <p>Período {{ env.enums.ContratoPlanoPeriodoStr[contrato.planoPeriodoSubstituto] }}</p>
+              <p>Pagamento {{ env.enums.ContratoFormaPgtoStr[contrato.planoFormaPgtoSubstituto] }}</p>
+
+            </div>
+
+          </div>
+
+          <div class="flex-1 padding-20 border-radius-10 bg-color-white t-w-10 t-flex-none">
+            <h2 class="font-size-25">Forma de pagamento</h2>
+            <ion-grid>
+              <ion-row>
+
+                <ion-col size="12">
+                  <ion-item [display-errors]="{property: 'contrato.planoFormaPgto', errors: []}">
+                    <ion-label position="stacked">Forma de pagamento</ion-label>
+                    <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="planoFormaPgto">
+                      <ion-select-option *ngFor="let formaPgto of formaPgtos" [value]="formaPgto.value">
+                        {{ formaPgto.label }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="12"
+                  *ngIf="planoFormaPgto !== env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO">
+                  <div class="warning-block margin-top-20">
+                    Seus boletos ou pix serão enviados no email {{ authService.getContrato().responsavelEmail }}.
+                  </div>
+                </ion-col>
+
+                <ion-col size="12">
+                  <div *ngIf="contrato.licenca && calculaPlanoValor() < calculaPlanoValor(true)"
+                    class="warning-block margin-top-20" style="--app-background: var(--ion-color-warning);">
+                    <h4>Atenção</h4>
+                    <p>● O valor da fatura escolhida é MENOR do que o plano atual. A alteração ocorrerá
+                      ao término da vigência do atual ({{ contrato.licenca.dataBloqueio | date:'dd/MM/yy' }})
+                      de forma automática.</p>
+                    <p>● Se precisar alterar ser plano de forma instantânea, seleciona uma opção com fatura de valor
+                      superior ao da fatura atual.</p>
+                  </div>
+                  <div *ngIf="contrato.licenca && calculaPlanoValor() > calculaPlanoValor(true)"
+                    class="warning-block margin-top-20" style="--app-background: var(--ion-color-warning);">
+                    <h4>Atenção</h4>
+                    <p>● O valor da fatura escolhida é MAIOR do que o plano atual.</p>
+                    <p>● Você receberá um desconto na próxima fatura proporcional ao tempo de uso.</p>
+                  </div>
+                </ion-col>
+
+                <ion-col size="12"
+                  *ngIf="planoFormaPgto === env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO">
+
+                  <div *ngIf="authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length">
+
+                    <ion-button class="text-initial" (click)="cartoes()">Gerenciar cartões</ion-button>
+
+                    <div class="font-size-11">
+                      {{ authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length }}
+                      {{ (authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length === 1) ?
+                      'cartão cadastrado' : 'cartões cadastrados' }}
+                    </div>
+
+                    <div *ngIf="cartaoAddInfo" class="warning-block margin-top-40">
+                      Seu cartão foi salvo e agora você pode concluir a assinatura.
+                    </div>
+
+                  </div>
+
+                  <app-perfil-cartao-form-page
+                    *ngIf="!authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length"
+                    context="embed-form" [state]="{perfilId: authService.getContrato().licenca?.competencia?.perfilId}"
+                    (appSave)="cartaoAdd($event)"></app-perfil-cartao-form-page>
+
+                </ion-col>
+
+              </ion-row>
+
+            </ion-grid>
+          </div>
+
+        </div>
+
+        <div
+          *ngIf="(planoSel !== planoAtual) || planoFormaPgto !== formaPgtoAtual || planoPeriodo !== planoPeriodoAtual"
+          class="text-right">
+          <ion-button color="primary" size="large" class="text-initial" (click)="salvar()">
+            {{ planoAtual ? 'Alterar' : 'Confirmar' }} assinatura
+          </ion-button>
+          <p *ngIf="planoFormaPgto !== env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO">
+            As faturas de <span class="font-weight-600">{{ calculaPlanoValor() | dinheiro }}</span>
+            serão enviadas
+            <span class="font-weight-600" style="text-transform: lowercase;">{{ planoPeriodo }}mente</span>
+            por email.
+          </p>
+          <p *ngIf="planoFormaPgto === env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO">
+            Será debitado <span class="font-weight-600">{{ calculaPlanoValor() | dinheiro }}</span>
+            <span class="font-weight-600" style="text-transform: lowercase;"> {{ planoPeriodo }}mente</span> no cartão.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  <app-footer></app-footer>
+
+</ion-content>

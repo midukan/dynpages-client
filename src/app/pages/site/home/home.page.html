@@ -1,0 +1,232 @@
+<ion-content>
+
+    <ion-button #buttonScrollToTop color="dark" shape="round"
+        class="display-none position-fixed bottom-0 margin-bottom-5 left-0 right-0 z-index-2 margin-auto-x"
+        style="width: 200px;" (click)="scrollToBlock('topo')">
+        Ir para o topo <span class="app-icon-up-1"></span>
+    </ion-button>
+
+    <header id="topo" class="padding-bottom-100">
+
+        <div class="centro-1600 padding-10-x">
+
+            <div
+                class="display-flex justify-between align-center flex-wrap margin-bottom-100 padding-top-40 t-margin-bottom-30">
+
+                <ion-menu-button class="display-none margin-top-10 t-display-flex"></ion-menu-button>
+
+                <div class="t-margin-auto-x">
+                    <img src="assets/images/logo-preto.png" alt="Logo" class="display-block" style="height: 27px;">
+                </div>
+
+                <nav class="display-flex color-dark t-display-none">
+                    <ion-button fill="clear" color="dark" class="text-initial" size="small"
+                        (click)="scrollToBlock('planos')">
+                        Planos
+                    </ion-button>
+                    <ion-button fill="clear" color="dark" class="text-initial" size="small"
+                        (click)="scrollToBlock('faq')">
+                        FAQ
+                    </ion-button>
+                    <ion-button fill="clear" color="dark" class="text-initial" size="small"
+                        (click)="scrollToBlock('rodape')">
+                        Atendimento
+                    </ion-button>
+                </nav>
+
+                <div class="t-display-none">
+                    <ion-button fill="clear" [color]="authService.isAuth() ? 'secondary' : 'dark'" class="text-initial"
+                        routerLink="/auth">
+                        {{ authService.isAuth() ? usuarioLogado.nomeCompleto : 'Entrar' }}
+                    </ion-button>
+                    <ion-button *ngIf="!authService.isAuth()" shape="round" color="dark" class="text-initial"
+                        (click)="scrollToBlock('planos')">Comece agora</ion-button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <section id="planos" style="background-color: #f0faf9;">
+
+        <div class="centro-1600 padding-10-x">
+
+            <div class="padding-top-50 margin-bottom-50 text-center">
+
+                <h2 class="block-title">Planos e preços</h2>
+                <p class="">Desde o plano gratuito até ao plano mais completo para seu negócio.</p>
+
+            </div>
+
+            <app-planos modo="button"
+                (planoSelecionado)="selecionaPlano($event.planoNum, $event.planoPeriodo, $event.acao)"></app-planos>
+
+        </div>
+
+    </section>
+
+    <section id="faq" style="background-color: #f0faf9;">
+
+        <div class="centro-1330 padding-10-x padding-top-50 padding-bottom-50">
+
+            <h2 class="block-title margin-bottom-50">Perguntas frequentes</h2>
+
+            <div *ngFor="let faq of env.data.faq" class="margin-bottom-30 padding-bottom-5 align-center"
+                style="border-bottom: 1px solid var(--ion-color-light);">
+
+                <h2 class="display-flex align-center justify-between font-size-20 font-weight-600 cursor-pointer"
+                    (click)="faq.open = !faq.open">
+                    <div>{{ faq.pergunta }}</div>
+                    <div class="flex-center border-radius-50 bg-color-success-tint"
+                        style="width: 35px; height: 35px; border: 1px solid var(--ion-color-light);">
+                        <span [class]="faq.open ? 'app-icon-minus' : 'app-icon-plus'"></span>
+                    </div>
+                </h2>
+
+                <div class="font-size-14 color-medium" [class]="faq.open ? '' : 'display-none'"
+                    [innerHTML]="faq.resposta"></div>
+
+                <div *ngIf="faq.pergunta.includes(env.infos.payName)" [class]="faq.open ? '' : 'display-none'">
+                    <ion-button color="secondary" fill="clear" class="text-initial"
+                        (click)="politicaTermosPageService.modalForm(null, 'conta-digital')">
+                        Mais informações
+                    </ion-button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="centro-1600 padding-10-x padding-top-100 padding-bottom-100">
+
+            <div
+                class="display-flex justify-between align-center overflow-hidden padding-30 padding-top-40 padding-bottom-40 border-radius-10 bg-color-tertiary color-white t-padding-20 t-text-center">
+                <div class="t-w-10 t-margin-bottom-10">
+                    <div>Alguma dúvida?</div>
+                    <h2 class="margin-top-0 margin-bottom-0 font-weight-600">
+                        Entre em contato conosco
+                    </h2>
+                </div>
+                <div class="t-w-10">
+                    <ion-button color="success" shape="round" class="text-initial"
+                        style="--padding-top: 20px; --padding-bottom: 20px;" [href]="env.paths.SUPPORT_LINK"
+                        target="-blank">
+                        WhatsApp <span class="margin-left-15 app-icon-whatsapp"></span>
+                    </ion-button>
+                    <ion-button shape="round" color="white" class="margin-left-10 text-initial"
+                        style="--padding-top: 20px; --padding-bottom: 20px;" (click)="contatoPageService.modalForm()">
+                        Email <span class="margin-left-15 app-icon-mail"></span>
+                    </ion-button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer id="rodape">
+
+        <div class="centro-1600 padding-10-x padding-top-100 padding-bottom-100">
+
+            <div class="display-flex flex-wrap t-text-center">
+
+                <div class="w-4 t-w-10 t-margin-bottom-50">
+                    <img src="assets/images/logo-pequeno-preto.png" alt="Logo rodapé" (click)="scrollToBlock('topo')"
+                        class="display-block cursor-pointer t-margin-auto-x" style="width: 250px;">
+                    <p>A ferramenta inteligente de gestão microempresarial.</p>
+                    <!-- <div class="display-flex t-justify-center">
+                        <ion-button fill="clear" color="dark" href="https://instagram.com" target="_blank">
+                            <span class="app-icon-instagram"></span>
+                        </ion-button>
+                        <ion-button fill="clear" color="dark" href="https://linkedin.com/" target="_blank">
+                            <span class="app-icon-linkedin"></span>
+                        </ion-button>
+                        <ion-button fill="clear" color="dark" href="https://facebook.com/" target="_blank">
+                            <span class="app-icon-facebook"></span>
+                        </ion-button>
+                        <ion-button fill="clear" color="dark" href="https://x.com/" target="_blank">
+                            <span class="app-icon-twitter"></span>
+                        </ion-button>
+                        <ion-button fill="clear" color="dark" [href]="env.paths.SUPPORT_LINK" target="_blank">
+                            <span class="app-icon-whatsapp"></span>
+                        </ion-button>
+                    </div> -->
+                </div>
+
+                <div class="w-2 t-w-10 t-margin-bottom-50">
+                    <h2 class="font-weight-900 font-size-20">Informações</h2>
+                    <p>{{ env.infos.email }}</p>
+                    <p>
+                        Rua Araújo Leite, 40-33
+                        <br />17012-432, Bauru - SP
+                    </p>
+                </div>
+
+                <div class="w-2 t-w-10 t-margin-bottom-50">
+
+                    <h2 class="font-weight-900 font-size-20">Navegue</h2>
+
+                    <div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="margin-0 text-initial" size="small"
+                                (click)="scrollToBlock('planos')">
+                                Planos
+                            </ion-button>
+                        </div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="margin-0 text-initial" size="small"
+                                (click)="scrollToBlock('faq')">
+                                FAQ
+                            </ion-button>
+                        </div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="margin-0 text-initial" size="small"
+                                (click)="scrollToBlock('rodape')">
+                                Atendimento
+                            </ion-button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="w-2 t-w-10">
+
+                    <h2 class="font-weight-900 font-size-20">Legal</h2>
+
+                    <div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="text-initial"
+                                (click)="politicaTermosPageService.modalForm(null, 'termos')">
+                                Termos de uso
+                            </ion-button>
+                        </div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="text-initial"
+                                (click)="politicaTermosPageService.modalForm(null, 'politica')">
+                                Política de privacidade
+                            </ion-button>
+                        </div>
+                    </div>
+
+                    <!-- <h2 class="font-weight-600 font-size-20">Disponível em</h2>
+
+                    <div class="display-flex t-justify-center">
+                        <ion-button fill="clear" size="large" color="dark" href="https://google.com" target="_blank">
+                            <span class="app-icon-googleplay"></span>
+                        </ion-button>
+                        <ion-button fill="clear" size="large" color="dark" href="https://apple.com/" target="_blank">
+                            <span class="app-icon-appstore"></span>
+                        </ion-button>
+                    </div> -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</ion-content>

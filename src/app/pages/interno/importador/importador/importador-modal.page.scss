@@ -1,0 +1,20 @@
+:host {
+
+    .tabela-registros {
+
+        min-width: 100%;
+        border-collapse: separate;
+        border-spacing: 1px;
+        background-color: var(--ion-color-light-shade);
+
+        td {
+            background-color: var(--ion-color-white);
+
+            &.campo-registro {
+                padding: 10px;
+            }
+        }
+
+    }
+
+}

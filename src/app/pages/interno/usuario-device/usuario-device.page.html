@@ -1,0 +1,73 @@
+<app-header [appType]="headerType" appTitle="Dispositivos" appSubtitle="Locais conectados e configurações."
+  (appDismiss)="dismiss()" [minimizable]="false"></app-header>
+
+<ion-content style="--background: var(--ion-color-light)">
+
+  <div class="main-block padding-20 t-padding-10">
+
+    <div class="margin-bottom-20-n">
+
+      <div class="margin-bottom-20 t-margin-top-10" style="height: 15px;">Meu IP atual: <span class="font-weight-600">{{
+          realIP }}</span></div>
+
+      <div *ngFor="let usuarioDevice of usuarioDevices" class="margin-bottom-20">
+
+        <div
+          class="display-flex align-center justify-between padding-15 position-relative overflow-hidden bg-color-white border-radius-5"
+          style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+
+          <div *ngIf="usuarioDevice._socketConnected"
+            class="position-absolute left-0 top-0 bg-color-success color-white font-size-9"
+            style="padding: 3px 5px; border-radius: 0 0 5px 0;">Online/Conectado</div>
+
+          <div class="display-flex flex-wrap">
+
+            <div class="w-10 font-weight-600 font-size-14" [class.margin-top-10]="usuarioDevice._socketConnected">{{
+              usuarioDevice.nome }}</div>
+            <div class="w-10 margin-bottom-10 color-medium font-size-10">{{ usuarioDevice.descricao }}</div>
+
+            <div class="padding-10 border-radius-5 bg-color-light color-dark font-size-10">
+              <div class="">IP: <span class="font-weight-600">{{ usuarioDevice.lastIP }}</span></div>
+              <div class="">Acesso: <span class="font-weight-600">há {{ appUtil.timeDiffToStr(usuarioDevice.lastLogin)
+                  }}</span></div>
+              <div class="">Criado: <span class="font-weight-600">{{ usuarioDevice.dataCadastro |
+                  date:'dd/MM/yyy':env.configs.DATE_ONLY_TIMEZONE }}</span></div>
+              <div class="">Local: <span class="font-weight-600">{{ usuarioDevice.lastLocation }}</span>
+                <app-tooltip>A localização pode não estar correta em casos de utilização de VPNs/Proxies ou de variação
+                  na faixa de IPs do seu ISP.</app-tooltip>
+              </div>
+              <div class="">ISP: <span class="font-weight-600">{{ usuarioDevice.lastISP }}</span></div>
+              <div class="color-success-shade font-weight-600">{{ (usuarioDevice.id === currentUsuarioDeviceId) ? 'Este
+                dispositivo' : '' }}</div>
+            </div>
+
+          </div>
+
+          <div class="flex-center flex-wrap margin-left-10" style="width: 135px; margin-top: 10px;">
+
+            <div class="padding-10 padding-bottom-0 border-radius-5 bg-color-light">
+              <div class="margin-bottom-10 text-center">Notificação</div>
+              <div class="text-center">
+                <ion-checkbox style="--size: 25px;" [(ngModel)]="usuarioDevice.sendPush"
+                  (ionChange)="save(usuarioDevice)"></ion-checkbox>
+              </div>
+              <div><ion-button [disabled]="!usuarioDevice.sendPush" fill="clear" color="dark" size="small"
+                  class="text-initial" (click)="testarNotificacao(usuarioDevice)">testar envio</ion-button></div>
+            </div>
+
+            <div class="text-center"><ion-button fill="clear" color="danger" size="small" class="text-initial"
+                (click)="desconectar(usuarioDevice)">desconectar</ion-button></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <app-loading *ngIf="!usuarioDevices"></app-loading>
+
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,45 @@
+<div class="overflow-hidden padding-10">
+
+  <div
+    class="display-flex justify-between flex-wrap align-center padding-5 bg-color-danger color-white border-radius-10 font-size-13">
+
+    <div class="padding-20-x t-w-10 t-margin-bottom-10 t-text-center"
+      [class]="forceMobile ? 'w-10 margin-bottom-10 text-center' : ''">Selecione registros para executar ações em lote.
+    </div>
+
+    <div class="t-w-10 t-text-center" [class]="forceMobile ? 'w-10 text-center' : ''">
+
+      <div class="display-flex justify-between align-center">
+
+        <div>
+
+          <ion-button *ngIf="appSelecionaTodos.observers.length" size="small" fill="default" color="white"
+            class="margin-top-0 margin-bottom-0 text-initial" (click)="selecionaTodos($event)">
+            <ion-icon name="checkbox" slot="start"></ion-icon> Sel. Todos
+          </ion-button>
+
+        </div>
+
+        <div>
+
+          <ion-button *ngFor="let button of appExtraButtons" size="small" fill="default" color="white"
+            class="margin-top-0 margin-bottom-0 text-initial" (click)="click($event, button)">
+            <ion-icon *ngIf="button.ionIcon" [name]="button.ionIcon"
+              [slot]="button.content ? 'start' : 'icon-only'"></ion-icon>
+            <div *ngIf="button.content" [innerHTML]="button.content"></div>
+          </ion-button>
+
+          <ion-button *ngIf="appExcluir.observers.length" size="small" fill="default" color="white"
+            class="margin-top-0 margin-bottom-0 text-initial" (click)="excluir($event)">
+            <ion-icon name="trash" slot="start"></ion-icon> Excluir
+          </ion-button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

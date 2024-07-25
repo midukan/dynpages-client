@@ -1,0 +1,124 @@
+<app-header *ngIf="context !== 'embed-form'" appType="modal" [appTitle]="title" [appSubtitle]="subtitle"
+  (appConfirm)="salvar()" (appDismiss)="dismiss()" [minimizable]="false" [maximizable]="false"></app-header>
+
+<ion-content *ngIf="context !== 'embed-form'">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</ion-content>
+
+<ng-container *ngIf="context === 'embed-form'">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</ng-container>
+
+<ng-template #content>
+
+  <div class="main-block_">
+
+    <app-form-buttons *ngIf="context !== 'embed-form'" [id]="this[key]?.id" [service]="service"
+      [show]="{prev: !appSelect, next: !appSelect}"></app-form-buttons>
+
+    <div class="form-default">
+
+      <div *ngIf="perfilCartao" [class.form-default-body]="context !== 'embed-form'">
+
+        <ion-grid>
+
+          <ion-row>
+
+            <ion-col size="12" sizeSm="12">
+              <h4>Identificação</h4>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="6" class="margin-bottom-10">
+              <ion-item [class]="getInputCSS('apelido').class"
+                [display-errors]="{property: 'perfilCartao.apelido', errors}">
+                <ion-label position="floating">Apelido do Cartão</ion-label>
+                <ion-input type="text" required [(ngModel)]="perfilCartao.apelido"
+                  (ionChange)="testInputs('apelido')"></ion-input>
+                <ion-icon slot="end" [name]="getInputCSS('apelido').icon"></ion-icon>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="6">
+              <ion-item lines="none">
+                <ion-label>Principal</ion-label>
+                <ion-checkbox slot="start" [(ngModel)]="perfilCartao.principal"></ion-checkbox>
+              </ion-item>
+            </ion-col>
+
+            <ng-container *ngIf="!perfilCartao.id">
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Dados do Cartão</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12" class="margin-bottom-10">
+                <ion-item [class]="getInputCSS('nome').class"
+                  [display-errors]="{property: 'perfilCartao.nome', errors}">
+                  <ion-label position="floating">Nome no Cartão</ion-label>
+                  <ion-input type="text" required [(ngModel)]="perfilCartao.nome"
+                    (ionChange)="testInputs('nome')"></ion-input>
+                  <ion-icon slot="end" [name]="getInputCSS('nome').icon"></ion-icon>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12" class="margin-bottom-10">
+                <ion-item [class]="getInputCSS('numero').class"
+                  [display-errors]="{property: 'perfilCartaoIugu.numero', errors}">
+                  <ion-label position="floating">Número</ion-label>
+                  <ion-input type="text" placeholder="0000 0000 0000 0000" required maxlength="19"
+                    [brmasker]="{mask: '0000 0000 0000 0000', type:'num'}" [(ngModel)]="perfilCartaoIugu.numero"
+                    (ionChange)="testInputs('numero')"></ion-input>
+                  <ion-thumbnail slot="end" class="margin-0 flex-center"><img
+                      *ngIf="appUtil.cartaoBandeira(perfilCartaoIugu.numero)"
+                      [src]="'assets/images/cartao/'+appUtil.cartaoBandeira(perfilCartaoIugu.numero)+'.png'"
+                      class="margin-0" style="height: 26px; width: 40px;"></ion-thumbnail>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="6" class="margin-bottom-10">
+                <ion-item [class]="getInputCSS('validade').class"
+                  [display-errors]="{property: 'perfilCartao.validade', errors}">
+                  <ion-label position="floating">Validade</ion-label>
+                  <ion-input type="text" placeholder="00/0000" required maxlength="7"
+                    [brmasker]="{mask: '00/0000', type:'num'}" [(ngModel)]="perfilCartao.validade"
+                    (ionChange)="testInputs('validade')"></ion-input>
+                  <ion-icon slot="end" [name]="getInputCSS('validade').icon"></ion-icon>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="6" class="margin-bottom-10">
+                <ion-item [class]="getInputCSS('cvv').class"
+                  [display-errors]="{property: 'perfilCartaoIugu.cvv', errors}">
+                  <ion-label position="floating">CVV</ion-label>
+                  <ion-input type="text" placeholder="0000" maxlength="4" required [(ngModel)]="perfilCartaoIugu.cvv"
+                    (ionChange)="testInputs('cvv')"></ion-input>
+                  <ion-icon slot="end" [name]="getInputCSS('cvv').icon"></ion-icon>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12">
+
+                <p class="w-10 display-flex align-center color-medium font-size-12 text-left">
+                  <span class="app-icon-info-4 font-size-22 margin-right-10"></span>
+                  <span class="flex-1"> Verifique a validade do Cartão de Crédito antes de incluir.</span>
+                </p>
+
+              </ion-col>
+
+            </ng-container>
+
+            <ion-col *ngIf="context === 'embed-form'" size="12" sizeSm="12">
+              <ion-button size="small" color="secondary" (click)="salvar()">Confirmar cartão</ion-button>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-template>

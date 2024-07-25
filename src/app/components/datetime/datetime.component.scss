@@ -1,0 +1,64 @@
+:host.force-mobile {
+	width: 100%;
+
+	.app-datetime:not(.app-datetime-layout-form) {
+		width: calc(100% - 16px) !important;
+	}
+}
+
+:host {
+	display: block;
+
+	@media not screen and (min-width: 550px) {
+		width: 100%;
+
+		.app-datetime:not(.app-datetime-layout-form) {
+			width: calc(100% - 16px) !important;
+		}
+	}
+
+	.app-datetime {
+		// --background: var(--ion-color-white);
+		// --color: var(--ion-color-base);
+		--inner-border-width: 0;
+		--inner-padding-end: 0;
+
+		&.app-datetime-layout-form {
+			--min-height: 50px;
+			// border-bottom: 1px solid var(--ion-color-light-shade);
+		}
+
+		&:not(.app-datetime-layout-form) {
+			--min-height: 42px;
+			--border-radius: 10px;
+			width: 220px;
+			margin: 0px 0 8px 8px;
+
+			&.with-time {
+				width: 250px;
+			}
+
+			ion-label {
+				margin-top: -4px;
+			}
+
+			ion-input {
+				--padding-top: 7px;
+				--padding-bottom: 2px;
+			}
+		}
+
+		&:not(.app-datetime-layout-form)::part(native) {
+			// border: 0px solid var(--ion-color-white);
+			border: 0px solid transparent;
+		}
+
+		&.app-datetime-filled:not(.app-datetime-layout-form)::part(native) {
+			--background: var(--app-color-bg-active);
+		}
+
+		&.app-datetime-filled:not(.app-datetime-layout-form)::part(native) {
+			// border-color: var(--ion-color-success);
+		}
+	}
+}

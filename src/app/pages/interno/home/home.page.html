@@ -1,0 +1,237 @@
+<app-header appType="page" [appTitle]="title" [appSubtitle]="subtitle"></app-header>
+
+<ion-content>
+
+  <div class="main-block padding-20 t-padding-0">
+
+    <div class="display-flex flex-wrap t-padding-10-x">
+
+      <div class="w-10 margin-bottom-30">
+
+        <h4 style="height: 35px;">Bem-vindo ao {{ env.infos.appName }}</h4>
+
+        <div class="padding-10 border-radius-10 bg-color-light-tint" style="border: 1px solid var(--ion-color-light);">
+
+          <div *ngIf="contrato && env.configs.APP_MULT_AMB" class="padding-15 bg-color-white_ border-radius-10">
+
+            <div class="display-flex align-center justify-between flex-wrap">
+
+              <div *ngIf="contrato.logoUrl"
+                class="flex-center overflow-hidden margin-top-15 margin-bottom-15 padding-right-30 t-w-10 t-flex-none t-padding-right-0"
+                style="width: 150px; height: 150px;">
+                <img [src]="contrato.logoUrl" alt="Logo do Ambiente" class="display-block w-10 h-10"
+                  style="object-fit: contain;" />
+              </div>
+
+              <div class="flex-1 t-padding-0 t-w-10 t-flex-none">
+
+                <div *ngIf="contrato.tipo === env.enums.ContratoTipo.PJ"
+                  class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Nome Fantasia</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.fantasia }}</div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">
+                    {{ contrato.tipo === env.enums.ContratoTipo.PJ ? 'Razão Social' : 'Nome Completo' }}</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.nome }}</div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">{{ contrato.tipo === env.enums.ContratoTipo.PJ ? 'CNPJ' : 'CPF' }}</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.documento }}</div>
+                </div>
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Inscrição Estadual</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.inscricaoEstadual }}</div>
+                </div>
+
+                <div *ngIf="contrato.tipo === env.enums.ContratoTipo.PJ"
+                  class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Inscrição Municipal</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.inscricaoMunicipal }}</div>
+                </div>
+
+                <div *ngIf="contrato.tipo === env.enums.ContratoTipo.PJ"
+                  class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">CRT</div>
+                  <div class="padding-5 font-weight-600">{{ env.enums.ContratoCRTStr[contrato.crt] }}</div>
+                </div>
+
+              </div>
+
+              <div class="flex-1 padding-left-30 t-padding-0 t-w-10 t-flex-none">
+
+                <div *ngIf="contrato.tipo === env.enums.ContratoTipo.PJ"
+                  class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Email</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.email }}</div>
+                </div>
+
+                <div *ngIf="contrato.tipo === env.enums.ContratoTipo.PJ"
+                  class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Telefone</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.telefone }}</div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Cidade</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.enderecoCidade?.nomeCompleto }}</div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Bairro</div>
+                  <div class="padding-5 font-weight-600">
+                    {{ contrato.enderecoBairro }}
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Logradouro</div>
+                  <div class="padding-5 font-weight-600">
+                    {{ contrato.enderecoLogradouro }}, {{ contrato.enderecoNumero }}
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Complemento</div>
+                  <div class="padding-5 font-weight-600">{{ contrato.enderecoComplemento }}</div>
+                </div>
+
+              </div>
+
+              <div class="flex-1 padding-left-30 t-padding-0 t-w-10 t-flex-none">
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Plano</div>
+                  <div class="padding-5 font-weight-600">{{ env.enums.ContratoPlanoOpcaoStr[contrato.planoOpcao] }}
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Período</div>
+                  <div class="padding-5 font-weight-600">
+                    {{ env.enums.ContratoPlanoPeriodoStr[contrato.planoPeriodo] }}
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Valor no período</div>
+                  <div class="padding-5 font-weight-600">
+                    {{ getPlanoValor() | dinheiro }}
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Armaz. utilizado</div>
+                  <div class="padding-5 font-weight-600">
+                    <app-tooltip>Os arquivos como imagens de clientes e fornecedores, PDFs de notas, arquivos de anexos
+                      de contas e etc, armazenados em seu ambiente.</app-tooltip>
+                    {{ (contrato.totalArquivos / 1024 / 1024).toFixed(0) }} MB /
+                    {{ (env.planos[contrato.planoOpcao + '_LIMITE_GERAL_ARQUIVO_BYTES'] / 1024 / 1024).toFixed(0) }} MB
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">NFs emitidas no mês</div>
+                  <div class="padding-5 font-weight-600">
+                    {{ contrato.totalNFs }} / {{ env.planos[contrato.planoOpcao + '_LIMITE_MES_NF'] }}
+                  </div>
+                </div>
+
+                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
+                  <div class="padding-5">Contas banc. integ.</div>
+                  <div class="padding-5 font-weight-600">
+                    <app-tooltip content="CONTA_BANCARIA_INTEGRADA"></app-tooltip>
+                    {{ contrato.totalCBs }} / {{ env.planos[contrato.planoOpcao + '_LIMITE_GERAL_CONTA_BANCARIA'] }}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div *ngIf="usuarioLogado.isMasterAdmin" class="w-10 margin-bottom-30">
+
+        <h4 style="height: 35px;">Painel Master</h4>
+
+        <div class="margin-bottom-30 padding-10 border-radius-10 bg-color-light-tint"
+          style="border: 1px solid var(--ion-color-light);">
+
+          <div class="padding-15 bg-color-white_ border-radius-10">
+
+            <div class="display-flex align-center justify-between flex-wrap gap-30">
+
+              <div>
+
+                <div class="display-flex flex-wrap">
+                  <ion-item class="margin-right-50 t-w-10 t-margin-0" style="width: 400px;">
+                    <ion-label position="floating">Criptografar string</ion-label>
+                    <ion-input [(ngModel)]="stringEncrypt" placeholder="String a ser criptografada"></ion-input>
+                  </ion-item>
+                  <ion-button (click)="encriptarString()">Criptografar</ion-button>
+                </div>
+
+                <div class="margin-top-5">
+                  <input type="text" [(ngModel)]="stringEncryptResult" class="w-10 padding-5"
+                    placeholder="Saída da criptografia"
+                    style="background: var(--ion-color-white); color: var(--ion-color-dark); border: 0;">
+                </div>
+
+              </div>
+
+              <div>
+
+                <div class="display-flex flex-wrap">
+                  <ion-item class="margin-right-50 t-w-10 t-margin-0" style="width: 400px;">
+                    <ion-label position="floating">Descriptografar string</ion-label>
+                    <ion-input [(ngModel)]="stringDecrypt" placeholder="String a ser descriptografada"></ion-input>
+                  </ion-item>
+                  <ion-button (click)="descriptarString()">Descriptografar</ion-button>
+                </div>
+
+                <div class="margin-top-5">
+                  <input type="text" [(ngModel)]="stringDecryptResult" class="w-10 padding-5"
+                    placeholder="Saída da descriptografia"
+                    style="background: var(--ion-color-white); color: var(--ion-color-dark); border: 0;">
+                </div>
+
+              </div>
+
+              <div class="t-w-10">
+
+                <div class="display-flex flex-wrap">
+                  <ion-button (click)="getTokenAPI()">Gerar Token de API</ion-button>
+                </div>
+
+                <div class="margin-top-5">
+                  <input type="text" [(ngModel)]="apiTokenResult" placeholder="Saída do token de API (10 anos)"
+                    class="padding-5 t-w-10"
+                    style="width: 400px; background: var(--ion-color-white); color: var(--ion-color-dark); border: 0;">
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <app-taskbar *ngIf="!isModal"></app-taskbar>
+
+</ion-content>

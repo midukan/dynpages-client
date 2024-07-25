@@ -1,0 +1,59 @@
+<ion-split-pane when="(min-width: 9999px)" contentId="site"
+  style="--side-max-width: 260px; --side-min-width: 260px; --side-width: 260px;">
+
+  <ion-menu side="start" menuId="site" contentId="site" style="--width: 260px;">
+
+    <ion-menu-toggle class="h-10" autoHide="false">
+
+      <ion-header class="ion-no-border">
+
+        <ion-toolbar color="tertiary">
+          <ion-menu-toggle autoHide="false" class="flex-center w-10 cursor-pointer" [routerLink]="'/'"
+            style="height: 70px; padding: 15px 0;">
+            <img src="assets/images/logo-branco.png" alt="Logo" class="display-block h-10"
+              style="max-width: calc(100% - 40px); object-fit: contain;">
+          </ion-menu-toggle>
+        </ion-toolbar>
+
+      </ion-header>
+
+      <ion-content>
+
+        <div style="padding-bottom: 100px;">
+
+          <div class="margin-top-30 margin-bottom-30">
+            <ion-item button lines="none" class="text-initial" routerLink="/auth">
+              Entrar {{ authService.isAuth() ? ' em ' + usuarioLogado.nomeCompleto : '' }}
+            </ion-item>
+          </div>
+
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('topo')">Início</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('funcoes')">Funções</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('exclusivas')">Exclusividades</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('plataformas')">Plataformas</ion-item>
+          <ion-item button lines="none" (click)="messageService.get('site.scrollToBlock').next('ia')">IA</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('suporte')">Suporte</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('planos')">Planos</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('representante')">Representates</ion-item>
+          <ion-item button lines="none" (click)="messageService.get('site.scrollToBlock').next('faq')">FAQ</ion-item>
+          <ion-item button lines="none"
+            (click)="messageService.get('site.scrollToBlock').next('rodape')">Atendimento</ion-item>
+
+        </div>
+
+      </ion-content>
+
+    </ion-menu-toggle>
+
+  </ion-menu>
+
+  <ion-router-outlet id="site"></ion-router-outlet>
+
+</ion-split-pane>

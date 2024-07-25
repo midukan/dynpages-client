@@ -1,0 +1,13 @@
+:host {
+
+  display: block;
+
+  .block-inner {
+
+    &:hover {
+      background-color: var(--ion-color-light-shade) !important;
+    }
+
+  }
+
+}

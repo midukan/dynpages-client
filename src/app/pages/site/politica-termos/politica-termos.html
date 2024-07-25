@@ -1,0 +1,174 @@
+<app-header [appType]="headerType" (appDismiss)="dismiss()" [appTitle]="title" [appSubtitle]="subtitle"
+	[minimizable]="false" [maximizable]="true" [fullContent]="true"></app-header>
+
+<ion-content>
+
+	<div class="padding-20 text-justify printable-content">
+
+		<app-action-buttons (appPrint)="print($event)" [show]="{share: false}"></app-action-buttons>
+
+		<div *ngIf="tela === 'politica'" class="printable-content-body">
+
+			<p>Atualizado em Julho 2024</p>
+			<p>Na DynPages, a privacidade e segurança dos dados de nossos usuários são prioridades. Este Aviso de
+				Privacidade descreve como coletamos, usamos, compartilhamos e protegemos suas informações pessoais em
+				conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.853/2019) e outras legislações aplicáveis.
+			</p>
+
+			<h2>Sobre Nosso Aviso</h2>
+			<p>Este Aviso se aplica a todos os serviços e produtos oferecidos pela DynPages. Ele define as
+				diretrizes para assegurar a privacidade e a segurança das informações tratadas no âmbito de nossas
+				plataformas, aplicativos e soluções.</p>
+			<p>Ao utilizar os serviços da DynPages, você declara estar ciente e de acordo com este Aviso de
+				Privacidade, autorizando o tratamento de seus dados pessoais conforme descrito.</p>
+
+			<h2>Termos e Definições</h2>
+			<ul>
+				<li><strong>Dados Pessoais:</strong> Qualquer informação que identifique um indivíduo, direta ou
+					indiretamente.</li>
+				<li><strong>Aplicativos e Plataformas DynPages:</strong> Aplicativos móveis e interfaces web
+					desenvolvidos para disponibilização e contratação das soluções DynPages.</li>
+				<li><strong>Soluções DynPages:</strong> Produtos e serviços oferecidos, incluindo gestão
+					financeira, emissão de notas fiscais, integração, pagamentos e recebimentos, sistema ERP, entre
+					outros.</li>
+				<li><strong>Titular de Dados:</strong> Pessoa física a quem os dados pessoais se referem.</li>
+				<li><strong>Tratamento:</strong> Qualquer operação realizada com dados pessoais, como coleta,
+					utilização, armazenamento e eliminação.</li>
+			</ul>
+
+			<h2>Seus Direitos</h2>
+			<p>Os titulares de dados têm os seguintes direitos, conforme a legislação:</p>
+			<ul>
+				<li><strong>Direito de acesso:</strong> Solicitar acesso aos dados pessoais tratados.</li>
+				<li><strong>Direito de retificação:</strong> Solicitar a correção de dados incorretos ou incompletos.
+				</li>
+				<li><strong>Direito de revogação do consentimento:</strong> Revogar o consentimento para ações de
+					marketing, cookies, etc.</li>
+				<li><strong>Direito de remoção:</strong> Solicitar a eliminação de dados pessoais.</li>
+				<li><strong>Direito de restrição:</strong> Solicitar a interrupção do processamento de dados pessoais.
+				</li>
+				<li><strong>Direito de oposição:</strong> Opor-se ao processamento de dados pessoais.</li>
+				<li><strong>Direito à portabilidade de dados:</strong> Solicitar uma cópia dos dados pessoais em formato
+					eletrônico.</li>
+			</ul>
+			<p>Para exercer esses direitos, entre em contato conosco pelo e-mail {{ env.infos.email }}.</p>
+
+			<h2>Coleta de Dados Pessoais</h2>
+			<p>Coletamos dados pessoais de diversas formas, como:</p>
+			<ul>
+				<li>Contato ativo via telefone ou e-mail</li>
+				<li>Acesso ao site e uso de aplicativos e plataformas</li>
+				<li>Cookies e formulários preenchidos</li>
+			</ul>
+
+			<h3>Finalidades da Coleta</h3>
+			<ul>
+				<li><strong>Contratação de Serviços:</strong> Dados como nome, CPF, e-mail, telefone, endereço e
+					informações de pagamento são coletados para a contratação de serviços ou produtos.</li>
+				<li><strong>Marketing:</strong> Dados como nome, CPF, telefone, endereço e e-mail são utilizados para
+					ações de marketing e otimização do uso do site.</li>
+			</ul>
+
+			<h2>Compartilhamento de Dados</h2>
+			<p>Compartilhamos dados pessoais com prestadores de serviços, processadores de pagamentos e parceiros
+				publicitários para viabilizar a prestação de nossos serviços e ações de marketing. Também podemos
+				compartilhar dados com autoridades para cumprir obrigações legais.</p>
+
+			<h2>Dados de Terceiros</h2>
+			<p>Os usuários são responsáveis por obter e fornecer dados de terceiros para execução dos serviços,
+				garantindo a devida autorização legal. Esses dados serão armazenados por um prazo máximo de 90 dias após
+				o encerramento do contrato ou inatividade.</p>
+
+			<h2>Retenção dos Dados</h2>
+			<p>Armazenamos dados pessoais pelo tempo necessário para cumprir as finalidades do tratamento, respeitando
+				as disposições legais e regulatórias. Dados desnecessários, excessivos ou tratados em desconformidade
+				podem ser excluídos a pedido do titular.</p>
+
+			<h2>Transferência Internacional de Dados</h2>
+			<p>Podemos transferir e armazenar dados em outros países devido ao uso de serviços em nuvem. As
+				transferências internacionais serão realizadas conforme a legislação aplicável.</p>
+
+			<h2>Segurança dos Dados</h2>
+			<p>Adotamos medidas rigorosas para proteger os dados pessoais, incluindo testes e técnicas de melhoria,
+				sistemas de segurança renomados, relatórios semanais de identificação de falhas e políticas internas
+				rígidas de acesso a informações.</p>
+
+			<h2>Alterações no Aviso de Privacidade</h2>
+			<p>Podemos alterar este Aviso para melhorar a proteção dos dados pessoais. Os usuários serão notificados
+				sobre alterações significativas através dos canais registrados. Pequenos ajustes podem ser feitos sem
+				notificação prévia.</p>
+
+			<h2>Resolução de Conflitos</h2>
+			<p>Este Aviso de Privacidade é regido pelas leis brasileiras. Em caso de conflito, fica eleito o foro da
+				Cidade de Bauru - SP.</p>
+
+			<h2>Contato</h2>
+			<p>Para dúvidas ou questões sobre este Aviso, entre em contato pelo e-mail {{ env.infos.email }}.
+			</p>
+
+
+		</div>
+
+		<div *ngIf="tela === 'termos'" class="printable-content-body">
+
+			<p>Bem-vindo ao DynPages! Ao utilizar nossos serviços, você concorda com os seguintes termos e
+				condições. Leia atentamente antes de utilizar nosso sistema de gestão administrativa e financeira.</p>
+
+			<h2>1. Aceitação dos Termos</h2>
+			<p>Ao acessar e utilizar o DynPages, você concorda em cumprir estes Termos de Uso. Se você não
+				concordar com qualquer parte destes termos, não deverá utilizar nossos serviços.</p>
+
+			<h2>2. Descrição dos Serviços</h2>
+			<p>O DynPages oferece uma plataforma completa para gestão administrativa e financeira de empresas,
+				incluindo recursos de controle financeiro, emissão de notas fiscais, gestão de estoque, entre outros.
+				Nosso objetivo é facilitar a administração de sua empresa com eficiência e segurança.</p>
+
+			<h2>3. Cadastro de Usuário</h2>
+			<p>Para utilizar o DynPages, é necessário realizar um cadastro, fornecendo informações precisas e
+				completas. Você é responsável por manter a confidencialidade de sua conta e senha, e por todas as
+				atividades que ocorram sob sua conta.</p>
+
+			<h2>4. Uso Adequado dos Serviços</h2>
+			<p>Você concorda em utilizar o DynPages apenas para fins legais e em conformidade com todas as leis e
+				regulamentos aplicáveis. É proibido utilizar nosso sistema para qualquer atividade ilegal, fraudulenta
+				ou que viole direitos de terceiros.</p>
+
+			<h2>5. Privacidade e Segurança</h2>
+			<p>Valorizamos a privacidade de nossos usuários. As informações pessoais fornecidas são protegidas de acordo
+				com nossa Política de Privacidade. Não compartilharemos suas informações com terceiros sem seu
+				consentimento, exceto conforme exigido por lei.</p>
+
+			<h2>6. Limitação de Responsabilidade</h2>
+			<p>O DynPages não se responsabiliza por qualquer dano indireto, incidental ou consequente resultante
+				do uso ou da incapacidade de usar nossos serviços. Nossa responsabilidade total será limitada ao valor
+				pago por você pelo uso dos serviços.</p>
+
+			<h2>7. Modificações nos Termos de Uso</h2>
+			<p>Reservamos o direito de modificar estes Termos de Uso a qualquer momento. As alterações serão efetivadas
+				mediante publicação no nosso site. O uso continuado do DynPages após a publicação das alterações
+				constitui sua aceitação dos novos termos.</p>
+
+			<h2>8. Encerramento de Conta</h2>
+			<p>Você pode encerrar sua conta a qualquer momento. Reservamos o direito de suspender ou encerrar contas que
+				violem estes Termos de Uso, sem aviso prévio.</p>
+
+			<h2>9. CleanPay</h2>
+			<p>O CleanPay, nosso sistema de pagamentos automatizados com conciliação, garante a segurança e a
+				privacidade das transações realizadas. As informações de pagamento são criptografadas e protegidas
+				contra acesso não autorizado. Utilizamos medidas de segurança avançadas para garantir a integridade dos
+				dados financeiros.</p>
+
+			<p>Para mais informações sobre a privacidade e segurança do CleanPay, consulte nossa Política de Privacidade
+				específica para pagamentos.</p>
+
+			<h2>10. Contato</h2>
+			<p>Se você tiver alguma dúvida sobre estes Termos de Uso, entre em contato conosco pelo e-mail
+				{{ env.infos.email }}.</p>
+
+			<p>Obrigado por escolher o DynPages!</p>
+
+		</div>
+
+	</div>
+
+</ion-content>

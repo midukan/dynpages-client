@@ -1,0 +1,100 @@
+<app-header *ngIf="context !== 'select-lite'" [appType]="headerType" [appTitle]="title" [appSubtitle]="subtitle"
+  (appDismiss)="dismiss()" [minimizable]="context !== 'select-full'"></app-header>
+
+<ion-content>
+
+  <div class="main-block" [class]="{'main-block-page-list': context === 'page-list'}">
+
+    <div class="list-default">
+
+      <div class="list-default-action-buttons">
+
+        <app-action-buttons *ngIf="!env.configs.USUARIO_CARGOS_ONLY" [parentContext]="context"
+          (appBulk)="showBulkSelect()" (appAdd)="form()" (appRefresh)="load()"></app-action-buttons>
+
+        <app-action-buttons *ngIf="env.configs.USUARIO_CARGOS_ONLY" [parentContext]="context"
+          (appRefresh)="load()"></app-action-buttons>
+
+      </div>
+
+      <div class="list-default-header t-border-radius-0"
+        [class]="{'list-default-header-full': context === 'select-full' || context === 'modal-list'}">
+
+        <app-filters [(appSelectDatas)]="filtersSelectDatas" [(appFilters)]="filters"
+          [appShow]="usuarioLogado.isMasterAdmin ? ['contratoId'] : []" [showDateGroup]="null"
+          (appFiltersChange)="load()" [parentContext]="context"></app-filters>
+
+      </div>
+
+      <div class="list-default-body">
+
+        <app-filters-selected [appSelect]="appSelect" [selectData]="state.selectData"></app-filters-selected>
+
+        <app-bulk-warning *ngIf="bulkSelect" (appExcluir)="excluirSelecionados()"
+          (appSelecionaTodos)="selecionaTodos()"></app-bulk-warning>
+
+        <div class="list-default-table">
+
+          <table>
+
+            <tr *ngIf="context !== 'select-lite'" class="list-default-table-header" appOrder
+              [(appOrderFilters)]="filters" [parentContext]="context" (appOrderFiltersChange)="load()">
+              <th style="min-width: 60px; width: 60px;" appOrderProperty="id">ID</th>
+              <th style="min-width: 230px;" appOrderProperty="nomeCompleto">Nome</th>
+              <th style="min-width: 150px;">CPF</th>
+              <th style="min-width: 150px;">Cargo</th>
+              <th *ngIf="!env.configs.PERFIL_ASSOC_USUARIO_ACEITE" style="width: 70px; min-width: 70px;"
+                appOrderProperty="aceite">Aceite
+              </th>
+            </tr>
+
+            <ng-container *ngFor="let conUsu of contratoUsuarios; trackBy:appUtil.trackByFn(['id'])">
+
+              <tr class="list-default-table-line ion-activatable ripple-parent"
+                [class]="{'list-default-table-line-selected': conUsu.usuario.id === state.selectData?.id}"
+                (click)="seleciona(conUsu)" prevent-double-click>
+                <td class="list-default-table-checkbox">
+                  <div>
+                    <ion-checkbox *ngIf="bulkSelect" stop-propagation [(ngModel)]="conUsu.selected"></ion-checkbox>
+                    <span class="badge-id">{{ conUsu.id }}</span>
+                  </div>
+                </td>
+                <td>{{ conUsu.usuario.nomeCompleto }}</td>
+                <td *ngIf="context !== 'select-lite'">{{ conUsu.usuario.documento }}</td>
+                <td *ngIf="context !== 'select-lite'">{{ env.roles.ContratoUsuarioCargoStr[conUsu.cargo] }}</td>
+                <td *ngIf="!env.configs.PERFIL_ASSOC_USUARIO_ACEITE && context !== 'select-lite'" class="text-center">
+                  <span
+                    [class]="conUsu.aceite ? 'app-icon-check-1 color-success' : 'app-icon-cancel color-danger'"></span>
+                </td>
+
+                <ion-ripple-effect></ion-ripple-effect>
+
+              </tr>
+
+            </ng-container>
+
+          </table>
+
+          <p *ngIf="contratoUsuarios && !contratoUsuarios.length"
+            class="margin-top-0 margin-bottom-0 padding-top-50 padding-bottom-50 bg-color-white text-center">
+            Nenhum registro encontrado.</p>
+
+          <app-loading *ngIf="!contratoUsuarios"></app-loading>
+
+        </div>
+
+      </div>
+
+      <app-pager *ngIf="filters && contratoUsuariosTotal && context !== 'select-lite'"
+        [position]="isModal ? 'default' : 'fixed'" [itemsCount]="contratoUsuariosTotal?.total" [pager]="filters.pager"
+        (appChange)="pagerChange()"></app-pager>
+
+      <app-footer *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-footer>
+
+    </div>
+
+  </div>
+
+  <app-taskbar *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-taskbar>
+
+</ion-content>

@@ -1,0 +1,90 @@
+<ng-container *ngIf="validStart === true">
+
+  <ion-item lines="none" [color]="color" class="app-datetime-group" style="--color: var(--ion-color-dark);"
+    [class]="{'app-datetime-group-filled': appModelInicial || appModelFinal, 'with-time': withTime}"
+    [style]="{'--border-width': '1px', '--padding-start': null}">
+
+    <!-- <ion-label position="stacked">{{ label ? label : 'Data' }}</ion-label> -->
+
+    <!-- <ion-button shape="round" fill="clear" slot="end" [id]="'open-popover-datetime-group' + randomId" class="margin-left-10 margin-top-10"
+      [style]="{'--border-color': 'var(--ion-color-' + (color || 'light') +'-contrast)', '--color': 'var(--ion-color-' + (color || 'light') +'-contrast)'}">
+      <ion-icon name="calendar-outline" slot="icon-only"></ion-icon>
+    </ion-button> -->
+
+    <div class="w-10 display-flex justify-between align-center font-size-12">
+
+      <ion-button size="small" fill="clear" class="z-index-3" [disabled]="periodo === 'TODO_PERIODO'"
+        (click)="stepPeriodo('back')" [style]="{'--color': 'var(--ion-color-' + (color || 'light') +'-contrast)'}"
+        [hotkey]="withHotkey ? 'ctrl+,' : null" (onHotkey)="stepPeriodo('back')">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+
+      <div class="w-10">
+
+        <ion-select interface="popover" [(ngModel)]="periodo" (ionDismiss)="setPeriodo()"
+          [interfaceOptions]="{backdropDismiss: false}" class="color-dark">
+          <ion-select-option *ngFor="let p of periodos" [value]="p.value">{{ p.label }}</ion-select-option>
+        </ion-select>
+
+        <div class="text-center color-dark" style="font-size: 10px; margin-top: 14px;"
+          [style]="{'font-size': withTime ? '9px' : '10px'}">
+          {{ appModelInicial | date:(withTime ? 'dd/MM/yy HH:mm' : 'dd/MM/yy') }}
+          {{ (appModelInicial || appModelFinal) ? (withTime ? '-' : 'até') : '' }}
+          {{ appModelFinal | date:(withTime ? 'dd/MM/yy HH:mm' : 'dd/MM/yy') }}
+        </div>
+
+      </div>
+
+      <ion-button size="small" fill="clear" class="z-index-3" [disabled]="periodo === 'TODO_PERIODO'"
+        (click)="stepPeriodo('forward')" [style]="{'--color': 'var(--ion-color-' + (color || 'light') +'-contrast)'}"
+        [hotkey]="withHotkey ? 'ctrl+.' : null" (onHotkey)="stepPeriodo('forward')">
+        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+
+    </div>
+
+  </ion-item>
+
+  <div [id]="'open-popover-datetime-group' + randomId"></div>
+
+  <ion-popover #popoverPersonalizado mode="ios" side="bottom" alignment="center"
+    [trigger]="'open-popover-datetime-group' + randomId" [class]="withTime ? 'popover-bigest' : 'popover-big'"
+    [isOpen]="popoverPersonalizadoShow" (didDismiss)="popoverPersDismiss($event)" style="--offset-y: 15px;">
+    <ng-template>
+
+      <div mode="md">
+
+        <p class="padding-left-15 font-weight-600 font-size-15">Período personalizado:</p>
+
+        <div class="w-10 display-flex flex-wrap padding-bottom-10 margin-top-10-n"
+          style="border-bottom: 1px solid var(--ion-color-light-shade)">
+
+          <div class="w-5 padding-10 padding-right-5 t-w-10 t-padding-10 t-padding-bottom-5">
+            <app-datetime layout="form" [(appModel)]="appModelInicialCustom"
+              [label]="withTime ? 'Data Hora Inicial' : 'Data Inicial'" [withTime]="withTime"
+              ngDefaultControl></app-datetime>
+          </div>
+
+          <div class="w-5 padding-10 padding-left-5 t-w-10 t-padding-10">
+            <app-datetime layout="form" [(appModel)]="appModelFinalCustom"
+              [label]="withTime ? 'Data Hora Final' : 'Data Final'" [withTime]="withTime"
+              ngDefaultControl></app-datetime>
+          </div>
+
+        </div>
+
+        <div class="display-flex justify-between padding-10">
+
+          <ion-button fill="clear" (click)="popoverPersonalizado.dismiss(null, 'cancelar');">Cancelar</ion-button>
+          <ion-button (click)="dateChanged()">Aplicar</ion-button>
+
+        </div>
+
+      </div>
+
+    </ng-template>
+  </ion-popover>
+
+</ng-container>
+
+<div *ngIf="validStart === false">Datetime Group com parâmetros inválidos!</div>

@@ -1,0 +1,440 @@
+<app-header *ngIf="authService.isAuth() && !routeData?.recuperandoSenha" appType="modal" [appTitle]="title"
+  [appSubtitle]="subtitle" [maximizable]="tela === 'default'" (appConfirm)="salvar()"
+  [show]="{confirm: tela !== 'seguranca'}" (appDismiss)="dismiss()"></app-header>
+
+<app-header *ngIf="authService.isAuth() && routeData?.recuperandoSenha" appType="modal" [appTitle]="title"
+  [appSubtitle]="subtitle" [minimizable]="false"></app-header>
+
+<ion-content>
+
+  <div *ngIf="!authService.isAuth()"
+    class="flex-center bg-color-tertiary padding-top-50 padding-bottom-30 t-padding-10-x"
+    style="flex-direction: column;">
+
+    <div class="display-flex flex-wrap justify-center margin-bottom-30">
+
+      <div class="display-flex align-center t-justify-center t-flex-wrap t-text-center">
+
+        <div class="margin-right-50 t-margin-right-0 t-margin-bottom-30 t-w-10">
+          <img src="assets/images/logo-branco.png" alt="Logo" class="display-block w-10 t-margin-auto-x"
+            style="max-width: 300px;">
+        </div>
+
+        <h1 class="margin-0 color-white font-weight-500">
+          <div class="font-size-23 font-weight-300 t-font-size-20">Você está a um passo de acessar</div>
+          <div class="font-weight-600 font-size-13 t-font-size-11">a ferramenta inteligente de gestão
+            microempresarial.</div>
+          <div class="font-weight-600 font-size-13 t-font-size-11">Totalmente integrada com inteligência artificial!
+          </div>
+        </h1>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="dataService.get('plano.selected') !== null"
+      class="flex-center w-10 margin-top-30 margin-bottom-30 color-white font-weight-600 font-size-14 font-visby-round t-font-size-11"
+      style="max-width: 460px;">
+
+      <div
+        class="padding-10-x padding-5 border-radius-10 bg-color-medium font-size-16 animated infinite pulse duration-1000 t-padding-5"
+        style="border: 6px solid var(--ion-color-success);border-right: 0;border-top: 0;border-bottom: 0;">
+        1. Usuário
+      </div>
+      <div class="bg-color-medium opacity-7 flex-1" style="height: 5px;"></div>
+      <div class="padding-10-x padding-5 border-radius-10 bg-color-medium opacity-7 t-padding-5">
+        2. Empresa
+      </div>
+      <div class="bg-color-medium opacity-7 flex-1" style="height: 5px;"></div>
+      <div class="padding-10-x padding-5 border-radius-10 bg-color-medium opacity-7 t-padding-5">
+        3. Plano
+      </div>
+
+    </div>
+
+  </div>
+
+  <div [class]="!authService.isAuth() ? 'main-block' : ''" [style.max-width]="!authService.isAuth() ? '900px' : null">
+
+    <app-form-buttons [id]="this[key]?.id" [service]="service" (appPrint)="print($event)"
+      [show]="{print: usuarioLogado.id !== usuario.id, prev: showPrevNext, next: showPrevNext, share: usuarioLogado.id !== usuario.id}"></app-form-buttons>
+
+    <div class="form-default">
+
+      <div *ngIf="usuario" class="form-default-body">
+
+        <ng-container *ngIf="usuario">
+
+          <ion-grid>
+
+            <ion-row *ngIf="tela === 'senha'" class="margin-auto-x" style="max-width: 300px; margin-top: 30px;">
+
+              <ion-col *ngIf="usuario.id && !authService.hasPermission('master-admin') && !routeData?.recuperandoSenha"
+                size="12" sizeSm="12">
+                <ion-item [display-errors]="{property: 'usuario.atualSenha', errors}">
+                  <ion-label position="floating">Senha Atual <span class="aster-required">*</span></ion-label>
+                  <ion-input autocomplete="off" placeholder="Obrigatório" required ngDefaultControl type="password"
+                    showHidePass [(ngModel)]="usuario.atualSenha"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item [display-errors]="{property: 'usuario.senha', errors}">
+                  <ion-label position="floating">Nova Senha <span class="aster-required">*</span></ion-label>
+                  <ion-input autocomplete="off" placeholder="Obrigatório" required ngDefaultControl type="password"
+                    showHidePass [(ngModel)]="usuario.senha"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item [display-errors]="{property: 'usuario.repetirSenha', errors}">
+                  <ion-label position="floating">Repetir Nova Senha <span class="aster-required">*</span></ion-label>
+                  <ion-input autocomplete="off" placeholder="Obrigatório" required ngDefaultControl type="password"
+                    showHidePass [(ngModel)]="usuario.repetirSenha"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="routeData?.recuperandoSenha" size="12" sizeSm="12">
+                <ion-button class="w-10 margin-0 text-initial" (click)="salvar()">Confirmar senha</ion-button>
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row *ngIf="tela === 'config'" style="margin-top: 30px;">
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item [display-errors]="{property: 'usuario.darkMode', errors}">
+                  <ion-label position="stacked">Modo escuro</ion-label>
+                  <ion-select interface="popover" [(ngModel)]="usuario.darkMode">
+                    <ion-select-option *ngFor="let darkMode of darkModes" [value]="darkMode.value">{{ darkMode.label
+                      }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item lines="none" [display-errors]="{property: 'usuario.modalMaximized', errors}">
+                  <ion-label>Abrir janelas maximizadas</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="usuario.modalMaximized"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item lines="none" [display-errors]="{property: 'usuario.sendPush', errors}">
+                  <ion-label>Notificações via push (global)</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="usuario.sendPush"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item lines="none" [display-errors]="{property: 'usuario.sendMail', errors}">
+                  <ion-label>Notificações via email (global)</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="usuario.sendMail"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item lines="none" [display-errors]="{property: 'usuario.comunicacaoMkt', errors}">
+                  <ion-label>Receber comunicação da plataforma</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="usuario.comunicacaoMkt"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row *ngIf="tela === 'seguranca'" style="margin-top: 30px;">
+
+              <ion-col size="12" sizeSm="8" class="display-flex align-center">
+                Autenticação de 2 fatores (2FA)
+              </ion-col>
+              <ion-col size="12" sizeSm="4">
+                <ion-button (click)="refazer2FA()" class="text-initial">Refazer</ion-button>
+              </ion-col>
+              <ion-col size="12" sizeSm="12" class="margin-top-25">
+                <div class="warning-block" style="--app-background: var(--ion-color-warning)">* A desativação da 2FA
+                  efetuará logout de sua conta. Este
+                  processo é necessário caso tenha perdido o acesso ao seu app/aparelho autenticador.</div>
+              </ion-col>
+
+            </ion-row>
+
+            <ion-row *ngIf="tela === 'default'">
+
+              <ion-col *ngIf="0 && env.configs.APP_MULT_AMB && !authService.isAuth()" size="12">
+                <div class="w-10 flex-center">
+                  <div class="margin-top-30 margin-bottom-10 padding-15 border-radius-30 bg-color-dark-tint color-white"
+                    style="box-shadow: 0 0 20px white, 0 0 20px white;">
+                    <div>Após criar sua conta, você poderá criar um ambiente para seu negócio ou fazer parte de outros.
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Dados pessoais</h4>
+              </ion-col>
+
+              <ion-col *ngIf="authService.isAuth()" size="12" sizeSm="3" class="flex-center"
+                [display-errors]="{property: 'usuario.fotoUsuarioUpload', errors}">
+
+                <div
+                  class="flex-center position-relative border-radius-30 overflow-hidden cursor-pointer bg-color-medium color-white"
+                  style="width: 200px; height: 200px;" (click)="cameraClick()">
+
+                  <div [class.opacity-3]="usuario.fotoDelete">
+
+                    <img *ngIf="usuario?.fotoUsuarioUpload || usuario?.fotoUsuarioUrl"
+                      [src]="usuario.fotoUsuarioUpload || usuario.fotoUsuarioUrl" class="display-block">
+
+                    <div *ngIf="!usuario?.fotoUsuarioUpload && !usuario?.fotoUsuarioUrl" class="text-center">
+                      <div class="app-icon-upload-cloud-2 font-size-60 color-medium-tint"></div>
+                      <p class="font-weight-600">Nova Foto</p>
+                    </div>
+
+                  </div>
+
+                  <ion-button *ngIf="usuario?.fotoUusuarioUpload || usuario?.fotoUsuarioUrl" size="small" shape="round"
+                    color="dark" stop-propagation class="position-absolute bottom-0 right-0 margin-5"
+                    style="width: 40px; aspect-ratio: 1/1; --padding-start: 5px; --padding-end: 5px;"
+                    alt="Marcar para excluir" (click)="usuario.fotoDelete = !usuario.fotoDelete">
+                    <ion-icon slot="icon-only" [name]="usuario.fotoDelete ? 'close' : 'trash'"></ion-icon>
+                  </ion-button>
+
+                </div>
+
+              </ion-col>
+
+              <ion-col size="12" [sizeSm]="authService.isAuth() ? 9 : 12"
+                class="flex-center padding-0 padding-top-5 t-padding-0">
+
+                <ion-grid style="--ion-grid-padding: 0;">
+                  <ion-row>
+                    <ion-col size="5" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'usuario.nome', errors}">
+                        <ion-label position="floating">Nome <span class="aster-required">*</span></ion-label>
+                        <ion-input #inputNome placeholder="Obrigatório" required maxlength="30" ngDefaultControl
+                          [(ngModel)]="usuario.nome"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="7" sizeSm="8">
+                      <ion-item [display-errors]="{property: 'usuario.sobrenome', errors}">
+                        <ion-label position="floating">Sobrenome <span class="aster-required">*</span></ion-label>
+                        <ion-input placeholder="Obrigatório" required maxlength="60" ngDefaultControl
+                          [(ngModel)]="usuario.sobrenome"></ion-input>
+                      </ion-item>
+                    </ion-col>
+
+                    <ion-col size="12" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'usuario.documento', errors}"
+                        [class.readonly]="usuario.id">
+                        <ion-label position="floating">CPF <span class="aster-required">*</span></ion-label>
+                        <ion-input placeholder="Obrigatório" required maxlength="18" [readonly]="usuario.id"
+                          [brmasker]="appUtil.getMask('PERFIL')" ngDefaultControl [(ngModel)]="usuario.documento">
+                        </ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeSm="8">
+                      <ion-item [display-errors]="{property: 'usuario.email', errors}">
+                        <ion-label position="floating">E-mail <span class="aster-required">*</span></ion-label>
+                        <ion-input type="email" placeholder="Obrigatório" required ngDefaultControl
+                          [(ngModel)]="usuario.email"></ion-input>
+                        <ion-icon *ngIf="usuario.id && usuario.id === usuarioLogado.id && !usuarioLogado.emailValidado"
+                          slot="end" name="alert-circle-outline" class="cursor-pointer color-danger"
+                          title="Clique para mais informações" (click)="avisoValidaEmailPop.present($event)"></ion-icon>
+                      </ion-item>
+                      <ion-popover #avisoValidaEmailPop>
+                        <ng-template>
+                          <div class="padding-10">
+                            <div>Acesse sua caixa de email e clique no link para validar.</div>
+                            <p>Ele expirou ou não recebeu o email?</p>
+                            <div><ion-button fill="outline" color="dark" size="small" class="text-initial"
+                                (click)="reenviarLinkValidacao()">Reenviar link de validação</ion-button></div>
+                          </div>
+                        </ng-template>
+                      </ion-popover>
+                    </ion-col>
+
+                    <ion-col size="6" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'usuario.celular', errors}">
+                        <ion-label position="floating">Celular <span class="aster-required">*</span></ion-label>
+                        <ion-input placeholder="Obrigatório" required maxlength="15" ngDefaultControl
+                          [(ngModel)]="usuario.celular" [brmasker]="appUtil.getMask('CELULAR')"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="6" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'usuario.telefone', errors}">
+                        <ion-label position="floating">Telefone</ion-label>
+                        <ion-input placeholder="Opcional" maxlength="15" type="tel" ngDefaultControl
+                          [(ngModel)]="usuario.telefone" [brmasker]="appUtil.getMask('FIXO')"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeSm="4" [display-errors]="{property: 'usuario.dataNascimento', errors}">
+                      <app-datetime label="Data Nascimento" placeholder="Opcional" ngDefaultControl
+                        [(appModel)]="usuario.dataNascimento"></app-datetime>
+                    </ion-col>
+
+                  </ion-row>
+                </ion-grid>
+
+              </ion-col>
+
+              <ng-container
+                *ngIf="!authService.isAuth() || (usuarioLogado.id !== usuario.id && authService.hasPermission('master-admin'))">
+
+                <ion-col size="12" sizeSm="12">
+                  <h4>Acesso</h4>
+                </ion-col>
+
+                <!-- <ion-col size="12" sizeSm="4">
+                  <ion-item [display-errors]="{property: 'usuario.username', errors}">
+                    <ion-label position="floating">Usuário</ion-label>
+                    <ion-input placeholder="Obrigatório" required maxlength="20" ngDefaultControl
+                      [(ngModel)]="usuario.username"></ion-input>
+                  </ion-item>
+                </ion-col> -->
+
+                <ion-col size="6" sizeSm="6">
+                  <ion-item [display-errors]="{property: 'usuario.senha', errors}">
+                    <ion-label position="floating">Senha <span class="aster-required">*</span></ion-label>
+                    <ion-input autocomplete="off" [placeholder]="!usuario.id ? 'Obrigatório' : 'Opcional'"
+                      ngDefaultControl type="password" showHidePass [(ngModel)]="usuario.senha"></ion-input>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="6" sizeSm="6">
+                  <ion-item [display-errors]="{property: 'usuario.repetirSenha', errors}">
+                    <ion-label position="floating">Repetir Senha <span class="aster-required">*</span></ion-label>
+                    <ion-input autocomplete="off" [placeholder]="!usuario.id ? 'Obrigatório' : 'Opcional'"
+                      ngDefaultControl type="password" showHidePass [(ngModel)]="usuario.repetirSenha"></ion-input>
+                  </ion-item>
+                </ion-col>
+
+              </ng-container>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Endereço</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'usuario.enderecoCEP', errors}">
+                  <ion-label position="floating">CEP <span class="aster-required">*</span></ion-label>
+                  <ion-input placeholder="Obrigatório" required maxlength="9" ngDefaultControl
+                    [(ngModel)]="usuario.enderecoCEP"
+                    [app-autocomplete]="{type: 'CEP', entity: usuario, inputs: {numero: inputNumero, logradouro: inputLogradouro}}"
+                    [brmasker]="appUtil.getMask('CEP')"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="8" sizeSm="7">
+                <ion-item [display-errors]="{property: 'usuario.enderecoLogradouro', errors}">
+                  <ion-label position="floating">Endereço <span class="aster-required">*</span></ion-label>
+                  <ion-input #inputLogradouro placeholder="Obrigatório" required maxlength="60" ngDefaultControl
+                    [(ngModel)]="usuario.enderecoLogradouro"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="4" sizeSm="2">
+                <ion-item [display-errors]="{property: 'usuario.enderecoNumero', errors}">
+                  <ion-label position="floating">Número <span class="aster-required">*</span></ion-label>
+                  <ion-input #inputNumero placeholder="Obrigatório" required maxlength="10" ngDefaultControl
+                    [(ngModel)]="usuario.enderecoNumero"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'usuario._estadoId', errors}">
+                  <ion-label position="stacked">Estado <span class="aster-required">*</span></ion-label>
+                  <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="usuario._estadoId"
+                    (ionChange)="estadoChange()">
+                    <ion-select-option *ngFor="let item of env.data.estados" [value]="item.id">
+                      {{ item.nome }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeSm="4">
+                <app-select *ngIf="usuario.enderecoCidadeSelectData" type="cidadeId"
+                  [(ngModel)]="usuario.enderecoCidadeId" [filters]="{estadoId: [usuario._estadoId]}"
+                  [disabled]="!usuario._estadoId" [(selectData)]="usuario.enderecoCidadeSelectData" [required]="true"
+                  [opcaoNenhum]="false" [display-errors]="{property: 'usuario.enderecoCidadeId', errors}"
+                  ngDefaultControl>
+                </app-select>
+              </ion-col>
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'usuario.enderecoBairro', errors}">
+                  <ion-label position="floating">Bairro <span class="aster-required">*</span></ion-label>
+                  <ion-input placeholder="Obrigatório" required maxlength="40" ngDefaultControl
+                    [(ngModel)]="usuario.enderecoBairro">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeSm="2">
+                <ion-item [display-errors]="{property: 'usuario.enderecoComplemento', errors}">
+                  <ion-label position="floating">Complemento</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="60" ngDefaultControl
+                    [(ngModel)]="usuario.enderecoComplemento">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ng-container *ngIf="authService.hasPermission('master-admin')">
+
+                <ion-col size="12" sizeSm="12">
+                  <h4>Administração</h4>
+                </ion-col>
+
+                <ion-col size="6" sizeSm="4">
+                  <ion-item lines="none" [display-errors]="{property: 'usuario.isMasterAdmin', errors}">
+                    <ion-label>Master Admin</ion-label>
+                    <ion-checkbox slot="start" [(ngModel)]="usuario.isMasterAdmin"></ion-checkbox>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="6" sizeSm="4">
+                  <ion-item lines="none" [display-errors]="{property: 'usuario.emailValidado', errors}">
+                    <ion-label>Email Validado</ion-label>
+                    <ion-checkbox slot="start" [(ngModel)]="usuario.emailValidado"></ion-checkbox>
+                  </ion-item>
+                </ion-col>
+
+                <ion-col size="6" sizeSm="4">
+                  <ion-item lines="none" [display-errors]="{property: 'usuario.ativo', errors}">
+                    <ion-label>Ativo</ion-label>
+                    <ion-checkbox slot="start" [(ngModel)]="usuario.ativo"></ion-checkbox>
+                  </ion-item>
+                </ion-col>
+
+              </ng-container>
+
+              <ion-col *ngIf="!authService.isAuth()" size="12">
+
+                <div class="padding-top-30 text-center">
+
+                  <div>
+                    <ion-button size="large" shape="round" color="success" class="text-initial"
+                      style="--background: var(--ion-color-success-tint);" (click)="salvar()">
+                      Criar minha conta!
+                    </ion-button>
+                  </div>
+                  <div>
+                    <ion-button fill="clear" color="medium" class="text-initial" (click)="voltarParaLogin()">
+                      Voltar para login ou site
+                    </ion-button>
+                  </div>
+
+                </div>
+
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,84 @@
+<ion-content [fullscreen]="true" [scrollEvents]="true">
+
+  <div class="">
+
+    <div>
+      <div class="overflow-hidden" style="background-color: #000000bb;">
+        <div class="margin-bottom-60 margin-top-60 text-center color-white t-padding-bottom-0 t-margin-top-30">
+
+          <div slot="start" class="display-none margin-bottom-30 cursor-pointer t-display-block" routerLink="/">
+            <img src="assets/images/logo.png" class="display-block w-10 t-margin-auto-x" style="max-width: 120px" />
+          </div>
+
+          <h1 class="text-uppercase font-weight-600 font-size-35">
+            {{ title }}
+          </h1>
+          <p class="font-weight-500">
+            Parece que estamos com problemas...
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <div>
+
+      <div class="main-block padding-10 padding-top-50 padding-bottom-50 text-center">
+
+        <ng-container *ngIf="tipo === 'CUSTOM'">
+
+          <p class="margin-bottom-40" [innerHTML]="msg"></p>
+
+          <div class="text-center">
+            <ion-button fill="outline" [href]="url" class="text-initial w-10" style="max-width: 285px;">Tentar
+              novamente</ion-button>
+          </div>
+          <div class="text-center">
+            <ion-button fill="outline" color="medium" [href]="'mailto:' + env.infos?.email"
+              class="text-initial w-10 font-size-12" style="max-width: 140px;">Entrar em contato</ion-button>
+            <ion-button fill="outline" color="medium" href="/" class="text-initial w-10"
+              style="max-width: 140px;">Página Inicial</ion-button>
+          </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="tipo === 'CONVITE_PAGE'">
+
+          <p class="margin-bottom-40" [innerHTML]="msg"></p>
+
+          <div class="text-center">
+            <ion-button [routerLink]="url" class="text-initial w-10" style="max-width: 285px;">Ver meus
+              convites</ion-button>
+          </div>
+          <div class="text-center">
+            <ion-button fill="outline" color="medium" [href]="'mailto:' + env.infos?.email"
+              class="text-initial w-10 font-size-12" style="max-width: 140px;">Entrar em contato</ion-button>
+            <ion-button fill="outline" color="medium" (click)="modalContrato()" class="text-initial w-10 font-size-12"
+              style="max-width: 140px;">Alterar Ambiente</ion-button>
+          </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="tipo === 'NOT_FOUND'">
+
+          <p class="margin-bottom-40 color-black">Esta página não existe.</p>
+
+          <div class="text-center">
+            <ion-button fill="outline" href="/" class="text-initial">
+              Ir para o início
+            </ion-button>
+            <ion-button *ngIf="env.infos?.email" color="medium" fill="outline" [href]="'mailto:' + env.infos?.email"
+              class="text-initial">
+              Entrar em contato
+            </ion-button>
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

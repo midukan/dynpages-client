@@ -1,0 +1,216 @@
+<ion-split-pane when="(min-width: 1370px)" contentId="restrito"
+  style="--side-max-width: 260px; --side-min-width: 260px; --side-width: 260px;">
+
+  <ion-menu side="start" menuId="menu" contentId="restrito" class="dark-mode-off" style="--width: 260px;">
+
+    <div class="submenu" [class.show]="submenuShow" [class.show-opacity]="submenuShow === 1">
+
+      <ng-container [ngTemplateOutlet]="menuTemplateShow"></ng-container>
+
+    </div>
+
+    <ion-header class="ion-no-border">
+
+      <ion-toolbar>
+        <ion-menu-toggle autoHide="false" class="flex-center w-10 cursor-pointer"
+          [routerLink]="'/painel/' + contratoId + '/home'" style="flex-direction: column; height: 70px;">
+          <img src="assets/images/logo-branco.png" alt="Logo" class="display-block"
+            style="max-width: calc(100% - 40px); object-fit: contain; padding-top: 7px;">
+          <div class="display-flex justify-end w-10 text-right color-white font-visby-round font-weight-600"
+            style="margin-top: 3px; padding-right: 58px;">
+            <div class="bg-color-primary color-dark border-radius-3" style="padding: 1px 5px;">
+              {{ env.enums.ContratoPlanoOpcaoStr[authService.getContrato().planoOpcao] }}
+            </div>
+          </div>
+        </ion-menu-toggle>
+      </ion-toolbar>
+
+    </ion-header>
+
+    <ion-content style="height: calc(100% - 96px);">
+
+      <div *ngIf="contratoId" class="h-10" (click)="closeSubmenu()">
+
+        <ng-container *ngFor="let grupo of menu">
+
+          <div *ngIf="grupo.show" class="overflow-hidden" [class.submenu-show]="submenuShow">
+
+            <!-- <ion-list-header>Gestão</ion-list-header> -->
+
+            <ion-list-header *ngIf="grupo.title">
+              <span *ngIf="grupo.icon" [class]="grupo.icon"></span> {{ grupo.title }}
+            </ion-list-header>
+
+            <ng-container *ngFor="let item of grupo.children">
+
+              <ion-item *ngIf="item.show && (item.routerLink || (!item.routerLink && !item.href && !item.click))"
+                [id]="item.id" [id]="item.id"
+                [class.submenu-show-item]="menuTemplateShowId && menuTemplateShowId === item.id"
+                [disabled]="bloqueioSemAssinatura" button lines="none"
+                (click)="item.routerLink || openSubmenu(item.id!)" stop-propagation [routerLink]="item.routerLink"
+                [queryParams]="item.queryParams">
+                <span [class]="item.icon" [title]="item.title"></span>
+                {{ item.title }}
+              </ion-item>
+
+              <ion-item *ngIf="item.show && (item.href || item.click)" [id]="item.id"
+                [class.submenu-show-item]="menuTemplateShowId && menuTemplateShowId === item.id"
+                [disabled]="bloqueioSemAssinatura" button lines="none"
+                (click)="item.href || (item.click ? item.click() : openSubmenu(item.id!))" stop-propagation
+                [href]="item.href" [target]="item.target">
+                <span [class]="item.icon" [title]="item.title"></span>
+                {{ item.title }}
+              </ion-item>
+
+              <ng-template *ngIf="item.show" #menuChildrenRef>
+
+                <div class="submenu-tpl">
+
+                  <ion-toolbar style="--background: var(--ion-color-tertiary-shade);">
+
+                    <div class="color-white font-weight-600 font-size-17 padding-left-10">{{ item.title }}</div>
+
+                    <ion-buttons slot="end">
+                      <ion-button class="cta-btn" color="white" title="Fechar menu." (click)="closeSubmenu()"
+                        stop-propagation>
+                        <ion-icon slot="icon-only" name="close"></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+
+                  </ion-toolbar>
+
+                  <ion-content stop-propagation>
+
+                    <ion-menu-toggle class="h-10" autoHide="false">
+
+                      <ng-container *ngFor="let child of item.children">
+
+                        <ion-item *ngIf="child.show && child.routerLink" lines="none" routerLinkActive="active"
+                          [routerLink]="child.routerLink" [queryParams]="child.queryParams">
+                          {{ child.title }}
+                        </ion-item>
+
+                        <ion-item *ngIf="child.show && (child.href || child.click)" lines="none"
+                          routerLinkActive="active" [href]="child.href" [target]="child.target"
+                          (click)="item.click ? item.click() : openSubmenu(item.id!)">
+                          {{ child.title }}
+                        </ion-item>
+
+                      </ng-container>
+
+                    </ion-menu-toggle>
+
+                  </ion-content>
+
+                </div>
+
+              </ng-template>
+
+            </ng-container>
+
+          </div>
+
+        </ng-container>
+
+        <div *ngIf="authService.hasPermission('master-admin')" [class.opacity-0]="submenuShow"
+          style="transition: opacity var(--submenu-animate-time) ease;">
+
+          <ion-list-header [class.submenu-show]="submenuShow">Estatísticas</ion-list-header>
+
+          <div class="padding-15 padding-top-0">
+
+            <div class="padding-10" style="background-color: #00000033;">
+
+              <h6 class="margin-top-0 font-size-14">Abas conectadas</h6>
+
+              <div class="margin-bottom-30">
+
+                <div class="display-flex justify-between">
+                  <span>Logados</span>
+                  <span class="font-weight-600">{{ statistics.usuariosConectados }}</span>
+                </div>
+                <div class="display-flex justify-between margin-bottom-5">
+                  <span>Anônimos</span>
+                  <span class="font-weight-600">{{ statistics.anonimosConectados }}</span>
+                </div>
+                <div class="display-flex justify-between margin-bottom-5 padding-bottom-5"
+                  style="border-bottom: 1px solid var(--ion-color-medium);">
+                  <span class="font-weight-600">Total (logados+anônimos)</span>
+                  <span class="font-weight-600">{{ statistics.abasConectadas }}</span>
+                </div>
+                <div class="display-flex justify-between">
+                  <span>Logados únicos</span>
+                  <span class="font-weight-600">{{ statistics.usuariosConectadosUnicos }}</span>
+                </div>
+
+              </div>
+
+              <h6 class="margin-top-0 font-size-14">Usuários</h6>
+
+              <div>
+                <div *ngFor="let usuario of statistics.usuarios"
+                  class="margin-bottom-5 padding-5 border-radius-5 bg-color-tertiary-shade font-size-11">
+                  <div class="margin-bottom-5 cursor-pointer" (click)="modalUsuario(usuario)">({{ usuario.id }}) {{
+                    usuario.nomeCompleto }}</div>
+                  <div class="font-size-10 cursor-pointer text-overflow" [routerLink]="usuario._currentUrlDecoded"
+                    [queryParams]="usuario._currentUrlDecodedQP">({{ usuario._contratoId }}) {{ usuario._currentTitle }}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div
+          *ngIf="env.build.frontendDate && env.build.frontendCommit && env.build.backendDate && env.build.backendCommit"
+          class="margin-5 padding-10 color-white font-size-10"
+          style="transition: opacity var(--submenu-animate-time) ease;" [class.opacity-0]="submenuShow">
+
+          FE: {{ env.build.frontendCommit.substring(0, 7) }} ({{ env.build.frontendDate !==
+          '__replaceDate__' ? (env.build.frontendDate | date:'dd/MM/yy HH:mm') : '' }})<br />
+          BE: {{ env.build.backendCommit?.substring(0, 7) }} ({{ env.build.backendDate !== '__replaceDate__' ?
+          (env.build.backendDate | date:'dd/MM/yy HH:mm') : '' }})
+
+        </div>
+
+      </div>
+
+    </ion-content>
+
+    <div *ngIf="env.configs.APP_MULT_AMB && contratos && contratos.length" class="bg-color-tertiary-shade"
+      style="z-index: 12;" [style.box-shadow]="submenuShow ? undefined : '0 1px 5px #0000005c'">
+
+      <div>
+
+        <app-select color="secondary" type="contratoId" [opcaoNenhum]="false" title="Alterne entre suas empresas."
+          [disableFull]="!authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN)"
+          [opcaoCadastrar]="env.configs.APP_MULT_AMB_FREE_CREATE || authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN)"
+          [initSelectData]="{text: contrato?.fantasia || contrato?.nome || 'Ambiente indisponível', id: contrato?.id}"
+          [(ngModel)]="contratoId" (ngModelChange)="updateContrato()" ngDefaultControl
+          style="margin-bottom: -1px; --border-radius-custom: 0px;"></app-select>
+
+      </div>
+
+    </div>
+
+    <!-- <div *ngIf="contratos && contratos.length === 1" class="z-index-1 bg-color-tertiary text-center color-white"
+     style="box-shadow: 0 -15px 10px #0000000f, 0 -25px 10px #0000000f;">
+
+      <div style="transition: opacity var(--submenu-animate-time) ease;" [class.opacity-0]="submenuShow">
+
+        <div class="padding-top-15 font-size-16">Ambiente de {{ contrato.fantasia }}</div>
+        <div><ion-button class="text-initial font-size-11" size="small" color="light" fill="clear"
+            (click)="modalContrato()">Criar novo ambiente</ion-button></div>
+
+      </div>
+
+    </div> -->
+
+  </ion-menu>
+
+  <ion-router-outlet id="restrito"></ion-router-outlet>
+
+</ion-split-pane>

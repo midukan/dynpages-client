@@ -1,0 +1,10 @@
+:host {
+	display: block;
+
+	ion-button {
+		--border-radius: 8px;
+		--box-shadow: 0;
+		--border-width: 1px;
+		text-transform: initial;
+	}
+}

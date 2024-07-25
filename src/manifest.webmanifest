@@ -1,0 +1,35 @@
+{
+  "dir": "ltr",
+  "lang": "pt-br",
+  "name": "DynPages",
+  "short_name": "DynPages",
+  "description": "A ferramenta inteligente de gestão microempresarial.",
+  "orientation": "any",
+  "theme_color": "#1D2733",
+  "background_color": "#1D2733",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "assets/images/logo-icon-pwa.png",
+      "sizes": "400x292",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/images/logo-icon-pwa.png",
+      "type": "image/png",
+      "sizes": "400x292",
+      "form_factor": "wide"
+    },
+    {
+      "src": "assets/images/logo-icon-pwa.png",
+      "type": "image/png",
+      "sizes": "400x292",
+      "form_factor": "narrow"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+<ng-container *ngIf="validStart === true">
+
+  <app-header *ngIf="context === 'complete'" [appType]="'modal'" appTitle="Filtros"
+    appSubtitle="Combine filtros para sua consulta." (appDismiss)="dismiss()" (appConfirm)="applyFilters()"
+    [minimizable]="false"></app-header>
+
+  <div class="filters-wrapper" [class]="'parent-' + parentContext" [class.force-mobile]="forceMobile"
+    modal-adjust-content>
+
+    <div [class]="{'padding-top-20': context === 'complete', 'padding-bottom-20': context === 'complete'}">
+
+      <h4 *ngIf="parentContext !== 'select-lite' && context !== 'complete'"
+        class="margin-0 padding-10 padding-bottom-5">Filtros e busca</h4>
+
+      <div class="fix-order-mobile display-flex align-top t-flex-wrap">
+
+        <div *ngIf="showSearch && showDateGroup && parentContext !== 'select-lite'">
+          <ng-container *ngTemplateOutlet="datetimeGroup"></ng-container>
+        </div>
+
+        <div class="w-10 display-flex align-center">
+
+          <ion-searchbar *ngIf="showSearch" color="white" placeholder="Buscar..." cancelButtonText="Cancelar"
+            style="color: var(--ion-color-dark);" [debounce]="context === 'complete' ? 0 : 800"
+            [class]="{'filters-searchbar-filled': filters.busca?.trim().length}" (ionInput)="searchChanged()"
+            [(ngModel)]="filters.busca"></ion-searchbar>
+
+          <ion-button *ngIf="parentContext === 'select-lite'" class="display-none t-display-block" fill="clear"
+            color="white" (click)="closeModalTop()">
+            <ion-icon [name]="'close'" slot="icon-only"></ion-icon>
+          </ion-button>
+
+          <ng-container *ngIf="showSearch || showDateGroup">
+            <ng-container *ngTemplateOutlet="tinyButtons"></ng-container>
+          </ng-container>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="parentContext !== 'select-lite'" class="display-flex flex-wrap__ justify-between"
+        [class]="{'justify-center': context === 'complete'}">
+
+        <div class="display-flex flex-wrap w-10">
+
+          <ng-container *ngIf="!showSearch">
+            <ng-container *ngTemplateOutlet="datetimeGroup"></ng-container>
+          </ng-container>
+
+          <ng-container *ngTemplateOutlet="filtersArray"></ng-container>
+
+        </div>
+
+        <ng-container *ngIf="!showSearch && !showDateGroup">
+          <ng-container *ngTemplateOutlet="tinyButtons"></ng-container>
+        </ng-container>
+
+      </div>
+
+      <div *ngIf="context === 'complete'" class="margin-top-20 text-center dark-mode-off">
+        <ion-button color="white" fill="clear" size="small" (click)="clearFilters()" class="text-initial">
+          Limpar filtros
+        </ion-button>
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-container>
+
+<div *ngIf="validStart === false">Filters com parâmetros inválidos!</div>
+
+<ng-template #datetimeGroup>
+  <app-datetime-group *ngIf="showDateGroup" [forceMobile]="forceMobile" [withHotkey]="true"
+    [(appModelInicial)]="filters[getAppDatetimeGroupData(showDateGroup).withTime ? 'datahoraInicial' : 'dataInicial']"
+    [(appModelFinal)]="filters[getAppDatetimeGroupData(showDateGroup).withTime ? 'datahoraFinal' : 'dataFinal']"
+    [(appModelTipo)]="filters.dataTipo" [withTime]="getAppDatetimeGroupData(showDateGroup).withTime"
+    (appModelChange)="setChangeFilters(showDateGroup)" ngDefaultControl
+    style="margin-top: 8px; margin-bottom: 8px;"></app-datetime-group>
+</ng-template>
+
+<ng-template #filtersArray>
+
+  <div *ngFor="let show of appShow" class="t-w-10" [class.t-display-none]="context === 'tiny'"
+    [style.padding-top]="(!showSearch) ? '8px' : '0'">
+
+    <ion-item *ngIf="showSubtype(show) === 'ion-select'" class="filters-select"
+      [class]="{'filters-select-filled': filters[show] || filters[show] === false}">
+      <ion-label position="stacked">{{ getIonSelectData(show).label }}</ion-label>
+      <ion-select [multiple]="getIonSelectData(show).multiple" interface="popover"
+        [placeholder]="getIonSelectData(show).showTodos ? 'Todos' : 'Selecione'" [(ngModel)]="filters[show]"
+        (ionDismiss)="setChangeFilters(show)">
+        <ion-select-option *ngIf="!getIonSelectData(show).multiple && getIonSelectData(show).showTodos"
+          [value]="null">Todos</ion-select-option>
+        <ion-select-option *ngFor="let option of getIonSelectData(show).options" [value]="option.value">{{ option.label
+          }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <app-select *ngIf="showSubtype(show) === 'app-select'" [forceMobile]="forceMobile" [multiple]="20"
+      placeholder="Todos" [type]="show" layout="filter" [(ngModel)]="filters[show]" [opcaoCadastrar]="false"
+      (appDidDismiss)="setChangeFilters(show)" [(selectData)]="selectDatas[show]" ngDefaultControl></app-select>
+
+    <ion-item *ngIf="showSubtype(show) === 'ion-input'" class="filters-select"
+      [class]="{'filters-input-filled': filters[show] || filters[show] === false}">
+      <ion-label position="stacked">{{ getIonInputData(show).label }}</ion-label>
+      <ion-input placeholder="Todos" [type]="getIonInputData(show).inputType" [(ngModel)]="filters[show]"
+        (ionInput)="setChangeFilters(show)" [debounce]="700"></ion-input>
+    </ion-item>
+
+    <app-datetime *ngIf="showSubtype(show) === 'app-datetime'" [forceMobile]="forceMobile" layout="filter"
+      [(appModel)]="filters[show]" [label]="getAppDatetimeData(show).label"
+      [withTime]="getAppDatetimeData(show).withTime" [offsetY]="-140" (appModelChange)="setChangeFilters(show)"
+      ngDefaultControl></app-datetime>
+
+    <app-datetime-group *ngIf="showSubtype(show) === 'app-datetime-group'" [forceMobile]="forceMobile"
+      style="margin-bottom: 8px;"
+      [(appModelInicial)]="filters[getAppDatetimeGroupData(show).withTime ? 'datahoraInicial' : 'dataInicial']"
+      [(appModelFinal)]="filters[getAppDatetimeGroupData(show).withTime ? 'datahoraFinal' : 'dataFinal']"
+      [(appModelTipo)]="filters.dataTipo" [withTime]="getAppDatetimeGroupData(show).withTime"
+      (appModelChange)="setChangeFilters(show)" ngDefaultControl></app-datetime-group>
+
+  </div>
+
+</ng-template>
+
+<ng-template #tinyButtons>
+
+  <ion-buttons *ngIf="parentContext !== 'select-lite' && (appExtraButtons?.length || appShowComplete?.length)">
+
+    <ng-container *ngIf="context === 'tiny'">
+
+      <ion-button *ngFor="let extraButtom of appExtraButtons" color="dark" (click)="extraButtom.click($event)">
+        <ion-icon [name]="extraButtom.ionIcon" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="appShowComplete?.length" color="dark" style="width: 60px;" (click)="filtersModal()">
+        <ion-icon name="list" slot="icon-only"></ion-icon>
+        <ion-badge *ngIf="totalFilters" slot="end" color="danger" class="border-radius-10"
+          style="--padding-top: 3px; --padding-end: 4px; --padding-bottom: 1px; --padding-start: 4px;">
+          {{ totalFilters }}
+        </ion-badge>
+      </ion-button>
+
+    </ng-container>
+
+  </ion-buttons>
+
+</ng-template>

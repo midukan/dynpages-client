@@ -1,0 +1,364 @@
+<app-header appType="modal" [appTitle]="title" [appSubtitle]="subtitle" (appConfirm)="salvar()"
+  (appDismiss)="dismiss()"></app-header>
+
+<ion-content>
+
+  <div class="main-block_">
+
+    <app-form-buttons [id]="this[key]?.id" [service]="service" (appPrint)="print($event)"
+      [show]="{prev: !appSelect, next: !appSelect}"></app-form-buttons>
+
+    <div class="form-default">
+
+      <div *ngIf="perfil" class="form-default-body">
+
+        <ng-container *ngIf="perfil">
+
+          <ion-grid>
+
+            <ion-row>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Dados principais</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3" class="flex-center"
+                [display-errors]="{property: 'perfil.fotoPerfilUpload', errors}">
+
+                <div
+                  class="flex-center position-relative border-radius-30 overflow-hidden cursor-pointer bg-color-medium color-white"
+                  style="width: 200px; height: 200px;" (click)="cameraClick()">
+
+                  <div [class.opacity-3]="perfil.fotoDelete">
+
+                    <div *ngIf="perfil?.fotoPerfilUpload || perfil?.fotoPerfilUrl">
+                      <img [src]="perfil.fotoPerfilUpload || perfil.fotoPerfilUrl" class="display-block">
+                    </div>
+
+                    <div *ngIf="!perfil?.fotoPerfilUpload && !perfil?.fotoPerfilUrl" class="text-center">
+                      <div class="app-icon-upload-cloud-2 font-size-60 color-medium-tint"></div>
+                      <p class="font-weight-600">Nova Foto</p>
+                    </div>
+
+                  </div>
+
+                  <ion-button *ngIf="perfil?.fotoPerfilUpload || perfil?.fotoPerfilUrl" size="small" shape="round"
+                    color="dark" stop-propagation class="position-absolute bottom-0 right-0 margin-5"
+                    style="width: 40px; aspect-ratio: 1/1; --padding-start: 5px; --padding-end: 5px;"
+                    alt="Marcar para excluir" (click)="perfil.fotoDelete = !perfil.fotoDelete">
+                    <ion-icon slot="icon-only" [name]="perfil.fotoDelete ? 'close' : 'trash'"></ion-icon>
+                  </ion-button>
+
+                </div>
+
+              </ion-col>
+
+              <ion-col size="12" sizeSm="9" class="flex-center padding-0 padding-top-5 t-padding-0">
+
+                <ion-grid style="--ion-grid-padding: 0;">
+                  <ion-row>
+                    <ion-col size="12" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'perfil.pessoa', errors}">
+                        <ion-label position="stacked">Tipo de pessoa</ion-label>
+                        <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="perfil.pessoa"
+                          (ionChange)="limparDadosPJPF()">
+                          <ion-select-option *ngFor="let pessoa of pessoas" [value]="pessoa.value">
+                            {{ pessoa.label }}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="5" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'perfil.nome', errors}">
+                        <ion-label position="floating">
+                          {{ (perfil.pessoa === env.enums.PerfilPessoa.PJ) ? 'Nome fantasia' : 'Nome' }}
+                          <span class="aster-required">*</span>
+                        </ion-label>
+                        <ion-input #inputNome placeholder="Obrigatório" required maxlength="60" ngDefaultControl
+                          [(ngModel)]="perfil.nome"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="7" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'perfil.sobrenome', errors}">
+                        <ion-label position="floating">
+                          {{ (perfil.pessoa === env.enums.PerfilPessoa.PJ) ? 'Razão Social' : 'Sobrenome' }}
+                          <span class="aster-required">*</span>
+                        </ion-label>
+                        <ion-input placeholder="Obrigatório" required maxlength="100" ngDefaultControl
+                          [(ngModel)]="perfil.sobrenome"></ion-input>
+                      </ion-item>
+                    </ion-col>
+
+                    <ion-col size="12" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'perfil.documento', errors}">
+                        <ion-label position="floating">
+                          {{ (perfil.pessoa === env.enums.PerfilPessoa.PJ) ? 'CNPJ' :
+                          ((perfil.pessoa === env.enums.PerfilPessoa.PF) ? 'CPF' : 'Passaporte') }}
+                        </ion-label>
+                        <ion-input placeholder="Obrigatório" required
+                          [maxlength]="(perfil.pessoa === env.enums.PerfilPessoa.PJ) ? 18 : 14"
+                          [app-autocomplete]="{type: 'CNPJ', entity: perfil, inputs: {fantasia: inputNome}, fields: {nome: 'sobrenome', fantasia: 'nome', contatos: 'perfilContatos'}}"
+                          [brmasker]="appUtil.getMask((perfil.pessoa === env.enums.PerfilPessoa.PJ) ? 'CNPJ' : 'CPF')"
+                          [(ngModel)]="perfil.documento">
+                        </ion-input>
+                      </ion-item>
+                    </ion-col>
+
+                    <ion-col size="12" sizeSm="8">
+                      <ion-item [display-errors]="{property: 'perfil.email', errors}">
+                        <ion-label position="floating">E-mail</ion-label>
+                        <ion-input type="email" placeholder="Opcional" ngDefaultControl
+                          [(ngModel)]="perfil.email"></ion-input>
+                      </ion-item>
+                    </ion-col>
+
+                    <ion-col size="6" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'perfil.celular', errors}">
+                        <ion-label position="floating">Celular</ion-label>
+                        <ion-input placeholder="Opcional" maxlength="15" type="tel" ngDefaultControl
+                          [(ngModel)]="perfil.celular" [brmasker]="appUtil.getMask('CELULAR')"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="6" sizeSm="4">
+                      <ion-item [display-errors]="{property: 'perfil.telefone', errors}">
+                        <ion-label position="floating">Telefone</ion-label>
+                        <ion-input placeholder="Opcional" maxlength="14" type="tel" ngDefaultControl
+                          [(ngModel)]="perfil.telefone" [brmasker]="appUtil.getMask('FIXO')"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="12" sizeSm="4" [display-errors]="{property: 'perfil.dataNascimento', errors}">
+                      <app-datetime
+                        [label]="(perfil.pessoa === env.enums.PerfilPessoa.PJ) ? 'Data de abertura' : 'Data de nascimento'"
+                        placeholder="Opcional" ngDefaultControl [(appModel)]="perfil.dataNascimento"></app-datetime>
+                    </ion-col>
+
+                  </ion-row>
+                </ion-grid>
+
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Dados fiscais</h4>
+              </ion-col>
+
+              <ion-col *ngIf="perfil.pessoa === env.enums.PerfilPessoa.PJ" size="12" sizeSm="2">
+                <ion-item lines="none" [display-errors]="{property: 'perfil.optanteSN', errors}">
+                  <ion-label>Optante do SN</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="perfil.optanteSN"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="2">
+                <ion-item [display-errors]="{property: 'perfil.tipo', errors}">
+                  <ion-label position="stacked">Indicador de IE</ion-label>
+                  <ion-select interface="popover" placeholder="Opcional" [(ngModel)]="perfil.indicadorInsEst">
+                    <ion-select-option [value]="null">Nenhum</ion-select-option>
+                    <ion-select-option *ngFor="let perfilIndicadorInsEst of perfilIndicadorInsEsts"
+                      [value]="perfilIndicadorInsEst.value">{{ perfilIndicadorInsEst.label }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'perfil.inscricaoEstadual', errors}">
+                  <ion-label position="floating">Inscrição estadual</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                    [(ngModel)]="perfil.inscricaoEstadual"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="perfil.pessoa === env.enums.PerfilPessoa.PJ" size="12" sizeSm="2">
+                <ion-item [display-errors]="{property: 'perfil.inscricaoMunicipal', errors}">
+                  <ion-label position="floating">Inscrição municipal</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                    [(ngModel)]="perfil.inscricaoMunicipal"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="perfil.pessoa === env.enums.PerfilPessoa.PJ" size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'perfil.inscricaoSuframa', errors}">
+                  <ion-label position="floating">Inscrição suframa</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                    [(ngModel)]="perfil.inscricaoSuframa"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>
+                  Outros contatos
+                  <app-tooltip>Os contatos serão utilizados pelo sistema para envio de mensagens através de Email, SMS e
+                    WhatsApp de acordo com o cargo especificado e finalidade do conteúdo.</app-tooltip>
+                </h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12" class="padding-0">
+
+                <ion-grid class="padding-0">
+
+                  <ng-container *ngFor="let perfilContato of perfil.perfilContatos; let idx = index">
+
+                    <ion-row class="t-margin-bottom-30" [class.opacity-5]="perfilContato.delete">
+
+                      <ion-col size="12" sizeSm="2">
+                        <ion-item [display-errors]="{property: 'perfil.perfilContatos.' + idx + '.nome', errors}">
+                          <ion-label position="floating">Nome <span class="aster-required">*</span></ion-label>
+                          <ion-input placeholder="Obrigatório" required="" maxlength="50" ngDefaultControl
+                            [(ngModel)]="perfilContato.nome"></ion-input>
+                        </ion-item>
+                      </ion-col>
+
+                      <ion-col size="12" sizeSm="2">
+                        <ion-item [display-errors]="{property: 'perfil.perfilContatos.' + idx + '.cargo', errors}">
+                          <ion-label position="stacked">Cargo <span class="aster-required">*</span></ion-label>
+                          <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="perfilContato.cargo">
+                            <ion-select-option *ngFor="let cargo of perfilContatoCargos" [value]="cargo.value">
+                              {{ cargo.label }}
+                            </ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                      </ion-col>
+
+                      <ion-col size="12" sizeSm="3">
+                        <ion-item [display-errors]="{property: 'perfil.perfilContatos.' + idx + '.email', errors}">
+                          <ion-label position="floating">E-mail</ion-label>
+                          <ion-input type="email" placeholder="Opcional" ngDefaultControl
+                            [(ngModel)]="perfilContato.email"></ion-input>
+                        </ion-item>
+                      </ion-col>
+
+                      <ion-col size="6" sizeSm="2">
+                        <ion-item [display-errors]="{property: 'perfil.perfilContatos.' + idx + '.celular', errors}">
+                          <ion-label position="floating">Celular</ion-label>
+                          <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                            [(ngModel)]="perfilContato.celular" [brmasker]="appUtil.getMask('CELULAR')"></ion-input>
+                        </ion-item>
+                      </ion-col>
+                      <ion-col size="6" sizeSm="2">
+                        <ion-item [display-errors]="{property: 'perfil.perfilContatos.' + idx + '.telefone', errors}">
+                          <ion-label position="floating">Telefone</ion-label>
+                          <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                            [(ngModel)]="perfilContato.telefone" [brmasker]="appUtil.getMask('FIXO')"></ion-input>
+                        </ion-item>
+                      </ion-col>
+
+                      <ion-col size="12" sizeSm="1">
+                        <div class="w-10 h-10 flex-center">
+                          <ion-button fill="clear" color="dark" size="small" (click)="removeContato(perfilContato)">
+                            <ion-icon name="trash" slot="icon-only"></ion-icon>
+                          </ion-button>
+                        </div>
+                      </ion-col>
+
+                    </ion-row>
+
+                  </ng-container>
+
+                </ion-grid>
+
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-button fill="outline" color="medium" class="w-10 margin-0 text-initial"
+                  style="--border-style: dashed; --border-radius: 10px;" (click)="novoContato()">
+                  Novo contato
+                </ion-button>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Endereço</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'perfil.enderecoCEP', errors}">
+                  <ion-label position="floating">CEP</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="9" ngDefaultControl [(ngModel)]="perfil.enderecoCEP"
+                    [app-autocomplete]="{type: 'CEP', entity: perfil, inputs: {numero: inputNumero, logradouro: inputLogradouro}}"
+                    [brmasker]="appUtil.getMask('CEP')"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="8" sizeSm="7">
+                <ion-item [display-errors]="{property: 'perfil.enderecoLogradouro', errors}">
+                  <ion-label position="floating">Endereço</ion-label>
+                  <ion-input #inputLogradouro placeholder="Opcional" maxlength="60" ngDefaultControl
+                    [(ngModel)]="perfil.enderecoLogradouro"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="4" sizeSm="2">
+                <ion-item [display-errors]="{property: 'perfil.enderecoNumero', errors}">
+                  <ion-label position="floating">Número</ion-label>
+                  <ion-input #inputNumero placeholder="Opcional" maxlength="10" ngDefaultControl
+                    [(ngModel)]="perfil.enderecoNumero"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item>
+                  <ion-label position="stacked">Estado</ion-label>
+                  <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="perfil._estadoId"
+                    (ionChange)="estadoChange()">
+                    <ion-select-option *ngFor="let item of env.data.estados" [value]="item.id">{{ item.nome
+                      }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeSm="4" [display-errors]="{property: 'perfil.enderecoCidade', errors}">
+                <app-select *ngIf="perfil.enderecoCidadeSelectData" type="cidadeId"
+                  [(ngModel)]="perfil.enderecoCidadeId" [filters]="{estadoId: [perfil._estadoId]}"
+                  [disabled]="!perfil._estadoId" [(selectData)]="perfil.enderecoCidadeSelectData"
+                  [display-errors]="{property: 'perfil.enderecoCidadeId', errors}" ngDefaultControl>
+                </app-select>
+              </ion-col>
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'perfil.enderecoBairro', errors}">
+                  <ion-label position="floating">Bairro</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="60" ngDefaultControl [(ngModel)]="perfil.enderecoBairro">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" sizeSm="2">
+                <ion-item [display-errors]="{property: 'perfil.enderecoComplemento', errors}">
+                  <ion-label position="floating">Complemento</ion-label>
+                  <ion-input placeholder="Opcional" maxlength="60" ngDefaultControl
+                    [(ngModel)]="perfil.enderecoComplemento">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Controle</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="2">
+                <ion-item lines="none" [display-errors]="{property: 'perfil.ativo', errors}">
+                  <ion-label>Ativo</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="perfil.ativo"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Extras</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <ion-item [display-errors]="{property: 'perfil.infoExtras', errors}">
+                  <ion-label position="floating">Observações</ion-label>
+                  <ion-textarea [autoGrow]="true" placeholder="Opcional" maxlength="2000" ngDefaultControl
+                    [(ngModel)]="perfil.infoExtras"
+                    (keyup)="messageService.get('modal.resize').next(null)"></ion-textarea>
+                </ion-item>
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

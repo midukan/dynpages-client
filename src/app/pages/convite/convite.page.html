@@ -1,0 +1,52 @@
+<app-header [appType]="headerType" appTitle="Convites" appSubtitle="Solicitações para adentrar aos ambientes."
+  (appDismiss)="dismiss()" [minimizable]="false"></app-header>
+
+<ion-content style="--background: var(--ion-color-light)">
+
+  <div class="main-block padding-20 t-padding-10">
+
+    <div class="margin-bottom-30-n">
+
+      <div *ngFor="let contratoUsuario of contratoUsuarios" class="margin-bottom-30">
+
+        <div class="padding-15 bg-color-white border-radius-5" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+
+          <div class="margin-bottom-15"><span class="font-weight-600">{{ contratoUsuario.fromUsuario.nomeCompleto
+              }}</span> convidou você para o ambiente:</div>
+
+          <div class="w-10 display-flex align-center justify-between margin-bottom-5 padding-10 bg-color-light">
+            <div>
+              <div class="font-weight-600 font-size-16">{{ contratoUsuario.contrato.fantasia }}</div>
+              <div class="color-medium">{{ contratoUsuario.contrato.nome }}</div>
+            </div>
+            <div>{{ contratoUsuario.contrato.documento }}</div>
+          </div>
+
+          <div class="margin-bottom-15 text-right font-size-10">há {{
+            appUtil.timeDiffToStr(contratoUsuario.dataCadastro) }}</div>
+
+          <div>
+            <ion-button size="small" class="w-10 margin-0 text-initial"
+              [color]="contratoUsuario.aceite ? 'success' : 'tertiary'" (click)="aceitar(contratoUsuario)">{{
+              contratoUsuario.aceite ? 'Convite aceito! Acessar?' : 'Aceito ser ' +
+              env.roles.ContratoUsuarioCargoStr[contratoUsuario.cargo] }}</ion-button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="contratoUsuarios && !contratoUsuarios.length" class="w-10 flex-center margin-bottom-30"
+        style="height: 100px;">
+
+        <p>Não há convites por aqui.</p>
+
+      </div>
+
+      <app-loading *ngIf="!contratoUsuarios"></app-loading>
+
+    </div>
+
+  </div>
+
+</ion-content>

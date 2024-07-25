@@ -1,0 +1,77 @@
+<app-header *ngIf="context !== 'select-lite'" [appType]="headerType" [appTitle]="title" [appSubtitle]="subtitle"
+  [minimizable]="context !== 'select-full'"></app-header>
+
+<ion-content>
+
+  <div class="main-block" [class]="{'main-block-page-list': context === 'page-list'}">
+
+    <div class="list-default">
+
+      <div class="list-default-action-buttons">
+
+        <app-action-buttons [parentContext]="context" (appSave)="salvar()"></app-action-buttons>
+
+      </div>
+
+      <app-form-buttons [id]="this[key]?.id" [service]="service"
+        [show]="{prev: !appSelect, next: !appSelect}"></app-form-buttons>
+
+      <div class="form-default">
+
+        <div class="">
+
+          <ion-grid style="--ion-grid-padding: 0;">
+
+            <ion-row>
+
+              <ion-col size="12" sizeSm="6" sizeMd="4" *ngFor="let config of configs">
+
+                <ng-container *ngIf="!config.oculto || usuarioLogado.isMasterAdmin">
+
+                  <ion-item
+                    *ngIf="config.tipo === env.enums.ConfigTipo.STRING || config.tipo === env.enums.ConfigTipo.OBJECT"
+                    class="font-size-12" [class.readonly]="config.bloqueado">
+                    <ion-label position="floating">{{ config.nome }}{{ config.oculto ? ' (oculto)' : '' }}</ion-label>
+                    <ion-input [readonly]="config.bloqueado" [minlength]="config.min" [maxlength]="config.max"
+                      [(ngModel)]="config.value" ngDefaultControl></ion-input>
+                  </ion-item>
+
+                  <ion-item *ngIf="config.tipo === env.enums.ConfigTipo.FLOAT" class="font-size-12"
+                    [class.readonly]="config.bloqueado">
+                    <ion-label position="floating">{{ config.nome }}{{ config.oculto ? ' (oculto)' : '' }}</ion-label>
+                    <ion-input [readonly]="config.bloqueado" [minlength]="(config.min + '').length + 3"
+                      [maxlength]="(config.max + '').length + 4" appMoneyMasker [(ngModel)]="config.value"
+                      ngDefaultControl></ion-input>
+                  </ion-item>
+
+                  <ion-item *ngIf="config.tipo === env.enums.ConfigTipo.BOOLEAN" lines="none" class="font-size-12">
+                    <ion-label>{{ config.nome }}{{ config.oculto ? ' (oculto)' : '' }}</ion-label>
+                    <ion-checkbox [disabled]="config.bloqueado" [(ngModel)]="config.value"
+                      ngDefaultControl></ion-checkbox>
+                  </ion-item>
+
+                  <ion-item *ngIf="config.tipo === env.enums.ConfigTipo.NUMBER" class="app-number-item font-size-12">
+                    <ion-label>{{ config.nome }}{{ config.oculto ? ' (oculto)' : '' }}</ion-label>
+                    <app-number [disabled]="config.bloqueado" [min]="config.min" [max]="config.max"
+                      [(ngModel)]="config.value" ngDefaultControl style="width: 150px;"></app-number>
+                  </ion-item>
+
+                </ng-container>
+
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <app-taskbar *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-taskbar>
+
+</ion-content>

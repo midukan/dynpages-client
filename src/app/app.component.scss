@@ -1,0 +1,17 @@
+:host {
+
+    .tutorial-pwa-popover {
+        --offset-x: -150px;
+        --width: 370px;
+        --max-width: calc(100% - 12px);
+    }
+
+    @media not screen and (min-width: 1100px) {
+        .tutorial-pwa-popover {
+            --offset-x: 0px;
+            --width: 250px;
+            --max-width: calc(100% - 12px);
+        }
+    }
+
+}

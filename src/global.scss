@@ -1,0 +1,446 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Custom CSS */
+@import "assets/css/base.css";
+@import "app-global.scss";
+
+body {
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+	scroll-behavior: smooth;
+	text-rendering: optimizeLegibility;
+	color: var(--ion-text-color);
+}
+
+input {
+	outline: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	border: 0px solid white;
+	// -webkit-text-fill-color: white !important; // estava deixando branco o texto autofilled
+	-webkit-box-shadow: 0 0 0px 0px #fff inset;
+	transition: background-color 5000s ease-in-out 0s;
+}
+
+textarea {
+	resize: none;
+}
+
+button {
+	background-color: transparent;
+	/* bug de ficar buttons cinza em baixo */
+}
+
+ion-header {
+	box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.6) !important;
+}
+
+ion-modal {
+
+	// --backdrop-opacity: 0.4 !important; // fazendo pelo variables
+	&::part(content) {
+		--box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+	}
+}
+
+ion-modal.no-shadow {
+	&::part(content) {
+		--box-shadow: 0;
+	}
+}
+
+ion-select {
+	min-height: 0 !important;
+}
+
+.app-number-item {
+	--inner-padding-bottom: 7px;
+	--inner-padding-top: 7px;
+}
+
+.request-button {
+	opacity: 1;
+	transition: 0.5s ease all;
+}
+
+.request-button-requesting {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.alert-tappable.alert-radio {
+	height: auto;
+	contain: content;
+}
+
+.alert-radio-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-ios {
+	white-space: normal;
+}
+
+.popover-tip {
+
+	--background: var(--ion-color-white);
+	color: var(--ion-color-white-contrast);
+	--max-height: auto;
+	--min-width: 80px;
+	height: 0;
+	width: 0;
+	--offset-y: 10px;
+
+	&.popover-tip-footer {
+		--offset-y: -25px;
+	}
+
+	&.popover-tip-with-hotkey {
+		--offset-y: 50px;
+
+		&::part(arrow) {
+			display: none;
+		}
+	}
+
+	&::part(backdrop) {
+		display: none;
+	}
+
+	&::part(content) {
+		box-shadow: 2px 2px 4px #00000022, 4px 4px 15px #00000033;
+	}
+
+	&::part(arrow) {
+		// box-shadow: 0px -3px 2px #00000088;
+		--background: var(--ion-color-white);
+	}
+
+}
+
+.popover-contextmenu {
+
+	--background: var(--ion-color-white);
+
+	&.popover-contextmenu-footer {}
+
+	&::part(backdrop) {
+		// background-color: transparent
+	}
+
+	&::part(arrow) {
+		--background: var(--ion-color-white);
+	}
+
+}
+
+.popover-medium {
+	--width: 300px;
+	--max-width: calc(100% - 12px);
+}
+
+.popover-big {
+	--width: 370px;
+	--max-width: calc(100% - 12px);
+}
+
+.popover-bigest {
+	--width: 450px;
+	--max-width: calc(100% - 12px);
+}
+
+ion-picker-internal {
+	cursor: pointer;
+}
+
+.loading-clear {
+	--background: transparent;
+
+	.loading-wrapper {
+		box-shadow: none;
+	}
+}
+
+.loading-big-spinner {
+	ion-spinner {
+		width: 80px;
+		height: 80px;
+	}
+}
+
+.alert-danger,
+.alert-alert {
+	.alert-title {
+		font-weight: bold;
+	}
+
+	.alert-title,
+	.alert-message {
+		color: white;
+	}
+
+	.alert-button {
+		color: white;
+		font-weight: bold;
+	}
+
+	.alert-input {
+		color: white;
+	}
+
+	.alert-input::-moz-placeholder {
+		color: #eee;
+	}
+}
+
+.alert-success .alert-wrapper {
+	background-color: var(--ion-color-success);
+	color: white;
+}
+
+.alert-danger .alert-wrapper {
+	background-color: var(--ion-color-danger);
+	color: white;
+}
+
+.alert-alert .alert-wrapper {
+	background-color: var(--ion-color-warning);
+	color: white;
+}
+
+.alert-big {
+	.alert-wrapper {
+		width: 100%;
+		max-width: 500px;
+
+		.alert-message {
+			max-height: 380px;
+		}
+	}
+}
+
+.light-backdrop {
+	--ion-backdrop-color: var(--ion-color-white);
+}
+
+.dark-backdrop {
+	--ion-backdrop-color: var(--ion-color-black);
+}
+
+.modal-adjust {
+	&::part(content) {
+		height: auto;
+		transition: ease 0.2s bottom;
+	}
+
+	.ion-page {
+		position: static;
+		transition: ease 0.2s height;
+		height: 100px;
+	}
+}
+
+.modal-transparent {
+	--background: transparent;
+	--box-shadow: 0 !important;
+}
+
+.modal-round {
+	&::part(content) {
+		border-radius: 24px;
+		overflow: hidden;
+	}
+}
+
+.modal-margin {
+	&::part(content) {
+		width: 90%;
+		height: 94%;
+		max-height: 94%;
+		box-shadow: 0 14px 20px rgba(0, 0, 0, 0.3) !important;
+	}
+
+	@media only screen and (min-width: 768px) and (min-height: 600px) {
+		.modal-wrapper {
+			height: 740px;
+			width: 483px;
+			box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+		}
+	}
+}
+
+.modal-margin.modal-big {
+	&::part(content) {
+		top: calc(5% / 2) !important;
+	}
+}
+
+.modal-small {
+
+	@media only screen and (min-width: 768px) {
+		--height: calc(100% - 40px);
+		--width: calc(100% - 40px);
+		--max-width: 400px;
+	}
+
+	// @media only screen and (min-width: 768px) and (min-height: 600px) {
+	// 	--height: 550px;
+	// 	--width: 400px;
+	// }
+
+	// @media only screen and (min-width: 1050px) and (min-height: 600px) {
+	// 	--height: 650px;
+	// 	--width: 400px;
+	// }
+
+	// @media only screen and (min-width: 768px) and (min-height: 768px) {
+	// 	--height: 700px;
+	// 	--width: 400px;
+	// }
+
+	// @media only screen and (min-width: 1050px) and (min-height: 750px) {
+	// 	--height: 700px;
+	// 	--width: 400px;
+	// }
+
+	// @media only screen and (min-width: 1050px) and (min-height: 900px) {
+	// 	--height: 850px;
+	// 	--width: 400px;
+	// }
+}
+
+.modal-medium {
+
+	@media only screen and (min-width: 768px) {
+		--height: calc(100% - 40px);
+		--width: calc(100% - 40px);
+		--max-width: 1032px;
+	}
+
+	// @media only screen and (min-width: 818px) and (min-height: 600px) {
+	// 	--height: 550px;
+	// 	--width: 750px;
+	// }
+
+	// @media only screen and (min-width: 1100px) and (min-height: 600px) {
+	// 	--height: 650px;
+	// 	--width: 1032px;
+	// }
+
+	// @media only screen and (min-width: 818px) and (min-height: 768px) {
+	// 	--height: 700px;
+	// 	--width: 800px;
+	// }
+
+	// @media only screen and (min-width: 1100px) and (min-height: 750px) {
+	// 	--height: 700px;
+	// 	--width: 1032px;
+	// }
+
+	// @media only screen and (min-width: 1100px) and (min-height: 900px) {
+	// 	--height: 850px;
+	// 	--width: 1032px;
+	// }
+
+}
+
+.modal-big {
+
+	@media only screen and (min-width: 768px) {
+		--height: calc(100% - 40px);
+		--width: calc(100% - 40px);
+		--max-width: 1310px;
+	}
+
+	// @media only screen and (min-width: 768px) and (min-height: 600px) {
+	// 	--height: 550px;
+	// 	--width: 700px;
+	// }
+
+	// @media only screen and (min-width: 1050px) and (min-height: 600px) {
+	// 	--height: 650px;
+	// 	--width: 830px;
+	// }
+
+	// @media only screen and (min-width: 1330px) and (min-height: 600px) {
+	// 	--height: 650px;
+	// 	--width: 1310px;
+	// }
+
+	// @media only screen and (min-width: 768px) and (min-height: 768px) {
+	// 	--height: 700px;
+	// 	--width: 740px;
+	// }
+
+	// @media only screen and (min-width: 1050px) and (min-height: 750px) {
+	// 	--height: 700px;
+	// 	--width: 1000px;
+	// }
+
+	// @media only screen and (min-width: 1330px) and (min-height: 750px) {
+	// 	--height: 700px;
+	// 	--width: 1310px;
+	// }
+
+	// @media only screen and (min-width: 1050px) and (min-height: 900px) {
+	// 	--height: 850px;
+	// 	--width: 1000px;
+	// }
+
+	// @media only screen and (min-width: 1330px) and (min-height: 900px) {
+	// 	--height: 850px;
+	// 	--width: 1310px;
+	// }
+
+	// @media only screen and (min-width: 1330px) and (min-height: 900px) {
+	// 	--height: 850px;
+	// 	--width: 1310px;
+	// }
+
+	// @media only screen and (min-width: 1330px) and (min-height: 1000px) {
+	// 	--height: 950px;
+	// 	--width: 1310px;
+	// }
+
+	// @media only screen and (min-width: 1330px) and (min-height: 1330px) {
+	// 	--height: 1310px;
+	// 	--width: 1310px;
+	// }
+}
+
+.modal-full::part(content) {
+	height: 100% !important;
+	width: 100% !important;
+}

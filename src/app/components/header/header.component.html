@@ -1,0 +1,119 @@
+<ion-header class="dark-mode-off">
+
+  <ion-toolbar style="height: 70px;">
+
+    <div class="display-flex align-center justify-between" [class.main-block]="!fullContent"
+      style="padding-left: 20px !important;">
+
+      <ion-menu-button *ngIf="appType === 'page'" style="margin-left: -20px;"></ion-menu-button>
+
+      <div class="flex-1">
+        <h1 class="margin-bottom-0 font-normal_ font-size-30 t-font-size-22 t-margin-top-15" style="margin-top: 9px;">
+          {{ appTitle }}
+        </h1>
+        <p class="margin-top-0" style="margin-bottom: 12px;" [innerHTML]="appSubtitle"></p>
+      </div>
+
+      <div *ngIf="appType === 'page'" class="padding-right-20 t-padding-right-5">
+
+        <button [id]="nomePop" fill="clear" shape="round" color="black">
+
+          <div class="display-flex flex-wrap">
+
+            <div
+              class="display-flex justify-between margin-right-10 padding-top-10 padding-bottom-10 text-right color-white t-display-none"
+              [class.justify-center]="!authService.getContratoUsuario()" style="flex-direction: column;">
+
+              <div class="font-weight-600">{{ usuarioLogado.nomeCompleto }}</div>
+
+              <div *ngIf="authService.getContratoUsuario() && !usuarioLogado.isMasterAdmin" class="font-size-12">
+                {{ environment.roles.ContratoUsuarioCargoStr[authService.getContratoUsuario().cargo] }}
+              </div>
+              <div *ngIf="usuarioLogado.isMasterAdmin" class="font-size-12">
+                Master admin
+              </div>
+
+            </div>
+
+            <div class="border-radius-50 bg-color-tertiary"
+              style="width: 55px; height: 55px; border: 3px solid var(--ion-color-white);"
+              [style.padding-top]="!usuarioLogado.fotoUsuarioUrl ? '8px' : '0px'">
+              <img *ngIf="usuarioLogado.fotoUsuarioUrl" [src]="usuarioLogado.fotoUsuarioUrl"
+                class="w-10 h-10 display-block border-radius-50" style="object-fit: cover; margin-top: -1px;">
+              <span *ngIf="!usuarioLogado.fotoUsuarioUrl" class="app-icon-user font-size-30 color-white"></span>
+            </div>
+
+          </div>
+
+        </button>
+
+        <ion-popover [trigger]="nomePop" triggerAction="click" arrow="true" backdropDismiss="true"
+          dismissOnSelect="true">
+          <ng-template>
+            <ion-list class="ion-no-padding">
+
+              <ion-item *ngIf="!usuarioLogado.emailValidado" lines="none" class="font-size-12" [button]="true"
+                (click)="reenviarEmail()" color="warning">
+                <div class="display-flex">
+                  <span class="font-size-20 app-icon-mail" style="width: 35px;"></span>
+                  <div>
+                    <div>Validação do email pendente</div>
+                    <div class="font-size-11 color-light-shade">Reenviar email de validação?</div>
+                  </div>
+                </div>
+              </ion-item>
+              <ion-item lines="none" class="font-size-12" [button]="true" (click)="minhaConta()"><span
+                  class="font-size-20 app-icon-user-o" style="width: 35px;"></span> Dados pessoais</ion-item>
+              <ion-item lines="none" class="font-size-12" [button]="true" (click)="minhaSenha()"><span
+                  class="font-size-20 app-icon-lock-7" style="width: 35px;"></span> Alterar senha</ion-item>
+              <ion-item lines="none" class="font-size-12" [button]="true" (click)="seguranca()"><span
+                  class="font-size-20 app-icon-block" style="width: 35px;"></span> Segurança</ion-item>
+              <ion-item lines="none" class="font-size-12" [button]="true" (click)="configuracoes()"><span
+                  class="font-size-20 app-icon-params" style="width: 35px;"></span> Configurações</ion-item>
+              <ion-item *ngIf="environment.configs.APP_MULT_AMB" lines="none" class="font-size-12" [button]="true"
+                (click)="meusConvites()"><span class="font-size-18 app-icon-mail" style="width: 35px;"></span> Meus
+                convites</ion-item>
+              <ion-item lines="none" class="font-size-12" [button]="true" (click)="meusDispositivos()"><span
+                  class="font-size-19 app-icon-laptop" style="width: 35px;"></span> Dispositivos conectados</ion-item>
+              <ion-item lines="none" class="font-size-12 color-danger" [button]="true" (click)="logout()"><span
+                  class="font-size-20 app-icon-logout" style="width: 35px;"></span> Sair</ion-item>
+
+            </ion-list>
+          </ng-template>
+        </ion-popover>
+
+      </div>
+
+    </div>
+
+    <ion-buttons
+      *ngIf="appConfirm.observers.length || (appType === 'modal' && (appDismiss.observers.length || minimizable))"
+      slot="end" class="margin-right-10">
+
+      <ion-button *ngIf="minimizable && appType === 'modal'" class="cta-btn" color="white"
+        title="Minimiza esta janela para continuar depois" (click)="minimize()" hotkey="ctrl+b" (onHotkey)="minimize()">
+        <ion-icon slot="icon-only" name="remove"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="maximizable && appType === 'modal'" class="cta-btn t-display-none btn-maximize" color="white"
+        title="Maximiza ou desmaximiza esta janela" (click)="maximize()" style="width: 50px; height: 50px;"
+        hotkey="ctrl+m" (onHotkey)="maximize()">
+        <ion-icon slot="icon-only" name="browsers-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="appConfirm.observed && (show.confirm === undefined || show.confirm)" class="cta-btn"
+        color="white" title="Salva os dados do formulário" (click)="confirm()" hotkey="ctrl+s" (onHotkey)="confirm()">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        *ngIf="appType === 'modal' && appDismiss.observers.length && (show.dismiss === undefined || show.dismiss)"
+        class="cta-btn" color="white" title="Fechar janela sem salvar os dados" (click)="dismiss()" hotkey="esc">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>

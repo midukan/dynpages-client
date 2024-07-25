@@ -1,0 +1,26 @@
+
+:host {
+
+  ion-content {
+    --background: var(--ion-color-white);
+    --color: var(--ion-color-white-contrast);
+  }
+
+  ion-col {
+    ion-buttons {
+
+      ion-button {
+          margin: 0;
+          font-size: 11px;
+          width: auto;
+          height: auto;
+          padding: 0;
+          --padding-top: 0;
+          --padding-bottom: 0;
+          --border-radius: 0;
+        }
+
+    }
+
+  }
+}

@@ -1,0 +1,550 @@
+<app-header *ngIf="isModal" appType="modal" [appTitle]="title" [appSubtitle]="subtitle" (appConfirm)="salvar()"
+  (appDismiss)="dismiss()"></app-header>
+
+<ion-content>
+
+  <div *ngIf="!isModal" class="flex-center bg-color-tertiary padding-top-50 padding-bottom-30 t-padding-10-x"
+    style="flex-direction: column;">
+
+    <div class="display-flex flex-wrap justify-center margin-bottom-30">
+
+      <div class="display-flex align-center t-justify-center t-flex-wrap t-text-center">
+
+        <div class="margin-right-50 t-margin-right-0 t-margin-bottom-30 t-w-10">
+          <img src="assets/images/logo-branco.png" alt="Logo" class="display-block w-10 t-margin-auto-x"
+            style="max-width: 300px;">
+        </div>
+
+        <h1 class="margin-0 color-white font-weight-500">
+          <div class="font-size-23 font-weight-300 t-font-size-20">Chegou a hora</div>
+          <div class="font-weight-600 font-size-13 t-font-size-11">de cadastrar seu negócio.</div>
+        </h1>
+
+      </div>
+
+    </div>
+
+    <div
+      class="flex-center w-10 margin-top-30 margin-bottom-30 color-white font-weight-600 font-size-14 font-visby-round t-font-size-11"
+      style="max-width: 460px;">
+
+      <div class="padding-10-x padding-5 border-radius-10 bg-color-success opacity-7 t-padding-5">
+        1. Usuário <span class="app-icon-check-1"></span>
+      </div>
+      <div class="bg-color-success flex-1" style="height: 5px;"></div>
+      <div
+        class="padding-10-x padding-5 border-radius-10 bg-color-medium font-size-16 animated infinite pulse duration-1000 t-font-size-13 t-padding-5"
+        style="border: 6px solid var(--ion-color-success);border-right: 0;border-top: 0;border-bottom: 0;">
+        2. Empresa
+      </div>
+      <div class="bg-color-medium opacity-7 flex-1" style="height: 5px;"></div>
+      <div class="padding-10-x padding-5 border-radius-10 bg-color-medium opacity-7 t-padding-5">
+        3. Plano
+      </div>
+
+    </div>
+
+  </div>
+
+  <div [class]="!isModal ? 'main-block' : ''" [style.max-width]="!isModal ? '900px' : null">
+
+    <app-form-buttons [id]="this[key]?.id" [service]="service" (appPrint)="print($event)"
+      [show]="{prev: !appSelect, next: !appSelect, print: isModal}"></app-form-buttons>
+
+    <div class="form-default">
+
+      <div *ngIf="contrato" class="form-default-body">
+
+        <ion-grid class="margin-top-50" [class.display-none]="isModal || showForm"
+          [style.max-width]="!isModal ? '300px' : null">
+
+          <ion-row>
+
+            <ion-col size="12" sizeSm="12">
+              <h4>Minha empresa</h4>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="12">
+              <ion-item [display-errors]="{property: 'contrato.tipo', errors}">
+                <ion-label position="stacked">Tipo</ion-label>
+                <ion-select (ionChange)="this.contrato.documento = ''" interface="popover" [(ngModel)]="contrato.tipo"
+                  [disabled]="contrato.id">
+                  <ion-select-option *ngFor="let contratoTipo of contratoTipos" [value]="contratoTipo.value">
+                    {{ contratoTipo.label }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="12">
+              <ion-item [display-errors]="{property: 'contrato.documento', errors}" [class.readonly]="contrato.id">
+                <ion-label position="floating">
+                  {{ contrato.tipo === env.enums.ContratoTipo.PJ ? 'CNPJ' : 'CPF' }}
+                  <span class="aster-required">*</span>
+                </ion-label>
+                <ion-input placeholder="Obrigatório" required maxlength="18" ngDefaultControl
+                  [app-autocomplete]="{type: 'CNPJ', entity: contrato, inputs: {fantasia: inputFantasia}}"
+                  [(ngModel)]="contrato.documento" [brmasker]="appUtil.getMask('PERFIL')" [readonly]="contrato.id"
+                  (ionInput)="documentoInputed()">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+        <ion-grid [class.display-none]="!showForm">
+
+          <ion-row>
+
+            <ion-col size="12" sizeSm="12">
+              <h4>Dados principais</h4>
+            </ion-col>
+
+            <ion-col *ngIf="isModal" size="12" sizeSm="3" class="flex-center"
+              [display-errors]="{property: 'contrato.logoUpload', errors}">
+
+              <div class="flex-center border-radius-30 overflow-hidden cursor-pointer bg-color-medium color-white"
+                style="width: 200px; height: 200px;" (click)="cameraClick()">
+
+                <div>
+
+                  <img *ngIf="contrato?.logoUpload || contrato?.logoUrl" [src]="contrato.logoUpload || contrato.logoUrl"
+                    class="display-block">
+
+                  <div *ngIf="!contrato?.logoUpload && !contrato?.logoUrl" class="text-center">
+                    <div class="app-icon-upload-cloud-2 font-size-60 color-medium-tint"></div>
+                    <p class="font-weight-600">Novo Logo</p>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </ion-col>
+
+            <ion-col size="12" [sizeSm]="isModal ? 9 : 12" class="flex-center padding-0 padding-top-5 t-padding-0">
+
+              <ion-grid style="--ion-grid-padding: 0;">
+                <ion-row>
+
+                  <ion-col size="12" sizeSm="6">
+                    <ion-item [display-errors]="{property: 'contrato.tipo', errors}">
+                      <ion-label position="stacked">Tipo</ion-label>
+                      <ion-select (ionChange)="this.contrato.documento = ''" interface="popover"
+                        [(ngModel)]="contrato.tipo" [disabled]="contrato.id">
+                        <ion-select-option *ngFor="let contratoTipo of contratoTipos" [value]="contratoTipo.value">
+                          {{ contratoTipo.label }}
+                        </ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col size="12" sizeSm="6">
+                    <ion-item [display-errors]="{property: 'contrato.documento', errors}"
+                      [class.readonly]="contrato.id">
+                      <ion-label position="floating">
+                        {{ contrato.tipo === env.enums.ContratoTipo.PJ ? 'CNPJ' : 'CPF' }}
+                        <span class="aster-required">*</span>
+                      </ion-label>
+                      <ion-input placeholder="Obrigatório" required maxlength="18" ngDefaultControl
+                        [app-autocomplete]="{type: 'CNPJ', entity: contrato, inputs: {fantasia: inputFantasia}}"
+                        [(ngModel)]="contrato.documento" [brmasker]="appUtil.getMask('PERFIL')"
+                        [readonly]="contrato.id">
+                      </ion-input>
+                    </ion-item>
+                  </ion-col>
+
+                  <ng-container *ngIf="isModal">
+
+                    <ion-col size="12" sizeSm="6">
+                      <ion-item [display-errors]="{property: 'contrato.inscricaoEstadual', errors}">
+                        <ion-label position="floating">Inscrição estadual</ion-label>
+                        <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                          [(ngModel)]="contrato.inscricaoEstadual"></ion-input>
+                      </ion-item>
+                    </ion-col>
+
+                    <ion-col *ngIf="contrato.tipo === env.enums.ContratoTipo.PJ" size="12" sizeSm="6">
+                      <ion-item [display-errors]="{property: 'contrato.inscricaoMunicipal', errors}">
+                        <ion-label position="floating">Inscrição municipal</ion-label>
+                        <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
+                          [(ngModel)]="contrato.inscricaoMunicipal"></ion-input>
+                      </ion-item>
+                    </ion-col>
+
+                  </ng-container>
+
+                  <ion-col size="12" sizeSm="6" [class.display-none]="contrato.tipo !== env.enums.ContratoTipo.PJ">
+                    <ion-item [display-errors]="{property: 'contrato.fantasia', errors}">
+                      <ion-label position="floating">Nome Fantasia <span class="aster-required">*</span></ion-label>
+                      <ion-input #inputFantasia placeholder="Obrigatório" required maxlength="30" ngDefaultControl
+                        [(ngModel)]="contrato.fantasia"></ion-input>
+                    </ion-item>
+                  </ion-col>
+
+                  <ion-col size="12" sizeSm="6">
+                    <ion-item [display-errors]="{property: 'contrato.nome', errors}">
+                      <ion-label position="floating">
+                        {{ contrato.tipo === env.enums.ContratoTipo.PJ ? 'Razão Social' : 'Nome Completo' }} <span
+                          class="aster-required">*</span>
+                      </ion-label>
+                      <ion-input placeholder="Obrigatório" required maxlength="30" ngDefaultControl
+                        [(ngModel)]="contrato.nome"></ion-input>
+                    </ion-item>
+                  </ion-col>
+
+                </ion-row>
+              </ion-grid>
+
+            </ion-col>
+
+            <ng-container *ngIf="env.configs.IS_MDK_CLEAN_APP && contrato.tipo === env.enums.ContratoTipo.PJ">
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Fiscal</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.crt', errors}">
+                  <ion-label position="stacked">CRT</ion-label>
+                  <ion-select interface="popover" [(ngModel)]="contrato.crt">
+                    <ion-select-option *ngFor="let contratoCRT of contratoCRTs" [value]="contratoCRT.value">
+                      {{ contratoCRT.label }}
+                    </ion-select-option>
+                  </ion-select>
+                  <app-tooltip slot="end">
+                    <p><span class="font-weight-600">CRT - Código de Regime Tributário</span></p>
+                    <p><span class="font-weight-600">Simples Nacional</span><br>
+                      Optante pelo Simples Nacional</p>
+                    <p><span class="font-weight-600">Simples Nacional - Excesso de sublimite de receita
+                        bruta</span><br>
+                      Optante pelo Simples Nacional mas que tiver ultrapassado o limite de receita bruta fixado.</p>
+                    <p><span class="font-weight-600">Regime Normal</span><br>
+                      Regime Normal de tributação, englobando empresas de lucro presumido e lucro real.</p>
+                  </app-tooltip>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="isModal" size="12" sizeSm="3">
+                <ion-item lines="none" [display-errors]="{property: 'contrato.emiteNF', errors}">
+                  <ion-label>Emite NFe e NFSe</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="contrato.emiteNF"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="contrato.emiteNF" size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.certificadoA1Upload', errors}"
+                  [class.opacity-5]="contrato.certificadoA1Delete">
+
+                  <ion-label position="stacked">Certificado A1 <span class="aster-required">*</span></ion-label>
+
+                  <div class="flex-center w-10" style="height: 21px; margin: 10px 0 5px 0;">
+
+                    <div class="w-10 border-radius-10 bg-color-white cursor-pointer text-center"
+                      style="padding: 2px 6px 1px 6px; border: 1px dashed var(--ion-color-medium);"
+                      (click)="certificadoOpenDialog()">
+                      <div *ngIf="contrato.certificadoA1Upload">{{ contrato.certificadoA1Nome }}</div>
+                      <div *ngIf="!contrato.certificadoA1Upload && contrato.certificadoA1"><span
+                          class="app-icon-check-1"></span> Certificado configurado!</div>
+                      <div *ngIf="!contrato.certificadoA1Upload && !contrato.certificadoA1">Selecione o arquivo</div>
+                    </div>
+
+                    <ion-button *ngIf="0 && (contrato.certificadoA1 || contrato.certificadoA1Upload)" color="medium"
+                      size="small" fill="clear" class="margin-0 text-initial" (click)="removeCertificado()">
+                      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                    </ion-button>
+
+                  </div>
+
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="contrato.emiteNF" size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.certificadoA1Senha', errors}">
+                  <ion-label position="floating">Senha do certificado <span class="aster-required">*</span></ion-label>
+                  <ion-input placeholder="Obrigatório (preencha p/ alterar)" maxlength="20" ngDefaultControl
+                    [(ngModel)]="contrato.certificadoA1Senha"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="contrato.emiteNF" size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.prefeituraLogin', errors}">
+                  <ion-label position="floating">Login da prefeitura</ion-label>
+                  <ion-input placeholder="Opcional (verifique sua prefeitura)" maxlength="30" ngDefaultControl
+                    [(ngModel)]="contrato.prefeituraLogin"></ion-input>
+                  <app-tooltip slot="end" content="NF_PREFEITURA_LOGIN"></app-tooltip>
+                </ion-item>
+              </ion-col>
+
+              <ion-col *ngIf="contrato.emiteNF" size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.prefeituraSenha', errors}">
+                  <ion-label position="floating">Senha da prefeitura</ion-label>
+                  <ion-input placeholder="Opcional (preencha p/ alterar)" maxlength="20" ngDefaultControl
+                    [(ngModel)]="contrato.prefeituraSenha"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <!-- <ion-col size="12" sizeSm="3">
+                  <ion-item lines="none" [display-errors]="{property: 'perfil.optanteSN', errors}">
+                    <ion-label>Optante do SN</ion-label>
+                    <ion-checkbox slot="start" [(ngModel)]="contrato.optanteSN"></ion-checkbox>
+                  </ion-item>
+                </ion-col> -->
+
+              <ion-col *ngIf="contrato.emiteNF" size="12" sizeSm="12">
+                <div class="warning-block" style="--app-background: var(--ion-color-success)">
+                  <div class="display-flex justify-between align-center gap-20">
+
+                    <div>
+                      <p>
+                        ● Se precisar renovar ou gerar um novo certificado <b>A1</b>, realize através do nosso link
+                        integrado.
+                      </p>
+                      <p>
+                        ● Você pode configurar outro dia seu certificado, após receber da unidade certificadora.
+                      </p>
+                      <p>
+                        ● Agende agora para agilizar o processo de aquisição.
+                      </p>
+                    </div>
+
+                    <div>
+                      <ion-button color="secondary" [href]="env.paths.CERT_A1_LINK" target="_blank"
+                        class="font-weight-600 text-initial" style="color: var(--ion-color-black);">Agendar</ion-button>
+                    </div>
+
+                  </div>
+                </div>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>
+                  Responsável financeiro
+                  <app-tooltip>
+                    Deve ser o responsável pela conta bancária da empresa que receberá os saques da conta digital
+                    {{ env.infos.payName }} (caso utilize).
+                  </app-tooltip>
+                </h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.responsavelNome', errors}">
+                  <ion-label position="floating">Nome completo <span class="aster-required">*</span></ion-label>
+                  <ion-input placeholder="Obrigatório" required maxlength="50" ngDefaultControl
+                    [(ngModel)]="contrato.responsavelNome"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="2">
+                <ion-item [display-errors]="{property: 'contrato.responsavelDocumento', errors}">
+                  <ion-label position="floating">CPF <span class="aster-required">*</span></ion-label>
+                  <ion-input placeholder="Obrigatório" required [maxlength]="14" [brmasker]="appUtil.getMask('CPF')"
+                    [(ngModel)]="contrato.responsavelDocumento">
+                  </ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="4">
+                <ion-item [display-errors]="{property: 'contrato.responsavelEmail', errors}">
+                  <ion-label position="floating">E-mail <span class="aster-required">*</span></ion-label>
+                  <ion-input type="email" placeholder="Obrigatório" required ngDefaultControl
+                    [(ngModel)]="contrato.responsavelEmail"></ion-input>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3" [display-errors]="{property: 'contrato.responsavelDataNascimento', errors}">
+                <app-datetime label="Data nascimento" placeholder="Obrigatório" [required]="true" ngDefaultControl
+                  [(appModel)]="contrato.responsavelDataNascimento"></app-datetime>
+              </ion-col>
+
+            </ng-container>
+
+            <ion-col size="12" sizeSm="12">
+              <h4>Contatos</h4>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="2">
+              <ion-item [display-errors]="{property: 'contrato.telefone', errors}">
+                <ion-label position="floating">Telefone <span class="aster-required">*</span></ion-label>
+                <ion-input placeholder="Obrigatório" required maxlength="15" type="tel" ngDefaultControl
+                  [(ngModel)]="contrato.telefone" [brmasker]="appUtil.getMask('FIXO_CELULAR')"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" sizeSm="4">
+              <ion-item [display-errors]="{property: 'contrato.email', errors}">
+                <ion-label position="floating">E-mail <span class="aster-required">*</span></ion-label>
+                <ion-input type="email" placeholder="Obrigatório" required ngDefaultControl
+                  [(ngModel)]="contrato.email"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="12">
+              <h4>Endereço</h4>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="3">
+              <ion-item [display-errors]="{property: 'contrato.enderecoCEP', errors}">
+                <ion-label position="floating">CEP <span class="aster-required">*</span></ion-label>
+                <ion-input #enderecoCEP placeholder="Obrigatório" required maxlength="9" ngDefaultControl
+                  [(ngModel)]="contrato.enderecoCEP"
+                  [app-autocomplete]="{type: 'CEP', entity: contrato, inputs: {numero: inputNumero, logradouro: inputLogradouro}}"
+                  [brmasker]="appUtil.getMask('CEP')"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="8" sizeSm="7">
+              <ion-item [display-errors]="{property: 'contrato.enderecoLogradouro', errors}">
+                <ion-label position="floating">Endereço <span class="aster-required">*</span></ion-label>
+                <ion-input #inputLogradouro placeholder="Obrigatório" required maxlength="60" ngDefaultControl
+                  [(ngModel)]="contrato.enderecoLogradouro"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="4" sizeSm="2">
+              <ion-item [display-errors]="{property: 'contrato.enderecoNumero', errors}">
+                <ion-label position="floating">Número <span class="aster-required">*</span></ion-label>
+                <ion-input #inputNumero placeholder="Obrigatório" required maxlength="10" ngDefaultControl
+                  [(ngModel)]="contrato.enderecoNumero"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="12" sizeSm="3">
+              <ion-item>
+                <ion-label position="stacked">Estado <span class="aster-required">*</span></ion-label>
+                <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="contrato._estadoId"
+                  (ionChange)="estadoChange()" required>
+                  <ion-select-option *ngFor="let item of env.data.estados" [value]="item.id">{{ item.nome
+                    }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" sizeSm="4">
+              <app-select *ngIf="contrato.enderecoCidadeSelectData" type="cidadeId"
+                [(ngModel)]="contrato.enderecoCidadeId" [filters]="{estadoId: [contrato._estadoId]}"
+                [disabled]="!contrato._estadoId" [(selectData)]="contrato.enderecoCidadeSelectData" [required]="true"
+                [display-errors]="{property: 'contrato.enderecoCidadeId', errors}" ngDefaultControl>
+              </app-select>
+            </ion-col>
+            <ion-col size="12" sizeSm="3">
+              <ion-item [display-errors]="{property: 'contrato.enderecoBairro', errors}">
+                <ion-label position="floating">Bairro <span class="aster-required">*</span></ion-label>
+                <ion-input placeholder="Obrigatório" required maxlength="40" ngDefaultControl
+                  [(ngModel)]="contrato.enderecoBairro">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" sizeSm="2">
+              <ion-item [display-errors]="{property: 'contrato.enderecoComplemento', errors}">
+                <ion-label position="floating">Complemento</ion-label>
+                <ion-input placeholder="Opcional" maxlength="60" ngDefaultControl
+                  [(ngModel)]="contrato.enderecoComplemento">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ng-container *ngIf="env.configs.IS_MDK_CLEAN_APP && usuarioLogado.isMasterAdmin && contrato.id">
+
+              <ion-col *ngIf="contrato.id" size="12" sizeSm="12">
+                <h4>Financeiro</h4>
+              </ion-col>
+
+              <!-- <ng-container *ngIf="usuarioLogado.isMasterAdmin"> -->
+
+              <ion-col size="6" sizeSm="2">
+                <ion-item [display-errors]="{property: 'contrato.planoOpcao', errors}">
+                  <ion-label position="stacked">Plano</ion-label>
+                  <ion-select interface="popover" [(ngModel)]="contrato.planoOpcao">
+                    <ion-select-option *ngFor="let contratoTipo of contratoPlanoOpcoes" [value]="contratoTipo.value">
+                      {{ contratoTipo.label }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="6" sizeSm="2">
+                <ion-item [display-errors]="{property: 'contrato.planoPeriodo', errors}">
+                  <ion-label position="stacked">Período</ion-label>
+                  <ion-select interface="popover" [(ngModel)]="contrato.planoPeriodo">
+                    <ion-select-option *ngFor="let contratoTipo of contratoPlanoPeriodos" [value]="contratoTipo.value">
+                      {{ contratoTipo.label }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item class="app-number-item" [display-errors]="{property: 'contrato.planoDesconto', errors}">
+                  <ion-label>Desconto (%)</ion-label>
+                  <app-number [(ngModel)]="contrato.planoDesconto" ngDefaultControl [min]="0" [max]="100"></app-number>
+                </ion-item>
+              </ion-col>
+
+              <!-- </ng-container> -->
+
+              <ion-col size="12" sizeSm="3">
+                <ion-item [display-errors]="{property: 'contrato.planoFormaPgto', errors}">
+                  <ion-label position="stacked">Forma de pagamento</ion-label>
+                  <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="contrato.planoFormaPgto">
+                    <ion-select-option *ngFor="let formaPgto of formaPgtos" [value]="formaPgto.value">
+                      {{ formaPgto.label }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="2"
+                *ngIf="contrato.planoFormaPgto === env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO">
+
+                <div><ion-button class="text-initial" (click)="cartoes()">Gerenciar cartões</ion-button></div>
+                <div class="font-size-11">
+                  {{ contrato.licenca?.competencia?.perfil.perfilCartoes.length }}
+                  {{ (contrato.licenca?.competencia?.perfil.perfilCartoes.length === 1) ? 'cartão cadastrado' :
+                  'cartões cadastrados' }}
+                </div>
+
+              </ion-col>
+
+            </ng-container>
+
+            <ng-container *ngIf="usuarioLogado.isMasterAdmin">
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Controle</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="4">
+                <ion-item lines="none" [display-errors]="{property: 'contrato.ativo', errors}">
+                  <ion-label>Ativo</ion-label>
+                  <ion-checkbox slot="start" [(ngModel)]="contrato.ativo"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+
+            </ng-container>
+
+            <ion-col *ngIf="!isModal" size="12">
+
+              <div class="padding-top-30 text-center">
+
+                <div>
+                  <ion-button size="large" shape="round" color="success" class="text-initial"
+                    style="--background: var(--ion-color-success-tint);" (click)="salvar()">
+                    Criar meu ambiente!
+                  </ion-button>
+                </div>
+
+              </div>
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

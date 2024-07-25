@@ -1,0 +1,196 @@
+<app-header *ngIf="context !== 'select-lite' && !forceSelect" [appType]="headerType" [appTitle]="title"
+  [appSubtitle]="subtitle" (appDismiss)="dismiss()" [minimizable]="context !== 'select-full'"></app-header>
+<app-header *ngIf="context !== 'select-lite' && forceSelect" [appType]="headerType" [appTitle]="title"
+  [appSubtitle]="subtitle" [minimizable]="context !== 'select-full'"></app-header>
+
+<ion-content>
+
+  <div class="main-block" [class]="{'main-block-page-list': context === 'page-list'}">
+
+    <div class="list-default">
+
+      <div class="list-default-action-buttons">
+
+        <app-action-buttons *ngIf="usuarioLogado.isMasterAdmin" [parentContext]="context" (appAdd)="form()"
+          (appRefresh)="load()" (appBulk)="showBulkSelect()"></app-action-buttons>
+        <app-action-buttons
+          *ngIf="!usuarioLogado.isMasterAdmin && (env.configs.APP_MULT_AMB_FREE_CREATE || authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN))"
+          [parentContext]="context" (appAdd)="form()" (appRefresh)="load()"
+          (appBulk)="showBulkSelect()"></app-action-buttons>
+        <app-action-buttons
+          *ngIf="!usuarioLogado.isMasterAdmin && !(env.configs.APP_MULT_AMB_FREE_CREATE || authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN))"
+          [parentContext]="context"></app-action-buttons>
+
+      </div>
+
+      <div class="list-default-header t-border-radius-0"
+        [class]="{'list-default-header-full': context === 'select-full' || context === 'modal-list'}">
+
+        <app-filters [(appSelectDatas)]="filtersSelectDatas" *ngIf="usuarioLogado.isMasterAdmin"
+          [(appFilters)]="filters" (appFiltersChange)="load()" [parentContext]="context"></app-filters>
+
+        <app-filters [(appSelectDatas)]="filtersSelectDatas"
+          *ngIf="!usuarioLogado.isMasterAdmin && (env.configs.APP_MULT_AMB_FREE_CREATE || authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN))"
+          [showDateGroup]="null" [(appFilters)]="filters" (appFiltersChange)="load()"
+          [parentContext]="context"></app-filters>
+
+        <app-filters [(appSelectDatas)]="filtersSelectDatas"
+          *ngIf="!usuarioLogado.isMasterAdmin && !(env.configs.APP_MULT_AMB_FREE_CREATE || authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN))"
+          [showDateGroup]="null" [(appFilters)]="filters" (appFiltersChange)="load()"
+          [parentContext]="context"></app-filters>
+
+      </div>
+
+      <div class="list-default-body">
+
+        <app-filters-selected [appSelect]="appSelect" [selectData]="state.selectData"></app-filters-selected>
+
+        <app-bulk-warning *ngIf="bulkSelect" (appExcluir)="excluirSelecionados()"
+          (appSelecionaTodos)="selecionaTodos()"></app-bulk-warning>
+
+        <div class="list-default-table">
+
+          <table>
+
+            <tr *ngIf="context !== 'select-lite'" class="list-default-table-header" appOrder
+              [(appOrderFilters)]="filters" [parentContext]="context" (appOrderFilters)="load()">
+              <th style="min-width: 60px; width: 60px;" appOrderProperty="id">ID</th>
+              <th style="min-width: 140px;" appOrderProperty="fantansia">Nome</th>
+              <th style="min-width: 180px;" appOrderProperty="nome">Razão Social</th>
+              <th style="min-width: 140px;" appOrderProperty="documento">Documento</th>
+              <ng-container *ngIf="usuarioLogado.isMasterAdmin">
+                <th style="min-width: 100px;" appOrderProperty="planoOpcao">Plano</th>
+                <th style="min-width: 100px;" appOrderProperty="planoPeriodo">Período</th>
+                <th style="min-width: 100px;">Valor</th>
+                <th style="min-width: 100px;" appOrderProperty="planoDesconto">Desconto</th>
+              </ng-container>
+              <th style="min-width: 120px; width: 120px;" appOrderProperty="dataCadastro">Cadastro</th>
+              <th style="min-width: 70px; width: 70px;" appOrderProperty="ativo">Ativo</th>
+              <th *ngIf="!bulkSelect && !forceSelect" style="width: 1px; text-align: center;"></th>
+            </tr>
+
+            <tr *ngIf="context === 'select-lite' && opcaoCadastrar && !bulkSelect"
+              class="list-default-table-add-button ion-activatable ripple-parent" (click)="form()" prevent-double-click>
+              <td colspan="100%">
+                <div>
+                  <span class="list-default-table-add-button-icon app-icon-plus"></span>
+                  <span>Cadastrar novo</span>
+                </div>
+              </td>
+              <ion-ripple-effect></ion-ripple-effect>
+            </tr>
+
+            <tr *ngIf="context !== 'page-list' && opcaoNenhum && !bulkSelect"
+              class="list-default-table-sel-nenhum-button ion-activatable ripple-parent" (click)="seleciona()">
+              <td colspan="100%" [class.text-center]="context === 'select-lite'">Selecionar nenhum</td>
+              <ion-ripple-effect></ion-ripple-effect>
+            </tr>
+
+            <ng-container *ngFor="let contrato of contratos; trackBy:appUtil.trackByFn(['id'])">
+
+              <tr class="list-default-table-line ion-activatable ripple-parent"
+                [class]="{'list-default-table-line-selected': contrato.id === state.selectData?.id}"
+                (click)="seleciona(contrato)" prevent-double-click>
+                <td class="list-default-table-checkbox">
+                  <div>
+                    <ion-checkbox *ngIf="bulkSelect" stop-propagation [(ngModel)]="contrato.selected"></ion-checkbox>
+                    <span class="badge-id">{{ contrato.id }}</span>
+                  </div>
+                </td>
+                <td>
+                  {{ (contrato.tipo === env.enums.ContratoTipo.PJ) ? contrato.fantasia : contrato.nome }}
+                </td>
+                <td *ngIf="context !== 'select-lite'">
+                  {{ (contrato.tipo === env.enums.ContratoTipo.PJ) ? contrato.nome : '' }}
+                </td>
+                <td *ngIf="context !== 'select-lite'">{{ contrato.documento }}</td>
+                <ng-container *ngIf="usuarioLogado.isMasterAdmin">
+                  <td *ngIf="context !== 'select-lite'">{{ env.enums.ContratoPlanoOpcaoStr[contrato.planoOpcao] }}</td>
+                  <td *ngIf="context !== 'select-lite'">{{ env.enums.ContratoPlanoPeriodoStr[contrato.planoPeriodo] }}
+                  <td *ngIf="context !== 'select-lite'">{{ getPlanoValor(contrato) | dinheiro }}
+                  <td *ngIf="context !== 'select-lite'">{{ contrato.planoDesconto }}%
+                  </td>
+                </ng-container>
+                <td *ngIf="context !== 'select-lite'">{{ contrato.dataCadastro | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td *ngIf="context !== 'select-lite'" class="text-center"><span
+                    [class]="contrato.ativo ? 'app-icon-check-1 color-success' : 'app-icon-cancel color-danger'"></span>
+                </td>
+                <td *ngIf="!bulkSelect && !forceSelect" style="padding: 0;">
+                  <ion-buttons class="justify-end">
+
+                    <ion-button *ngIf="context === 'select-full'" fill="clear" color="dark"
+                      class="list-default-table-button" (click)="form(contrato)" stop-propagation title="Alterar">
+                      <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                    </ion-button>
+
+                    <ion-button
+                      *ngIf="context !== 'select-lite' && authService.hasPermission(env.roles.contratoUsuarioCargoGrupo.ADMIN)"
+                      fill="clear" color="dark" class="list-default-table-button"
+                      (click)="listContratoUsuario(contrato)" stop-propagation title="Acessos">
+                      <ion-icon slot="icon-only" name="person-outline"></ion-icon>
+                    </ion-button>
+
+                    <ion-button *ngIf="context !== 'select-lite'" fill="clear" color="danger"
+                      class="list-default-table-button" (click)="sairDoContrato(contrato)" stop-propagation
+                      title="Sair do ambiente">
+                      <ion-icon slot="icon-only" name="close"></ion-icon>
+                    </ion-button>
+
+                  </ion-buttons>
+                </td>
+
+                <ion-ripple-effect></ion-ripple-effect>
+
+              </tr>
+
+            </ng-container>
+
+          </table>
+
+          <div *ngIf="context !== 'select-lite' || contratos && !contratos.length"
+            class="padding-top-50 padding-bottom-50 padding-10 bg-color-white text-center">
+
+            <div *ngIf="context !== 'select-lite'"
+              class="margin-auto-x margin-bottom-15 padding-10 border-radius-5 bg-color-light-shade"
+              style="max-width: 300px;">
+              <p>Tem um convite para outro ambiente?</p>
+              <ion-button size="small" (click)="modalConvite()" class="text-initial">Ver convites</ion-button>
+            </div>
+
+            <ng-container *ngIf="contratos && !contratos.length">
+
+              <p>Nenhum ambiente encontrado. Solicite acesso ao seu administrador.</p>
+              <p>
+                Você também pode <span (click)="form()" prevent-double-click
+                  class="cursor-pointer color-tertiary text-underline font-weight-600">criar seu próprio ambiente</span>
+                e começar a usar o <span class="font-weight-600">{{ env.infos.appName }}</span> agora mesmo.
+              </p>
+              <p>
+                Se precisar alterar para outra conta, <span (click)="logout()" prevent-double-click
+                  class="cursor-pointer color-tertiary text-underline font-weight-600">efetue logout</span> e realize
+                novo login.
+              </p>
+
+            </ng-container>
+
+          </div>
+
+          <app-loading *ngIf="!contratos"></app-loading>
+
+        </div>
+
+      </div>
+
+      <app-pager *ngIf="filters && contratosTotal && context !== 'select-lite'"
+        [position]="isModal ? 'default' : 'fixed'" [itemsCount]="contratosTotal?.total" [pager]="filters.pager"
+        (appChange)="pagerChange()"></app-pager>
+
+      <app-footer *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-footer>
+
+    </div>
+
+  </div>
+
+  <app-taskbar *ngIf="!isModal && context !== 'select-lite' && context !== 'embed-list'"></app-taskbar>
+
+</ion-content>

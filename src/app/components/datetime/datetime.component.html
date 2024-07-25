@@ -1,0 +1,45 @@
+<ng-container *ngIf="validStart === true">
+
+  <ion-item lines="none" [color]="color" class="app-datetime" [class.readonly]="disabled"
+    [class]="{'app-datetime-filled': appModel, 'app-datetime-layout-form': layout === 'form', 'with-time': withTime}"
+    [style]="{'--border-width': noBorder ? '0' : '1px', '--padding-start': noBorder ? '0' : null}">
+
+    <ion-label [position]="layout === 'filter' ? 'stacked' : 'floating'">{{ label ? label : 'Data' }} <span
+        *ngIf="required" class="aster-required">*</span></ion-label>
+
+    <ion-input [placeholder]="placeholder" [maxlength]="withTime ? 16 : 10" [(ngModel)]="dateStr"
+      (ngModelChange)="inputChanged()" [brmasker]="appUtil.getMask(withTime ? 'DATAHORA' : 'DATA')"
+      [readonly]="disabled" ngDefaultControl></ion-input>
+
+    <ion-button *ngIf="!noCalendar && !disabled" shape="round" fill="clear" slot="end"
+      [id]="'open-popover-datetime' + randomId" class="margin-left-10" style="margin-top: 8px;"
+      [style]="{'--border-color': 'var(--ion-color-' + (color || 'light') +'-contrast)', '--color': 'var(--ion-color-' + (color || 'light') +'-contrast)'}"
+      (click)="isOpen = true">
+      <ion-icon name="calendar-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <app-tooltip *ngIf="tooltip && isContent()" slot="end" [content]="content"
+      style="margin: 3px 10px 0 0"></app-tooltip>
+    <app-tooltip *ngIf="tooltip && !isContent()" slot="end" style="margin: 3px 10px 0 0">{{ tooltip }}</app-tooltip>
+
+    <ion-modal #popoverDatetime style="--width: auto; --height: auto;" [isOpen]="isOpen" (didDismiss)="isOpen = false">
+      <ng-template>
+
+        <ion-datetime #datetime [min]="min" [max]="max" [(ngModel)]="dateIon"
+          [presentation]="withTime ? 'date-time' : 'date'" (ngModelChange)="ionChanged()">
+          <span *ngIf="withTime" slot="time-label">Horário</span>
+          <ion-buttons slot="buttons" class="justify-between" style="width: 270px;">
+            <!--ion-button color="success" (click)="datetime.reset()">Agora</!--ion-button-->
+            <ion-button color="dark" (click)="datetime.cancel(false); isOpen = false;">Fechar</ion-button>
+            <ion-button color="primary" (click)="datetime.confirm(false); isOpen = false;">Confirmar</ion-button>
+          </ion-buttons>
+        </ion-datetime>
+
+      </ng-template>
+    </ion-modal>
+
+  </ion-item>
+
+</ng-container>
+
+<div *ngIf="validStart === false">Datetime com parâmetros inválidos!</div>

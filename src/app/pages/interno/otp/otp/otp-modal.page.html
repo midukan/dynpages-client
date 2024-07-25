@@ -1,0 +1,79 @@
+<app-header appType="modal" [appTitle]="title" [appSubtitle]="subtitle" (appDismiss)="dismiss()" [minimizable]="false"
+  [maximizable]="false"></app-header>
+
+<ion-content>
+
+  <div class="main-block padding-20 text-center t-padding-0 t-padding-10-x">
+
+    <ng-container *ngIf="metodo === 'authApp'">
+
+      <h1 class="font-weight-300 margin-bottom-40">
+        {{ state.otp.otpAuthUrl ?
+        'Configure seu aplicativo autenticador.' :
+        'Informe o código do aplicativo autenticador.' }}
+      </h1>
+
+      <ng-container *ngIf="state.otp.otpAuthQrCode">
+        <div class="t-display-none">
+          <img [src]="state.otp.otpAuthQrCode" alt="QR Code">
+        </div>
+        <div class="display-none t m-display-block">
+          <ion-button [href]="state.otp.otpAuthUrl" class="text-initial">Configurar App</ion-button>
+        </div>
+      </ng-container>
+
+      <div *ngIf="state.otp.otpAuthUrl" class="warning-block margin-bottom-40 text-left">
+        <p class="margin-top-0 t-display-none">
+          ● Baixe um aplicativo autenticador e leia o QR Code acima.
+        </p>
+        <p class="display-none t m-display-block">
+          ● Baixe um aplicativo autenticador e clique no botão acima.
+        </p>
+        <p>
+          ● Recomendamos o <span class="font-weight-600">Google Authenticator</span>, mas você pode utilizar outros.
+        </p>
+        <p class="margin-bottom-0">
+          ● Após a configuração do app autenticador, insira o código gerado abaixo.
+        </p>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="metodo === 'email'">
+
+      <h1 class="font-weight-300" [class.color-success]="emailEnviado">
+        {{ !emailEnviado ? 'Enviaremos um código em seu email.' : 'Código enviado no seu email.' }}
+      </h1>
+
+      <div class="margin-bottom-40">
+        <ion-button (click)="sendMailCode()" color="secondary" class="text-initial" fill="outline"
+          [disabled]="emailCountdown !== 0">
+          {{ (emailCountdown !== 0) ? 'Enviar novamente (' + emailCountdown + 's)' : 'Solicitar código' }}
+        </ion-button>
+      </div>
+
+    </ng-container>
+
+    <div class="margin-bottom-15">
+      <ion-item class="margin-auto-x" style="width: 250px;">
+        <ion-input placeholder="XXXXXX" [(ngModel)]="token" type="tel" [maxlength]="6" ngDefaultControl
+          class="font-size-28 text-center" style="letter-spacing: 4px;" (keyup.enter)="salvar()"></ion-input>
+      </ion-item>
+      <p *ngIf="emailEnviado && metodo === 'email'">Informe o código recebido aqui.</p>
+    </div>
+
+    <div class="margin-bottom-40">
+      <ion-button (click)="salvar()" class="text-initial">
+        {{ (state.otp.otpAuthUrl && metodo !== 'email') ? 'Validar' : 'Acessar plataforma' }}
+      </ion-button>
+    </div>
+
+    <div class="margin-bottom-15">
+      <ion-button (click)="toggleMetodo()" size="small" fill="clear" color="light-dark" class="text-initial">
+        Tentar outro método
+      </ion-button>
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,115 @@
+<div [class]="'ion-color-' + color">
+
+  <div class="display-flex align-center" [class]="{'opacity-5': disabled}">
+
+    <div class="flex-1" [style]="{ margin: fill === 'outline' ? '0px' : '0 2px 0 0' }"
+      [class]="{'opacity-5': ((ngModel !== undefined && ngModel !== null) && ngModel !== 1 && ngModel !== true && (type === 'radio3' || type === 'yesno')) || ((ngModel !== undefined && ngModel !== null && ngModel !== 0 ) && type === 'radio') }">
+
+      <ion-button [fill]="fill" size="small" expand="full"
+        [color]="(ngModel === 1 || ngModel === true) && (type === 'radio3' || type === 'yesno') ? colorSelected : color"
+        [size]="size" (click)="sub()" shape="round" [disabled]="disabled" class="margin-0"
+        style="--padding-start: 5px; --padding-end: 5px;" [style]="{
+          height: size === 'large' ? '39px' : '29px',
+          'min-height': size === 'large' ? '39px' : '29px',
+          '--border-width': fill === 'outline' ? '1px' : '0px',
+          '--border-radius': fill === 'outline' ? '5px 0 0 5px' : '7px',
+          'font-size': size === 'large' ? ((icons.textoEsquerda !== undefined && icons.textoEsquerda.length > 3) ? '12px' : '16px') : ((icons.textoEsquerda !== undefined && icons.textoEsquerda.length > 3) ? '11px' : '14px')
+        }">
+
+        <ion-icon *ngIf="!icons.textoEsquerda && !icons?.left?.includes('.')" slot="icon-only"
+          [name]="icons.left"></ion-icon>
+        <img *ngIf="!icons.textoEsquerda && icons?.left?.includes('.')" [src]="icons.left" alt="Opção A"
+          style="width: 35px; height: 25px; object-fit: contain;">
+        <span *ngIf="icons.textoEsquerda" class="padding-left-5 padding-right-5">{{ icons.textoEsquerda }}</span>
+
+      </ion-button>
+
+    </div>
+
+    <div *ngIf="type !=='radio3' && type !=='yesno'" class="flex-center" [style]="{
+      height: type === 'radio' ? (size === 'large' ? '39px' : '29px') : 'auto',
+      width: type === 'radio' ? (size === 'large' ? '60px' : '40px') : 'auto',
+      padding: type === 'radio' ? '3px' : '0',
+      'border-top': fill === 'outline' ? '1px solid var(--ion-color-base)' : 'none',
+      'border-bottom': fill === 'outline' ? '1px solid var(--ion-color-base)' : 'none',
+      'border-radius': fill === 'outline' ? '0' : '7px',
+      'background-color': (type === 'radio') ? ((ngModel === 1 || ngModel === 2) ? colorSelected : 'var(--ion-color-tint)') : (fill === 'outline' ? 'transparent' : 'var(--ion-color-base)')
+      }">
+
+      <input *ngIf="type === 'default'" class="text-center bg-color-transparent border-none" style="outline: none;"
+        [style]="{
+          height: size === 'large' ? (fill === 'outline' ? '37px' : '39px') : (fill === 'outline' ? '27px' : '29px'),
+          width: (max >= 1000 ? (size === 'large' ? '80' : '62') : (size === 'large' ? '60' : '42')) + 'px',
+          'font-size': size === 'large' ? '20px' : '16px',
+          color: fill === 'outline' ? 'var(--ion-color-base)' : 'var(--ion-color-contrast)'
+        }" type="tel" [maxlength]="max.toString().length" [(ngModel)]="ngModelStr" (blur)="testInput(true)"
+        [disabled]="disabled">
+
+      <span *ngIf="type === 'radio' && !(ngModel === 1 || ngModel === 2)" alt="Selecione uma opção" class="opacity-7"
+        [class]="size === 'large' ? 'font-size-12' : 'font-size-10'"
+        style="color: var(--ion-color-contrast);">Escolha</span>
+
+      <img
+        *ngIf="type === 'radio' && (ngModel === 1 || ngModel === 2) && icons[(ngModel === 1) ? 'left' : 'right']?.includes('.')"
+        [src]="(ngModel === 1) ? icons.left : icons.right" [alt]="(ngModel === 1) ? 'Opção A' : 'Opção B'"
+        style="width: 100%; height: 100%; object-fit: contain;">
+
+      <ion-icon
+        *ngIf="type === 'radio' && (ngModel === 1 || ngModel === 2) && !icons[(ngModel === 1) ? 'left' : 'right']?.includes('.')"
+        [name]="icons[(ngModel === 1) ? 'left' : 'right']" style="color: var(--ion-color-base);"
+        [class]="(size === 'large' ? 'font-size-35' : 'font-size-28')"></ion-icon>
+
+
+    </div>
+
+    <ng-container *ngIf="type==='radio3'">
+
+      <div class="flex-1" [style]="{ margin: fill === 'outline' ? '0px' : '0 0 0 0px'}"
+        [class]="{'opacity-5': (ngModel !== undefined && ngModel !== null) && ngModel !== 0}">
+
+        <ion-button [fill]="fill" size="small" expand="full" [color]="ngModel === 0 ? colorSelected : color"
+          [size]="size" (click)="middle()" shape="round" [disabled]="disabled" class="margin-0"
+          style="--padding-start: 10px; --padding-end: 10px;" [style]="{
+                height: size === 'large' ? '39px' : '29px',
+                'min-height': size === 'large' ? '39px' : '29px',
+                '--border-width': fill === 'outline' ? '1px' : '0px',
+                '--border-radius': fill === 'outline' ? '0 5px 5px 0' : '7px',
+                'font-size': size === 'large' ? ((icons.textoCentro !== undefined && icons.textoCentro.length > 3) ? '12px' : (icons.middle ? '11px' : '16px')) : ((icons.textoCentro !== undefined && icons.textoCentro.length > 3) ? '11px' : (icons.middle ? '9px' : '14px'))
+              }">
+
+          <span>{{ icons.middle || icons.textoCentro}}</span>
+
+        </ion-button>
+
+      </div>
+
+    </ng-container>
+
+
+    <div class="flex-1" [style]="{margin: fill === 'outline' ? '0px' : '0 0 0 2px'}"
+      [class]="{'opacity-5': (((ngModel !== undefined && ngModel !== null) && ngModel !== 2 && type === 'radio3') || ((ngModel !== undefined && ngModel !== null && ngModel !== 0 ) && type === 'radio') || ((ngModel !== undefined && ngModel !== null) && ngModel !== 0 && ngModel !== false && type === 'yesno'))}">
+
+      <ion-button [fill]="fill" size="small" expand="full"
+        [color]="(ngModel === 2 || ((ngModel === 0 || ngModel === false) && type==='yesno')) && (type === 'radio3' || type === 'yesno') ? colorSelected : color"
+        [size]="size" (click)="add()" shape="round" [disabled]="disabled" class="margin-0"
+        style="--padding-start: 5px; --padding-end: 5px;" [style]="{
+          height: size === 'large' ? '39px' : '29px',
+          'min-height': size === 'large' ? '39px' : '29px',
+          '--border-width': fill === 'outline' ? '1px' : '0px',
+          '--border-radius': fill === 'outline' ? '0 5px 5px 0' : '7px',
+          'font-size': size === 'large' ? ((icons.textoDireita !== undefined && icons.textoDireita.length > 3) ? '12px' : '16px') : ((icons.textoDireita !== undefined && icons.textoDireita.length > 3) ? '11px' : '14px')
+        }">
+
+        <ion-icon *ngIf="!icons.textoDireita && !icons?.right?.includes('.')" slot="icon-only"
+          [name]="icons.right"></ion-icon>
+        <img *ngIf="!icons.textoDireita && icons?.right?.includes('.')" [src]="icons.right" alt="Opção B"
+          style="width: 35px; height: 25px; object-fit: contain;">
+        <span *ngIf="icons.textoDireita" class="padding-left-5 padding-right-5">{{icons.textoDireita }}</span>
+
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</div>

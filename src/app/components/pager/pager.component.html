@@ -1,0 +1,41 @@
+<div *ngIf="validStart === true" class="dark-mode-off" [style]="{'min-height': position === 'fixed' ? '50px' : null}">
+
+  <div class="padding-top-30 padding-bottom-30 t-padding-bottom-60">
+
+    <div *ngIf="pager.limit < itemsCount" class="display-flex justify-center flex-wrap t-justify-center"
+      [class]="{'app-pager-fixed': position === 'fixed', 'justify-center': position === 'default', 'justify-start': position === 'left', 'justify-end': position === 'right'}">
+
+      <ng-template ngFor [ngForOf]="[].constructor(getPagesCount())" let-pg="index + 1">
+
+        <ion-button *ngIf="pg === getPagesCount() && getPageNum() + this.pageOffset < getPagesCount() - 1" fill="clear"
+          [color]="(position === 'fixed' ? 'white' : 'medium')" disabled="true">...</ion-button>
+
+        <ion-button
+          *ngIf="pg === 1 || pg === getPagesCount() || (pg >= getPageNum() - this.pageOffset && pg <= getPageNum() + this.pageOffset)"
+          [class]="(pg+'').length >= 4 ? 'font-size-11' : ''"
+          [color]="getPageNum() === pg ? (position === 'fixed' ? 'white' : 'tertiary') : (position === 'fixed' ? 'white' : 'dark')"
+          (click)="pageClick(pg)" [fill]="getPageNum() === pg ? 'solid' : 'outline'"
+          [hotkey]="(pg <= 9) ? 'ctrl+' + pg : null" (onHotkey)="pageClick(pg)">{{ pg }}</ion-button>
+
+        <ion-button *ngIf="pg === 1 && getPageNum() - this.pageOffset > 2" fill="clear"
+          [color]="(position === 'fixed' ? 'white' : 'medium')" disabled="true">...</ion-button>
+
+      </ng-template>
+
+    </div>
+
+    <div class="w-10 display-flex justify-center">
+      <p class="text-center font-size-13 cursor-pointer" title="Clique para alterar o limite de exibição."
+        (click)="limitActionSheet()">
+        Exibindo do <b>{{ itemsCount ? (((getPageNum() - 1) * pager.limit) + 1) : 0 }}</b>
+        ao <b>{{ itemsCount < (getPageNum() * pager.limit) ? itemsCount : getPageNum() * pager.limit }}</b> de
+            <b>{{ itemsCount }}</b> encontrados.<br />
+            <span class="font-size-11 color-medium">Clique para alterar quantidade ({{ pager.limit }}) exibida.</span>
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="validStart === false">Pager com parâmetros inválidos!</div>

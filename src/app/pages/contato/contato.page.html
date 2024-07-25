@@ -1,0 +1,65 @@
+<app-header [appType]="headerType" (appDismiss)="dismiss()" appTitle="Contato"
+    appSubtitle="Nosso tempo de resposta é de até 1 dia útil." [minimizable]="false" [maximizable]="false"></app-header>
+
+<ion-content>
+
+    <div class="centro-700 padding-top-30">
+
+        <div class="form-default">
+
+            <div class="form-default-body">
+
+                <ion-grid>
+                    <ion-row>
+
+                        <ion-col size="12" sizeSm="12">
+                            <ion-item [display-errors]="{property: 'contato.nome', errors}">
+                                <ion-label position="floating">Nome</ion-label>
+                                <ion-input #inputNome placeholder="Obrigatório" required maxlength="30" ngDefaultControl
+                                    [(ngModel)]="contato.nome"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="12" sizeSm="12">
+                            <ion-item [display-errors]="{property: 'contato.email', errors}">
+                                <ion-label position="floating">Email</ion-label>
+                                <ion-input #inputEmail placeholder="Obrigatório" required maxlength="60"
+                                    ngDefaultControl [(ngModel)]="contato.email" type="email"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="12" sizeSm="12">
+                            <ion-item [display-errors]="{property: 'contato.celular', errors}">
+                                <ion-label position="floating">Celular</ion-label>
+                                <ion-input #inputCelular placeholder="Obrigatório" required maxlength="15"
+                                    ngDefaultControl [(ngModel)]="contato.celular" type="tel"
+                                    [brmasker]="appUtil.getMask('CELULAR')"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="12" sizeSm="12">
+                            <ion-item [display-errors]="{property: 'contato.assunto', errors}">
+                                <ion-label position="floating">Assunto</ion-label>
+                                <ion-input #inputCelular placeholder="Obrigatório" required maxlength="30"
+                                    ngDefaultControl [(ngModel)]="contato.assunto"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="12" sizeSm="12">
+                            <ion-item [display-errors]="{property: 'contato.texto', errors}">
+                                <ion-label position="floating">Texto</ion-label>
+                                <ion-textarea [autoGrow]="true" placeholder="Obrigatório" required maxlength="2000"
+                                    ngDefaultControl [(ngModel)]="contato.texto"></ion-textarea>
+                            </ion-item>
+                        </ion-col>
+
+                        <ion-col size="12" sizeSm="12" class="text-center">
+                            <ion-button style="width: 150px;" (click)="enviarForm()">Enviar</ion-button>
+                        </ion-col>
+
+                    </ion-row>
+                </ion-grid>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</ion-content>

@@ -1,0 +1,18 @@
+<ng-container *ngIf="validStart === true">
+
+  <span class="cursor-pointer app-icon-help-circled font-size-16" (click)="tooltipClick($event)"
+    stop-propagation></span>
+
+  <ion-popover #infoISPPop style="--width: 350px; --max-width: calc(100% - 20px); --background: var(--ion-color-white);"
+    (didDismiss)="tooltipClose()">
+    <ng-template>
+      <div class="padding-10">
+        <div class="tooltip-content">
+          <ng-content *ngIf="!contentHTML"></ng-content>
+        </div>
+        <div *ngIf="contentHTML" [innerHTML]="contentHTML" class="tooltip-content"></div>
+      </div>
+    </ng-template>
+  </ion-popover>
+
+</ng-container>

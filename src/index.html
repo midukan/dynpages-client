@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+	<!-- Google Tag Manager -->
+	<script>(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-KWQTPRQ4');</script>
+	<!-- End Google Tag Manager -->
+
+	<meta charset="utf-8" />
+	<title>DynPages</title>
+	<meta name="title" content="DynPages" />
+	<meta name="description" content="A ferramenta inteligente de gestão microempresarial." />
+	<meta name="keywords" content="" />
+	<meta name="author" content="DynPages" />
+
+	<base href="/" />
+
+	<meta name="color-scheme" content="light dark" />
+	<meta name="viewport"
+		content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="msapplication-tap-highlight" content="no" />
+
+	<meta property="og:site_name" content="DynPages" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="DynPages" />
+	<meta property="og:url" content="https://dynpages.com.br/" />
+	<meta property="og:image" content="https://dynpages.com.br/assets/images/logo-icon-og.png" />
+	<meta property="og:description" content="A ferramenta inteligente de gestão microempresarial." />
+
+	<link rel="icon" type="image/png" href="assets/images/logo-icon-fav.png" />
+
+	<!-- add to homescreen for ios -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+	<link rel="manifest" href="manifest.webmanifest" />
+	<meta name="theme-color" content="#1D2733" />
+
+	<script>
+		// Desabilita Prerender até que o site esteja pronto
+		window.prerenderReady = false; 
+	</script>
+
+	<script>
+		// This is a workaround used alongside the webpack-dev-server hot-module-reload feature
+		//  - it's quite chatty on the console, and there's no currently no configuration option
+		//    to silence it. Only used in development.
+		// Prevent messages starting with [HMR] or [WDS] from being printed to the console
+		(function (global) {
+			var console_log = global.console.log
+			global.console.log = function () {
+				if (!(
+					arguments.length == 1 &&
+					typeof arguments[0] === 'string' &&
+					arguments[0].match(/^\[(HMR|WDS)\]/)
+				)) {
+					console_log.apply(global.console, arguments)
+				}
+			}
+		})(window)
+	</script>
+
+	<script async type="text/javascript" src="https://js.iugu.com/v2"></script>
+
+	<script async src="https://www.google.com/recaptcha/api.js"></script>
+
+</head>
+
+<body>
+
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWQTPRQ4" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+
+	<app-root></app-root>
+</body>
+
+</html>

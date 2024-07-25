@@ -1,0 +1,101 @@
+:host.force-mobile {
+	width: 100%;
+
+	.app-select:not(.app-select-layout-form) {
+		width: calc(100% - 16px) !important;
+	}
+}
+
+:host {
+	display: block;
+
+	@media not screen and (min-width: 550px) {
+		width: 100%;
+
+		.app-select:not(.app-select-layout-form) {
+			width: calc(100% - 16px) !important;
+		}
+	}
+
+	.app-select {
+		// --background: var(--ion-color-white);
+		// --color: var(--ion-color-base);
+		--inner-border-width: 0;
+
+		&.app-select-layout-form {
+			--min-height: 50px;
+			// no Ionic 7 não precisa
+			// border-bottom: 1px solid var(--ion-color-light-shade);
+
+			ion-icon {
+				// margin-top: 30px;
+			}
+		}
+
+		--border-radius: var(--border-radius-custom, 8px);
+
+		&:not(.app-select-layout-form) {
+			width: 248px;
+			--min-height: 42px;
+			--border-radius: 10px;
+			margin: 0px 0 8px 8px;
+		}
+
+		&:not(.app-select-layout-form)::part(native) {
+			// border: 0px solid var(--ion-color-white);
+			border: 0px solid transparent;
+		}
+
+		&.app-select-filled:not(.app-select-layout-form) {
+			//--background: var(--ion-color-success);
+			--background: var(--app-color-bg-active); // rgb(from var(--red-hex) r g b / var(--color-opacity));
+		}
+
+		&.app-select-filled:not(.app-select-layout-form)::part(native) {
+			// border-color: var(--ion-color-success);
+		}
+
+		.app-select-body {
+			width: 100%;
+
+			.app-select-label {
+				font-size: 11px;
+
+				&.app-select-label-filled {
+					// color: var(--ion-color-medium);
+					// font-weight: 600;
+					// opacity: 0.7;
+				}
+			}
+
+			.app-select-value {
+				// color: var(--ion-color-medium);
+				opacity: 0.3;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				padding-top: 4px;
+				font-size: 13px;
+
+				&.app-select-value-filled {
+					// color: var(--ion-color-base);
+					opacity: 1;
+				}
+			}
+		}
+
+		&.app-select-layout-form {
+			.app-select-body {
+				.app-select-value {
+					padding-top: 8px;
+				}
+			}
+		}
+
+		ion-button {
+			--border-width: 1px;
+			max-height: 38px;
+			height: calc(100% - 8px);
+		}
+	}
+}

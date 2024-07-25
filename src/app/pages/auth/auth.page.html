@@ -1,0 +1,110 @@
+<ion-content class="dark-mode-off">
+
+  <div class="flex-center flex-wrap w-10 min-h-10">
+
+    <div class="w-10">
+
+      <ion-grid class="padding-20-x" style="max-width: 400px;">
+
+        <ion-row>
+
+          <ion-col size="12">
+
+            <div class="margin-top-30 margin-bottom-50 text-center cursor-pointer" routerLink="/">
+              <img src="assets/images/logo.png" alt="Logo" style="width: 340px;">
+            </div>
+
+            <ng-container *ngIf="tela === 'login'">
+              <h1 class="margin-top-5 margin-bottom-5 font-size-22">Bem-vindo!</h1>
+              <h2 class="margin-top-0 margin-bottom-20 font-size-13 font-weight-400">
+                Entre com suas credenciais{{ env.configs.ALLOW_CREATE_ACCOUNT ? ' ou crie sua conta' : '' }}.
+              </h2>
+            </ng-container>
+
+            <ng-container *ngIf="tela === 'recuperar-senha'">
+              <h1 class="margin-top-5 margin-bottom-5">Recuperar Senha</h1>
+              <p class="margin-top-0 margin-bottom-20 font-size-13">Solicite o processo de recuperação.</p>
+            </ng-container>
+
+          </ion-col>
+
+          <ion-col size="12">
+
+            <ion-item color="dark">
+              <ion-label position="stacked"></ion-label>
+              <ion-input #inputEmail placeholder="Digite seu email ou CPF" type="email" [(ngModel)]="email"
+                maxlength="60" class="text-center" style="font-size: 18px;" (ionBlur)="ajustaCPF()"></ion-input>
+            </ion-item>
+
+          </ion-col>
+
+          <ion-col size="9" *ngIf="tela === 'login'">
+
+            <ion-item color="dark">
+              <ion-label position="stacked"></ion-label>
+              <ion-input #inputSenha placeholder="Digite sua senha" showHidePass type="password" [(ngModel)]="senha"
+                class="text-center" style="font-size: 18px;" (keyup.enter)="efetuaLogin()"></ion-input>
+            </ion-item>
+
+          </ion-col>
+
+          <ion-col size="3" *ngIf="tela === 'login'">
+            <ion-button color="tertiary" size="large" style="height: 48px; min-height: 48px; margin: 2px 0;"
+              (click)="efetuaLogin()">
+              <ion-icon slot="icon-only" name="log-in"></ion-icon>
+            </ion-button>
+          </ion-col>
+
+          <ion-col *ngIf="showRecaptcha && env.keys?.RECAPTCHA_CLIENT_KEY" size="12" class="flex-center padding-top-20">
+            <re-captcha [(ngModel)]="recaptchaToken" required [siteKey]="env.keys.RECAPTCHA_CLIENT_KEY"></re-captcha>
+          </ion-col>
+
+          <ion-col size="12">
+
+            <div class="flex-center margin-top-20 margin-bottom-20">
+
+              <ng-container *ngIf="tela === 'login'">
+
+                <ion-button fill="clear" size="small" color="white" class="text-initial" (click)="telaRecSenha()">
+                  Esqueceu sua senha?
+                </ion-button>
+
+              </ng-container>
+
+              <ng-container *ngIf="tela === 'recuperar-senha'">
+
+                <ion-button fill="clear" size="small" color="white" class="text-initial" (click)="teclaLogin()">
+                  Voltar para login
+                </ion-button>
+
+                <ion-button color="tertiary" size="small" class="text-initial" (click)="recuperarConta()">
+                  Solicitar
+                </ion-button>
+
+              </ng-container>
+
+            </div>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+      <div class="w-10 padding-top-30 padding-bottom-30 bg-color-tertiary-shade text-center color-white"
+        *ngIf="env.configs.ALLOW_CREATE_ACCOUNT && tela === 'login'">
+        <div>
+          <ion-button fill="solid" color="secondary" style="--border-width: 1px;" (click)="criarConta()">
+            Crie uma nova conta
+          </ion-button>
+          <div *ngIf="env.configs.APP_MULT_AMB" class="margin-top-10 font-size-11">
+            Com ela, acesse o seu ou outros ambientes.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "dynpages-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

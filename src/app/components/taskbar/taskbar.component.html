@@ -1,0 +1,15 @@
+<div *ngIf="itens?.length" class="wrap dark-mode-off">
+
+  <div *ngFor="let item of itens" (click)="showModal(item)" class="taskbar-item ion-activatable ripple-parent"
+    [class]="item.cssClass" hotkey="ctrl+b" (onHotkey)="showModal(item)">
+
+    <div *ngIf="0" class="text-overflow font-weight-600 color-white">{{ item.title }}</div>
+    <div class="text-overflow font-size-11 color-white" style="margin-right: 7px;" [innerHTML]="item.subtitle"></div>
+
+    <span stop-propagation class="app-icon-cancel color-white" (click)="item.that.dismiss()"></span>
+
+    <ion-ripple-effect></ion-ripple-effect>
+
+  </div>
+
+</div>

@@ -1,0 +1,88 @@
+:host.force-mobile {
+	width: 100%;
+
+	.app-datetime-group {
+		width: calc(100% - 16px) !important;
+	}
+}
+
+:host {
+
+	display: block;
+
+	@media not screen and (min-width: 550px) {
+		width: 100%;
+
+		.app-datetime-group {
+			width: calc(100% - 16px) !important;
+		}
+	}
+
+	.app-datetime-group {
+		--inner-border-width: 0;
+
+		--padding-start: 0;
+		--padding-end: 0;
+		--inner-padding-start: 0;
+		--inner-padding-end: 0;
+
+		--min-height: 42px;
+		--border-radius: 10px;
+		width: 248px;
+		margin: 0px 0 0px 8px;
+
+		&.app-datetime-group-filled {
+			--background: var(--app-color-bg-active);
+		}
+
+		ion-button {
+			margin: 0;
+		}
+
+		ion-select {
+			width: 100%;
+			max-width: 100%;
+			padding: 0;
+			text-align: center;
+			justify-content: center;
+
+			&::part(text) {
+				width: 100%;
+				position: absolute;
+				z-index: 2;
+				height: 43px;
+				top: -9px;
+				padding-top: 8px;
+			}
+
+			&::part(icon) {
+				display: none;
+			}
+		}
+
+		&.with-time {
+			width: 250px;
+		}
+
+		ion-label {
+			margin-top: -4px;
+		}
+
+		ion-input {
+			--padding-top: 7px;
+			--padding-bottom: 2px;
+		}
+
+		&::part(native) {
+			border: 0px solid transparent;
+		}
+
+		&.app-datetime-filled::part(native) {
+			--background: var(--app-color-bg-active);
+		}
+
+		&.app-datetime-filled::part(native) {
+			// border-color: var(--ion-color-success);
+		}
+	}
+}

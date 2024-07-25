@@ -1,0 +1,135 @@
+<ng-container *ngIf="validStart === true">
+
+  <div *ngIf="parentContext !== 'select-lite' && 
+  (appExtraButtons?.length ||
+  (appPrint.observers.length && (show.print === undefined || show.print)) ||
+  (appReport.observers.length && (show.report === undefined || show.report)) ||
+  (appBulk.observers.length && (show.bulk === undefined || show.bulk)) ||
+  (appAdd.observers.length && (show.add === undefined || show.add)) ||
+  (appSave.observers.length && (show.save === undefined || show.save)) ||
+  (appRefresh.observers.length && (show.refresh === undefined || show.refresh)) ||
+  (show.share === undefined || show.share)
+  )"
+    class="display-flex justify-between flex-wrap t-padding-left-15 t-padding-right-15 margin-bottom-15 t-margin-top-15"
+    [class.margin-top-15]="parentContext !== 'page-list'" [class.padding-left-15]="parentContext !== 'page-list'"
+    [class.padding-right-15]="parentContext !== 'page-list'">
+
+    <div class="display-flex flex-wrap">
+
+      <ion-button *ngIf="appAdd.observers.length && (show.add === undefined || show.add)" color="primary"
+        (click)="appAdd.next($event)" hotkey="ctrl+a" (onHotkey)="appAdd.next($event)">
+        <ion-icon name="add-circle" slot="start" class="t-display-none"></ion-icon>
+        <ion-icon name="add-circle" slot="icon-only" class="display-none t-display-block"></ion-icon>
+        <span class="t-display-none">Adicionar</span>
+      </ion-button>
+
+      <ion-button *ngIf="appSave.observers.length && (show.save === undefined || show.save)" color="primary"
+        (click)="appSave.next($event)" hotkey="ctrl+s" (onHotkey)="appSave.next($event)"
+        title="Salva os dados do formulário">
+        <ion-icon name="save" slot="start" class="t-display-none"></ion-icon>
+        <ion-icon name="save" slot="icon-only" class="display-none t-display-block"></ion-icon>
+        <span class="t-display-none">Salvar</span>
+      </ion-button>
+
+    </div>
+
+    <div class="display-flex justify-end align-center flex-wrap t-justify-start">
+
+      <div>
+        <ion-button *ngFor="let extraButtom of appExtraButtons" color="dark" fill="outline" size="small"
+          (click)="extraButtom.click($event)" [title]="extraButtom.title">
+          <!-- <ion-icon [name]="extraButtom.ionIcon" [slot]="!extraButtom.text ? 'icon-only' : 'start'"
+            class="t-display-none"></ion-icon> -->
+          <ion-icon [name]="extraButtom.ionIcon" slot="icon-only" class="display-none t-display-block"></ion-icon>
+          <span *ngIf="extraButtom.text" class="t-display-none">{{ extraButtom.text }}</span>
+        </ion-button>
+      </div>
+
+      <div>
+        <ion-button
+          *ngIf="appReport.observers.length && (parentContext === 'page-list' || parentContext === 'modal-list') && (show.report === undefined || show.report)"
+          color="dark" fill="outline" size="small" (click)="appReport.next($event)" hotkey="ctrl+r"
+          (onHotkey)="appReport.next($event)" title="Gere um relatório dos dados exibidos">
+          <!-- <ion-icon name="document-text" slot="start" class="t-display-none"></ion-icon> -->
+          <ion-icon name="document-text" slot="icon-only" class="display-none t-display-block"></ion-icon>
+          <span class="t-display-none">Relatório</span>
+        </ion-button>
+      </div>
+
+      <div>
+        <ion-button *ngIf="appBulk.observers.length && (show.bulk === undefined || show.bulk)" color="dark"
+          (click)="bulkClick()" #bulkBt fill="outline" size="small" hotkey="ctrl+g" (onHotkey)="bulkClick()"
+          title="Ações aplicadas em múltiplos registros">
+          <!-- <ion-icon name="checkbox" slot="start" class="t-display-none"></ion-icon> -->
+          <ion-icon name="checkbox" slot="icon-only" class="display-none t-display-block"></ion-icon>
+          <span class="t-display-none">Ações</span>
+        </ion-button>
+      </div>
+
+      <div>
+        <ion-button
+          *ngIf="appPrint.observers.length && (parentContext === 'page-list' || parentContext === 'modal-list') && (show.print === undefined || show.print)"
+          color="dark" fill="outline" size="small" (click)="appPrint.next($event)"
+          title="Gera um documento com os dados exibidos para impressão">
+          <ion-icon name="print" slot="start" slot="icon-only" class="t-display-none_"></ion-icon>
+          <!-- <ion-icon name="print" slot="icon-only" class="display-none t-display-block"></ion-icon> -->
+          <!-- <span class="t-display-none">Imprimir</span> -->
+        </ion-button>
+      </div>
+
+      <div>
+
+        <ion-button *ngIf="parentContext !== 'select-full' && (show.share === undefined || show.share)" color="dark"
+          (click)="shareClick()" fill="outline" size="small" style="--padding-start: 6px;--padding-end: 6px;"
+          title="Compartilhar" [hintWidth]="70">
+          <ion-icon name="share-social" slot="icon-only"></ion-icon>
+        </ion-button>
+
+        <ion-modal cssClass="modal-draggable modal-small modal-adjust" [isOpen]="modalShareOpen"
+          (didDismiss)="modalShareOpen = false" [enterAnimation]="this.appUtil.enterAnimation('grow')"
+          [leaveAnimation]="this.appUtil.leaveAnimation('grow')">
+          <ng-template>
+            <app-header appType="modal" appTitle="Compartilhar" [maximizable]="false" [minimizable]="false"
+              appSubtitle="Envie o link da página." (appDismiss)="modalShareOpen = false"></app-header>
+            <ion-content>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-button class="w-10 margin-0 text-initial" style="--border-width: 1px;" color="dark"
+                      fill="outline" (click)="share('copy')">
+                      <span class="app-icon-docs"></span> Copiar link
+                    </ion-button>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-button class="w-10 margin-0 text-initial" style="--border-width: 1px;" color="success"
+                      fill="outline" (click)="share('whatsapp')">
+                      <span class="app-icon-whatsapp"></span> WhatsApp
+                    </ion-button>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-button class="w-10 margin-0 text-initial" style="--border-width: 1px;" color="medium"
+                      fill="outline" (click)="share('email')">
+                      <span class="app-icon-mail-4"></span> Email
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+
+      </div>
+
+      <div>
+        <ion-button *ngIf="appRefresh.observers.length && (show.refresh === undefined || show.refresh)" color="dark"
+          (click)="appRefresh.next($event)" fill="outline" size="small" style="--padding-start: 6px;--padding-end: 6px;"
+          hotkey="ctrl+r" (onHotkey)="appRefresh.next($event)" title="Atualizar dados">
+          <ion-icon name="refresh" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-container>

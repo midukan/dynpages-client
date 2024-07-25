@@ -1,0 +1,87 @@
+<app-header appType="modal" [appTitle]="title" [appSubtitle]="subtitle" (appConfirm)="salvar()"
+  (appDismiss)="dismiss()"></app-header>
+
+<ion-content>
+
+  <div class="main-block_">
+
+    <app-form-buttons *ngIf="!state.isViaUsuarioList" [id]="this[key]?.id" [service]="service"
+      [show]="{prev: !appSelect, next: !appSelect}"></app-form-buttons>
+
+    <div class="form-default">
+
+      <div *ngIf="contratoUsuario" class="form-default-body">
+
+        <ng-container *ngIf="contratoUsuario">
+
+          <ion-grid>
+
+            <ion-row>
+
+              <ion-col *ngIf="state.hideUsuario" size="12" sizeSm="12">
+                <div class="warning-block margin-top-30">
+                  <p>● A senha gerada serão os 6 primeiros dígitos do documento.</p>
+                  <p>● Para gerar este acesso, tenha certeza que o usuário existe ou o cadastro do cliente/fornecedor
+                    possua
+                    email e celular cadastrados.</p>
+                </div>
+              </ion-col>
+
+              <ion-col *ngIf="!contratoUsuario.id" size="12" sizeSm="12">
+                <div class="warning-block margin-top-30">
+                  <p>● Para incluir novos membros em seu ambiente, será necessário informar o CPF com pontuações para
+                    efetuar a busca: (Ex: 368.123.789-55)</p>
+                  <p>● O usuário deve possuir uma conta no {{ env.infos.appName }} para ser incluído. Ele
+                    pode criar pelo site em "Entrar" e depois "Criar uma nova conta".</p>
+                  <p>● Para sua comodidade, compartilhe o link <span class="font-weight-600">{{ env.paths.CLIENT_URL
+                      }}criar-conta</span>
+                    (<span class="cursor-pointer text-underline font-weight-600 color-secondary"
+                      (click)="appUtil.copyToClipboard(env.paths.CLIENT_URL + 'criar-conta')">copiar</span>) com seus
+                    colaboradores.</p>
+                  <p class="font-weight-600">● Após a configuração do acesso, o usuário deve aceitar o convite para
+                    efetivamente fazer parte do
+                    ambiente.</p>
+                </div>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Relação</h4>
+              </ion-col>
+
+              <ion-col *ngIf="contratoUsuario.usuarioId === usuarioLogado.id" size="12" sizeSm="12">
+                <p>Não é possível alterar o cargo de si mesmo.</p>
+              </ion-col>
+
+              <ion-col *ngIf="!state.hideUsuario" size="12" sizeSm="6">
+                <app-select type="usuarioId" [(ngModel)]="contratoUsuario.usuarioId" [opcaoNenhum]="false"
+                  [required]="true" [disabled]="!!contratoUsuario.id" [class.readonly]="!!contratoUsuario.id"
+                  [opcaoCadastrar]="false" [disableFull]="true" [(selectData)]="contratoUsuario.usuarioSelectData"
+                  [display-errors]="{property: 'contratoUsuario.usuarioId', errors}" ngDefaultControl>
+                </app-select>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="6">
+                <ion-item [display-errors]="{property: 'contratoUsuario.cargo', errors}"
+                  [class.readonly]="contratoUsuario.usuarioId === usuarioLogado.id">
+                  <ion-label position="stacked">Cargo</ion-label>
+                  <ion-select interface="popover" placeholder="Selecione" [(ngModel)]="contratoUsuario.cargo"
+                    [disabled]="contratoUsuario.usuarioId === usuarioLogado.id">
+                    <ion-select-option *ngFor="let cargo of cargos" [value]="cargo.value">{{ cargo.label
+                      }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

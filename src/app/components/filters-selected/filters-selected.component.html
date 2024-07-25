@@ -1,0 +1,9 @@
+<div *ngIf="selectDataInternal?.length" class="list-default-filtereds">
+
+  <p>Selecionados:</p>
+
+  <div class="list-default-filtereds-badge-wrap" *ngFor="let sd of selectDataInternal">
+    <div class="list-default-filtereds-badge" title="Remover da lista de filtros" (click)="remFromFiltersItem(sd.id!)">{{ sd.text }}</div>
+  </div>
+
+</div>

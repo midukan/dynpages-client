@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "DynPages",
   "description": "A ferramenta inteligente de gestão microempresarial.",
-  "homepage": "https://dynpages.com.br/",
+  "homepage": "https://dynpages-client.caprover.midukan.com.br/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",

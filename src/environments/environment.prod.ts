@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 // const SERVER_ADDR = 'https://api.locais.hub.app.br:3000';
-const SERVER_ADDR = 'https://api.dynpages.com.br';
-const SOCKET_ADDR = 'https://api.dynpages.com.br';
+const SERVER_ADDR = 'https://dynpages-server.caprover.midukan.com.br';
+const SOCKET_ADDR = 'https://dynpages-server.caprover.midukan.com.br';
 
 export const environment: any = {
 

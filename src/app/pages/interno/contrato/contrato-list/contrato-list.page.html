@@ -155,11 +155,12 @@
               style="max-width: 300px;">
               <p>Tem um convite para outro ambiente?</p>
               <ion-button size="small" (click)="modalConvite()" class="text-initial">Ver convites</ion-button>
+              <p>Se não, você deve solicitar acesso ao seus administrador.</p>
             </div>
 
             <ng-container *ngIf="contratos && !contratos.length">
 
-              <p>Nenhum ambiente encontrado. Solicite acesso ao seu administrador.</p>
+              <!-- <p>Nenhum ambiente encontrado. Solicite acesso ao seu administrador.</p> -->
               <p>
                 Você também pode <span (click)="form()" prevent-double-click
                   class="cursor-pointer color-tertiary text-underline font-weight-600">criar seu próprio ambiente</span>

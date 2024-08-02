@@ -122,31 +122,6 @@
                   </div>
                 </div>
 
-                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
-                  <div class="padding-5">Armaz. utilizado</div>
-                  <div class="padding-5 font-weight-600">
-                    <app-tooltip>Os arquivos como imagens de clientes e fornecedores, PDFs de notas, arquivos de anexos
-                      de contas e etc, armazenados em seu ambiente.</app-tooltip>
-                    {{ (contrato.totalArquivos / 1024 / 1024).toFixed(0) }} MB /
-                    {{ (env.planos[contrato.planoOpcao + '_LIMITE_GERAL_ARQUIVO_BYTES'] / 1024 / 1024).toFixed(0) }} MB
-                  </div>
-                </div>
-
-                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
-                  <div class="padding-5">NFs emitidas no mês</div>
-                  <div class="padding-5 font-weight-600">
-                    {{ contrato.totalNFs }} / {{ env.planos[contrato.planoOpcao + '_LIMITE_MES_NF'] }}
-                  </div>
-                </div>
-
-                <div class="display-flex justify-between margin-bottom-5 border-radius-3 bg-color-light">
-                  <div class="padding-5">Contas banc. integ.</div>
-                  <div class="padding-5 font-weight-600">
-                    <app-tooltip content="CONTA_BANCARIA_INTEGRADA"></app-tooltip>
-                    {{ contrato.totalCBs }} / {{ env.planos[contrato.planoOpcao + '_LIMITE_GERAL_CONTA_BANCARIA'] }}
-                  </div>
-                </div>
-
               </div>
 
             </div>

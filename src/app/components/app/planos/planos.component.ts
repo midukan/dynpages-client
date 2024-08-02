@@ -21,7 +21,7 @@ export class PlanosComponent {
 
   @Input() planoAtual: number | null = null
   @Input() planoSel: number | null = null
-  @Input() planoPeriodo: PlanoPeriodo = 'ANUAL'
+  @Input() planoPeriodo: PlanoPeriodo = 'MENSAL'
   @Input() modo: 'button' | 'radio'
   @Output() planoSelecionado: EventEmitter<{ planoNum: number, planoPeriodo: PlanoPeriodo, acao: 'plano' | 'periodo' }> = new EventEmitter()
 

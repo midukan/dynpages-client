@@ -104,8 +104,7 @@
 
                 <td *ngIf="!bulkSelect" style="padding: 0;">
                   <ion-buttons class="justify-end">
-                    <ion-button
-                      *ngIf="context !== 'select-lite' && perfil.pessoa === env.enums.PerfilPessoa.PF && !env.configs.IS_MDK_CLEAN_APP"
+                    <ion-button *ngIf="context !== 'select-lite' && perfil.pessoa === env.enums.PerfilPessoa.PF"
                       class="list-default-table-button" fill="clear"
                       [color]="perfil.usuarioId ? (perfil.usuario.contratoUsuarios.length ? 'success' : 'warning') : 'danger'"
                       (click)="toggleAcesso(perfil)" stop-propagation

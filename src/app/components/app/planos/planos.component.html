@@ -1,6 +1,6 @@
 <div *ngIf="validStart === true">
 
-  <div class="flex-center flex-wrap font-visby-round">
+  <div *ngIf="0" class="flex-center flex-wrap font-visby-round">
     <ion-button fill="clear" color="dark" class="text-initial"
       [class]="(planoPeriodo === env.enums.ContratoPlanoPeriodo.MENSAL) ? 'font-weight-900 text-underline' : ''"
       (click)="selecionaPlanoPeriodo(env.enums.ContratoPlanoPeriodo.MENSAL)">Mensal</ion-button>
@@ -17,169 +17,122 @@
 
   <div class="display-flex flex-wrap">
 
-    <div *ngFor="let _ of [].constructor(4); let idx = index" class="w-25 padding-15 t-w-10 t-margin-bottom-30">
+    <ng-container *ngFor="let _ of [].constructor(4); let idx = index">
 
-      <div class="position-relative display-flex flex-wrap align-top h-10 padding-20 border-radius-8"
-        [class]="(modo === 'radio' && planoSel === idx) ? 'bg-color-success color-white' : 'bg-color-white'"
-        style="box-shadow: 0 5px 29px #CECECE70, 0 0px 8px #CECECE75;">
+      <div *ngIf="idx" class="w-33 padding-15 t-w-10 t-margin-bottom-30">
 
-        <div *ngIf="planoAtual === idx"
-          class="position-absolute top-0 right-0 padding-10-x padding-5 bg-color-secondary color-white font-visby-round font-size-16 font-weight-900"
-          style="border-radius: 0 8px 0 10px;">
-          Plano atual
-        </div>
+        <div class="position-relative display-flex flex-wrap align-top h-10 padding-20 border-radius-8"
+          [class]="(modo === 'radio' && planoSel === idx) ? 'bg-color-success color-white' : 'bg-color-white'"
+          style="box-shadow: 0 5px 29px #CECECE70, 0 0px 8px #CECECE75;">
 
-        <div>
-
-          <h3 class="font-weight-900">{{ env.enums.ContratoPlanoOpcaoStr['PLANO_' + idx] }}</h3>
-
-          <div *ngIf="planoPeriodo !== env.enums.ContratoPlanoPeriodo.MENSAL" class="font-weight-100 opacity-7"
-            style="text-decoration: line-through">
-            {{ env.planos['PLANO_' + idx + '_VALOR_MENSAL'] | dinheiro }}
+          <div *ngIf="planoAtual === idx"
+            class="position-absolute top-0 right-0 padding-10-x padding-5 bg-color-secondary color-white font-visby-round font-size-16 font-weight-900"
+            style="border-radius: 0 8px 0 10px;">
+            Plano atual
           </div>
 
-          <h3 class="margin-top-0 font-weight-900">
-            {{ calculaPlanoProporcaoMensal(this.planoPeriodo, idx) | dinheiro }}
-            <span class="font-weight-500 font-size-14 opacity-7">
-              <span class="font-weight-800">
-                {{ calculaPlanoProporcaoMensalDesconto(this.planoPeriodo, idx)
-                ? (calculaPlanoProporcaoMensalDesconto(this.planoPeriodo, idx) | dinheiro:false:0) + '% off'
-                : '' }}
+          <div>
+
+            <h3 class="font-weight-900">{{ env.enums.ContratoPlanoOpcaoStr['PLANO_' + idx] }}</h3>
+
+            <div *ngIf="planoPeriodo !== env.enums.ContratoPlanoPeriodo.MENSAL" class="font-weight-100 opacity-7"
+              style="text-decoration: line-through">
+              {{ env.planos['PLANO_' + idx + '_VALOR_MENSAL'] | dinheiro }}
+            </div>
+
+            <h3 class="margin-top-0 font-weight-900">
+              {{ calculaPlanoProporcaoMensal(this.planoPeriodo, idx) | dinheiro }}
+              <span class="font-weight-500 font-size-14 opacity-7">
+                <span class="font-weight-800">
+                  {{ calculaPlanoProporcaoMensalDesconto(this.planoPeriodo, idx)
+                  ? (calculaPlanoProporcaoMensalDesconto(this.planoPeriodo, idx) | dinheiro:false:0) + '% off'
+                  : '' }}
+                </span>
+                por mês
               </span>
-              por mês
-            </span>
-          </h3>
+            </h3>
 
-          <p class="font-size-14 opacity-7">{{ env.planos['PLANO_' + idx + '_INFO'] }}</p>
+            <p class="font-size-14 opacity-7">{{ env.planos['PLANO_' + idx + '_INFO'] }}</p>
 
-          <div class="margin-top-30 margin-bottom-30 bg-color-light" style="height: 1px;"></div>
+            <div class="margin-top-30 margin-bottom-30 bg-color-light" style="height: 1px;"></div>
 
-          <div class="margin-bottom-25">
-            <div class="display-flex margin-bottom-5 align-center">
-              <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div class="margin-left-10 font-size-14">
-                <span class="font-weight-800">{{ env.planos['PLANO_' + idx + '_LIMITE_MES_NF']
-                  }}</span>
-                emissões de NFs por mês
+            <div class="margin-bottom-25">
+              <div class="display-flex margin-bottom-5 align-center">
+                <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div class="margin-left-10 font-size-14">
+                  <span class="font-weight-800">{{ env.planos['PLANO_' + idx + '_LIMITE_MES_NF']
+                    }}</span>
+                  emissões de NFs por mês
+                </div>
+              </div>
+              <div class="display-flex margin-bottom-5 align-center">
+                <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div class="margin-left-10 font-size-14">
+                  <span class="font-weight-800">
+                    {{ env.planos['PLANO_' + idx + '_TAXA_BOLETO_VALOR'] | dinheiro }}
+                  </span> por boleto
+                </div>
+              </div>
+              <div class="display-flex margin-bottom-5 align-center">
+                <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div class="margin-left-10 font-size-14">
+                  <span class="font-weight-800">
+                    {{ (env.planos['PLANO_' + idx + '_LIMITE_GERAL_ARQUIVO_BYTES'] / 1024 /
+                    1024).toFixed(0) }} MB
+                  </span>
+                  de armazenamento total
+                </div>
+              </div>
+              <div class="display-flex margin-bottom-5 align-center">
+                <img *ngIf="![0].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div *ngIf="[0].includes(idx)"
+                  class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
+                  style="width: 29px; aspect-ratio: 1/1;">
+                  <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
+                </div>
+                <div class="margin-left-10 font-size-14">
+                  Emails de cobranças automatizados
+                </div>
+              </div>
+              <div class="display-flex margin-bottom-5 align-center">
+                <img *ngIf="![0, 1].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div *ngIf="[0, 1].includes(idx)"
+                  class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
+                  style="width: 29px; aspect-ratio: 1/1;">
+                  <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
+                </div>
+                <div class="margin-left-10 font-size-14">
+                  Integração com outros sistemas (API)
+                </div>
               </div>
             </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div class="margin-left-10 font-size-14">
-                <span class="font-weight-800">
-                  {{ env.planos['PLANO_' + idx + '_TAXA_PIX_PORC'] | dinheiro:false }}%
-                </span>
-                por Pix
-                <app-tooltip content="CONTA_BANCARIA_CLEAN_PAY_PIX"></app-tooltip>
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div class="margin-left-10 font-size-14">
-                <span class="font-weight-800">
-                  {{ env.planos['PLANO_' + idx + '_TAXA_BOLETO_VALOR'] | dinheiro }}
-                </span> por boleto
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div class="margin-left-10 font-size-14">
-                <span class="font-weight-800">
-                  {{ env.planos['PLANO_' + idx + '_TAXA_CARTAO_PORC'] | dinheiro:false }}%
-                </span> +
-                <span class="font-weight-800">
-                  {{ env.planos['PLANO_' + idx + '_TAXA_CARTAO_VALOR'] | dinheiro }}
-                </span> no cartão
-                <app-tooltip content="CONTA_BANCARIA_CLEAN_PAY_CC"></app-tooltip>
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div class="margin-left-10 font-size-14">
-                Conta digital {{ env.infos.payName }}
-                <app-tooltip content="CONTA_BANCARIA_CLEAN_PAY"></app-tooltip>
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div class="margin-left-10 font-size-14">
-                <span class="font-weight-800">
-                  {{ (env.planos['PLANO_' + idx + '_LIMITE_GERAL_ARQUIVO_BYTES'] / 1024 /
-                  1024).toFixed(0) }} MB
-                </span>
-                de armazenamento total
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img *ngIf="![0].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div *ngIf="[0].includes(idx)"
-                class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
-                style="width: 29px; aspect-ratio: 1/1;">
-                <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
-              </div>
-              <div class="margin-left-10 font-size-14">
-                <span class="font-weight-800">
-                  {{ +env.planos['PLANO_' + idx + '_LIMITE_GERAL_CONTA_BANCARIA'] || '' }}
-                </span>
-                contas bancárias integradas
-                <app-tooltip content="CONTA_BANCARIA_INTEGRADA"></app-tooltip>
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img *ngIf="![0].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div *ngIf="[0].includes(idx)"
-                class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
-                style="width: 29px; aspect-ratio: 1/1;">
-                <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
-              </div>
-              <div class="margin-left-10 font-size-14">
-                Emails de cobranças automatizados
-              </div>
-            </div>
-            <div class="display-flex margin-bottom-5 align-center">
-              <img *ngIf="![0, 1].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-              <div *ngIf="[0, 1].includes(idx)"
-                class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
-                style="width: 29px; aspect-ratio: 1/1;">
-                <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
-              </div>
-              <div class="margin-left-10 font-size-14">
-                Integração com outros sistemas (API)
-              </div>
-            </div>
+
           </div>
 
-        </div>
+          <div *ngIf="modo === 'button'" class="w-10 t-text-center" style="align-self: flex-end;">
+            <ion-button shape="round" class="button-gradient-x w-10 text-initial" (click)="selecionaPlano(idx)">
+              Assinar agora!
+            </ion-button>
+          </div>
 
-        <div *ngIf="modo === 'button'" class="w-10 t-text-center" style="align-self: flex-end;">
-          <ion-button shape="round" class="button-gradient-x w-10 text-initial" (click)="selecionaPlano(idx)">
-            Assinar agora!
-          </ion-button>
-        </div>
+          <div *ngIf="modo === 'radio'" class="w-10 t-text-center" style="align-self: flex-end;">
+            <ion-button shape="round" [color]="(modo === 'radio' && planoSel === idx) ? 'primary' : 'secondary'"
+              class="button-gradient-x w-10 text-initial" (click)="selecionaPlano(idx)">
+              <ng-container *ngIf="planoSel === idx">
+                <span class="app-icon-check-1"></span> Selecionado
+              </ng-container>
+              <ng-container *ngIf="planoSel !== idx">
+                Quero este
+              </ng-container>
+            </ion-button>
+          </div>
 
-        <div *ngIf="modo === 'radio'" class="w-10 t-text-center" style="align-self: flex-end;">
-          <ion-button shape="round" [color]="(modo === 'radio' && planoSel === idx) ? 'primary' : 'secondary'"
-            class="button-gradient-x w-10 text-initial" (click)="selecionaPlano(idx)">
-            <ng-container *ngIf="planoSel === idx">
-              <span class="app-icon-check-1"></span> Selecionado
-            </ng-container>
-            <ng-container *ngIf="planoSel !== idx">
-              Quero este
-            </ng-container>
-          </ion-button>
         </div>
 
       </div>
 
-    </div>
+    </ng-container>
 
-  </div>
-
-  <div class="text-center">
-    <ion-button color="secondary" fill="clear" class="text-initial"
-      (click)="politicaTermosPageService.modalForm(null, 'conta-digital')">
-      Entenda a {{ env.infos.payName }}
-    </ion-button>
   </div>
 
 </div>

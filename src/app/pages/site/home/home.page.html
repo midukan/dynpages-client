@@ -88,13 +88,6 @@
                 <div class="font-size-14 color-medium" [class]="faq.open ? '' : 'display-none'"
                     [innerHTML]="faq.resposta"></div>
 
-                <div *ngIf="faq.pergunta.includes(env.infos.payName)" [class]="faq.open ? '' : 'display-none'">
-                    <ion-button color="secondary" fill="clear" class="text-initial"
-                        (click)="politicaTermosPageService.modalForm(null, 'conta-digital')">
-                        Mais informações
-                    </ion-button>
-                </div>
-
             </div>
 
         </div>

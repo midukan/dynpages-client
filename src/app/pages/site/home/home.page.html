@@ -6,41 +6,75 @@
         Ir para o topo <span class="app-icon-up-1"></span>
     </ion-button>
 
-    <header id="topo" class="padding-bottom-100">
+    <header id="topo" class="padding-top-20 t-padding-0">
 
-        <div class="centro-1600 padding-10-x">
+        <div class="centro-1600 padding-10-x fix-bg-top-mobile"
+            style="background: url(assets/images/site/bg-topo.png) no-repeat scroll 0 0 / 100% 100% transparent;">
 
             <div
-                class="display-flex justify-between align-center flex-wrap margin-bottom-100 padding-top-40 t-margin-bottom-30">
+                class="display-flex justify-between align-center flex-wrap margin-bottom-100 padding-20 t-margin-bottom-30">
 
-                <ion-menu-button class="display-none margin-top-10 t-display-flex"></ion-menu-button>
+                <ion-menu-button class="display-none margin-top-10 color-white t-display-flex"></ion-menu-button>
 
                 <div class="t-margin-auto-x">
-                    <img src="assets/images/logo-preto.png" alt="Logo" class="display-block" style="height: 27px;">
+                    <img src="assets/images/logo-branco.png" alt="Logo" class="display-block" style="height: 27px;">
                 </div>
 
-                <nav class="display-flex color-dark t-display-none">
-                    <ion-button fill="clear" color="dark" class="text-initial" size="small"
+                <nav class="display-flex color-white t-display-none">
+                    <ion-button fill="clear" color="white" class="text-initial" size="small"
+                        (click)="scrollToBlock('ferramenta')">
+                        Recursos
+                    </ion-button>
+                    <ion-button fill="clear" color="white" class="text-initial" size="small"
+                        (click)="scrollToBlock('recursos')">
+                        Recursos
+                    </ion-button>
+                    <ion-button fill="clear" color="white" class="text-initial" size="small"
+                        (click)="scrollToBlock('conheca')">
+                        Conheça melhor
+                    </ion-button>
+                    <ion-button fill="clear" color="white" class="text-initial" size="small"
                         (click)="scrollToBlock('planos')">
                         Planos
                     </ion-button>
-                    <ion-button fill="clear" color="dark" class="text-initial" size="small"
+                    <ion-button fill="clear" color="white" class="text-initial" size="small"
                         (click)="scrollToBlock('faq')">
                         FAQ
                     </ion-button>
-                    <ion-button fill="clear" color="dark" class="text-initial" size="small"
+                    <ion-button fill="clear" color="white" class="text-initial" size="small"
                         (click)="scrollToBlock('rodape')">
                         Atendimento
                     </ion-button>
                 </nav>
 
                 <div class="t-display-none">
-                    <ion-button fill="clear" [color]="authService.isAuth() ? 'secondary' : 'dark'" class="text-initial"
+                    <ion-button fill="clear" [color]="authService.isAuth() ? 'secondary' : 'white'" class="text-initial"
                         routerLink="/auth">
                         {{ authService.isAuth() ? usuarioLogado.nomeCompleto : 'Entrar' }}
                     </ion-button>
-                    <ion-button *ngIf="!authService.isAuth()" shape="round" color="dark" class="text-initial"
-                        (click)="scrollToBlock('planos')">Comece agora</ion-button>
+                    <ion-button *ngIf="!authService.isAuth()" shape="round" color="white" class="text-initial"
+                        (click)="scrollToBlock('planos')">Cadastre-se</ion-button>
+                </div>
+
+            </div>
+
+            <div class="flex-center text-center color-white" style="padding: 200px 0 300px 0;">
+
+                <div style="max-width: 600px;">
+
+                    <div>PARA STARTUPS E BIG TECHS</div>
+
+                    <h1 class="margin-bottom-30">AUMENTE SEU FATURAMENTO CRIANDO FUNIS DE VENDAS SEM DEPENDER DE VSLS,
+                        TYPEBOTS OU PÁGINAS DE
+                        VENDAS</h1>
+
+                    <div class="margin-bottom-30">Crie funis dinâmicos e interativos de alta conversão para elevar as
+                        vendas de seus produtos e
+                        serviços, de forma rápida e eficiente.</div>
+
+                    <ion-button color="white" size="large" class="text-initial"
+                        (click)="scrollToBlock('planos')">Começar já!</ion-button>
+
                 </div>
 
             </div>
@@ -49,9 +83,217 @@
 
     </header>
 
-    <section id="planos" style="background-color: #f0faf9;">
+    <section id="ferramenta">
+
+        <div class="centro-1330 padding-top-100 padding-bottom-100 padding-10-x flex-center t-flex-wrap"
+            style="gap: 200px;">
+
+            <div class="padding-top-100 padding-bottom-100 t-w-10"
+                style="width: 550px; background: url(assets/images/site/bg-circulos.png) no-repeat scroll 0 0 / 100% 100% transparent;">
+
+                <div class="font-weight-600">Alto índice de conversão!</div>
+
+                <h2 class="block-title">Transforme sua estratégia de vendas e tenha um alto índice de engajamento e
+                    conversão.</h2>
+
+            </div>
+
+            <div class="flex-1 t-w-10">
+
+                <p>A <b>{{ env.infos.appName }}</b> é uma ferramenta de criação de fluxos e funis dinâmicos e
+                    interativos. A
+                    solução mais
+                    completa para impulsionar suas vendas online com uma abordagem totalmente nova no mundo do mercado
+                    do <b>marketing digital</b>.</p>
+
+                <p>Com ela, você pode criar páginas altamente eficazes e personalizadas para converter visitantes em
+                    clientes qualificados. Simplifique o processo de conversão, aumente as taxas de conversão e otimize
+                    sua estratégia de marketing digital com uma plataforma intuitiva e poderosa.</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="recursos">
 
         <div class="centro-1600 padding-10-x">
+
+            <div class="padding-left-10 t-padding-0">Recursos</div>
+
+            <div class="display-flex flex-wrap padding-bottom-100 color-white">
+
+                <div class="w-33 padding-10 t-w-10 t-padding-left-0 t-padding-right-0">
+                    <div class="h-10 padding-30 bg-color-black border-radius-5">
+                        <div class="display-flex align-center">
+                            <h3 class="font-weight-600">Componentes interativos</h3>
+                        </div>
+                        <p>Plataforma fácil de usar, planejada para proporcionar uma experiência intuitiva e
+                            melhorar a satisfação do cliente.</p>
+                    </div>
+                </div>
+
+                <div class="w-33 padding-10 t-w-10 t-padding-left-0 t-padding-right-0">
+                    <div class="h-10 padding-30 bg-color-black border-radius-5">
+                        <div class="display-flex align-center">
+                            <h3 class="font-weight-600">Scripts e acompanhamento</h3>
+                        </div>
+                        <p>Rastreamento com Pixel para otimização de campanhas, permitindo rastrear o desempenho e o
+                            comportamento dos visitantes, ajudando a refinar suas estratégias de marketing.</p>
+                    </div>
+                </div>
+
+                <div class="w-33 padding-10 t-w-10 t-padding-left-0 t-padding-right-0">
+                    <div class="h-10 padding-30 bg-color-black border-radius-5">
+                        <div class="display-flex align-center">
+                            <h3 class="font-weight-600">Gerenciamento</h3>
+                        </div>
+                        <p>Formulários customizados para o seu negócio, oferecendo elementos de texto, imagem,
+                            vídeos, questões, gráficos e CTAs totalmente personalizáveis.</p>
+                    </div>
+                </div>
+
+                <div class="w-33 padding-10 t-w-10 t-padding-left-0 t-padding-right-0">
+                    <div class="h-10 padding-30 bg-color-black border-radius-5">
+                        <div class="display-flex align-center">
+                            <h3 class="font-weight-600">Recursos gráficos</h3>
+                        </div>
+                        <p>Formulários customizados para o seu negócio, oferecendo elementos de texto, imagem,
+                            vídeos, questões, gráficos e CTAs totalmente personalizáveis.</p>
+                    </div>
+                </div>
+
+                <div class="w-33 padding-10 t-w-10 t-padding-left-0 t-padding-right-0">
+                    <div class="h-10 padding-30 bg-color-black border-radius-5">
+                        <div class="display-flex align-center">
+                            <h3 class="font-weight-600">Todas plataformas</h3>
+                        </div>
+                        <p>“Arcu at dictum sapien, mollis. Vulputate sit id accumsan, ultricies. In ultrices
+                            malesuada elit mauris.</p>
+                    </div>
+                </div>
+
+                <div class="w-33 padding-10 t-w-10 t-padding-left-0 t-padding-right-0">
+                    <div class="h-10 padding-30 bg-color-black border-radius-5">
+                        <div class="display-flex align-center">
+                            <h3 class="font-weight-600">Web, mobile e desktop</h3>
+                        </div>
+                        <p>“Arcu at dictum sapien, mollis. Vulputate sit id accumsan, ultricies. In ultrices
+                            malesuada elit mauris.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="conheca">
+
+        <div class="centro-1330 padding-top-100 padding-bottom-100 padding-10-x flex-center t-flex-wrap"
+            style="gap: 200px;">
+
+            <div class="padding-top-100 padding-bottom-100 t-w-10">
+
+                <div class="margin-bottom-60 font-weight-600">Conheça melhor</div>
+
+                <h2 class="block-title margin-bottom-30">Facilidade de uso</h2>
+
+                <div class="margin-bottom-60">
+                    Com nossa ferramenta, você não precisa ser um especialista em desenvolvimento web ou designer para
+                    criar seus funis de vendas.
+                    Nossa interface intuitiva e simples de usar permite que você simplesmente arraste e
+                    solte componentes para montar suas estruturas de vendas de forma rápida e eficiente.</div>
+
+                <div class="display-flex align-center gap-5 margin-bottom-30">
+                    <div class="app-icon-bell padding-5 border-radius-50 color-white"
+                        style="background-color: #6412b0;"></div>
+                    <div>Minimalista, fácil e completo</div>
+                </div>
+
+                <div class="display-flex">
+                    <ion-button color="black" class="text-initial">Começar já</ion-button>
+                    <ion-button color="black" fill="outline" class="text-initial">Acessar exemplo online</ion-button>
+                </div>
+
+            </div>
+
+            <div class="t-w-10">
+
+                <img src="assets/images/site/smart-1.png" alt="Smartphone 1" class="display-block w-10 t-w-10"
+                    style="min-width: 550px;">
+
+            </div>
+
+        </div>
+
+        <div class="centro-1330 padding-top-100 padding-bottom-100 padding-10-x flex-center t-flex-wrap"
+            style="gap: 200px;">
+
+            <div class="t-w-10">
+
+                <img src="assets/images/site/smart-2.png" alt="Smartphone 2" class="display-block w-10 t-w-10"
+                    style="min-width: 550px;">
+
+            </div>
+
+            <div class="padding-top-100 padding-bottom-100 t-w-10">
+
+                <h2 class="block-title margin-bottom-30">Customização total</h2>
+
+                <div class="margin-bottom-60">
+                    O design da sua oferta é essencial para se destacar entre seus concorrentes. Com a {{
+                    env.infos.appName }},
+                    você pode personalizar cada etapa do seu funil de vendas, garantindo consistência visual e
+                    alinhamento com a identidade da sua marca, além de promover uma experiência inovadora aos seus
+                    clientes.
+                </div>
+
+                <div class="display-flex">
+                    <ion-button color="black" class="text-initial">Começar já</ion-button>
+                    <ion-button color="black" fill="outline" class="text-initial">Acessar exemplo online</ion-button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="centro-1330 padding-top-100 padding-bottom-100 padding-10-x flex-center t-flex-wrap"
+            style="gap: 200px;">
+
+            <div class="padding-top-100 padding-bottom-100 t-w-10">
+
+                <h2 class="block-title margin-bottom-30">Leads qualificados</h2>
+
+                <div class="margin-bottom-60">
+                    Ao proporcionar uma experiência guiada aos seus visitantes, nossa ferramenta aumenta
+                    significativamente a
+                    probabilidade de conversão dos seus leads. Com a dynpages, você tem uma gestão completa de todos os
+                    clientes que passam pelo seu funil, permitindo analisar cada clique e comportamento.</div>
+
+                <div class="display-flex">
+                    <ion-button color="black" class="text-initial">Começar já</ion-button>
+                    <ion-button color="black" fill="outline" class="text-initial">Acessar exemplo online</ion-button>
+                </div>
+
+            </div>
+
+            <div class="t-w-10">
+
+                <img src="assets/images/site/smart-3.png" alt="Smartphone 3" class="display-block w-10 t-w-10"
+                    style="min-width: 550px;">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="planos">
+
+        <div class="centro-1330 margin-bottom-100 padding-10-x">
 
             <div class="padding-top-50 margin-bottom-50 text-center">
 
@@ -67,20 +309,22 @@
 
     </section>
 
-    <section id="faq" style="background-color: #f0faf9;">
+    <section id="faq">
 
         <div class="centro-1330 padding-10-x padding-top-50 padding-bottom-50">
 
-            <h2 class="block-title margin-bottom-50">Perguntas frequentes</h2>
+            <div class="margin-bottom-100 text-center">
+                <h2 class="block-title margin-bottom-0">Como funciona?</h2>
+                <p>Tive suas principais dúvidas</p>
+            </div>
 
             <div *ngFor="let faq of env.data.faq" class="margin-bottom-30 padding-bottom-5 align-center"
                 style="border-bottom: 1px solid var(--ion-color-light);">
 
                 <h2 class="display-flex align-center justify-between font-size-20 font-weight-600 cursor-pointer"
                     (click)="faq.open = !faq.open">
-                    <div>{{ faq.pergunta }}</div>
-                    <div class="flex-center border-radius-50 bg-color-success-tint"
-                        style="width: 35px; height: 35px; border: 1px solid var(--ion-color-light);">
+                    <div class="font-weight-600">{{ faq.pergunta }}</div>
+                    <div class="flex-center" style="width: 35px; height: 35px;">
                         <span [class]="faq.open ? 'app-icon-minus' : 'app-icon-plus'"></span>
                     </div>
                 </h2>
@@ -94,25 +338,25 @@
 
         <div class="centro-1600 padding-10-x padding-top-100 padding-bottom-100">
 
-            <div
-                class="display-flex justify-between align-center overflow-hidden padding-30 padding-top-40 padding-bottom-40 border-radius-10 bg-color-tertiary color-white t-padding-20 t-text-center">
-                <div class="t-w-10 t-margin-bottom-10">
-                    <div>Alguma dúvida?</div>
-                    <h2 class="margin-top-0 margin-bottom-0 font-weight-600">
-                        Entre em contato conosco
-                    </h2>
+            <div class="display-flex justify-center overflow-hidden padding-30 padding-top-100 padding-bottom-100 border-radius-10 color-white t-padding-20 t-text-center fix-bg-bottom-mobile"
+                style="background: url(assets/images/site/bg-bottom.png) no-repeat scroll 0 0 / 100% auto;">
+
+                <div class="w-5 t-display-none">&nbsp;</div>
+
+                <div class="w-5 t-w-10 t-padding-top-100">
+
+                    <div class="t-w-10 t-padding-top-100" style="max-width: 500px;">
+
+                        <h2 class="font-size-30 font-weight-700 margin-top-0 margin-bottom-0 font-weight-600">
+                            Entenda na prática como funciona nossa plataforma!
+                        </h2>
+                        <p>Capturar leads de forma eficiente nunca foi tão fácil.</p>
+                        <p>Crie quizzes e transforme visitantes em clientes qualificados.</p>
+
+                    </div>
+
                 </div>
-                <div class="t-w-10">
-                    <ion-button color="success" shape="round" class="text-initial"
-                        style="--padding-top: 20px; --padding-bottom: 20px;" [href]="env.paths.SUPPORT_LINK"
-                        target="-blank">
-                        WhatsApp <span class="margin-left-15 app-icon-whatsapp"></span>
-                    </ion-button>
-                    <ion-button shape="round" color="white" class="margin-left-10 text-initial"
-                        style="--padding-top: 20px; --padding-bottom: 20px;" (click)="contatoPageService.modalForm()">
-                        Email <span class="margin-left-15 app-icon-mail"></span>
-                    </ion-button>
-                </div>
+
             </div>
 
         </div>
@@ -126,40 +370,24 @@
             <div class="display-flex flex-wrap t-text-center">
 
                 <div class="w-4 t-w-10 t-margin-bottom-50">
-                    <img src="assets/images/logo-pequeno-preto.png" alt="Logo rodapé" (click)="scrollToBlock('topo')"
+                    <img src="assets/images/logo-preto.png" alt="Logo rodapé" (click)="scrollToBlock('topo')"
                         class="display-block cursor-pointer t-margin-auto-x" style="width: 250px;">
-                    <p>A ferramenta inteligente de gestão microempresarial.</p>
-                    <!-- <div class="display-flex t-justify-center">
-                        <ion-button fill="clear" color="dark" href="https://instagram.com" target="_blank">
+                    <p>Aumente seu faturamento criando funis de vendas<br />
+                        sem depender de VSLs, Typebots ou Páginas de
+                        Vendas.</p>
+                    <div class="display-flex t-justify-center">
+                        <ion-button size="large" fill="clear" color="dark" href="https://instagram.com" target="_blank">
                             <span class="app-icon-instagram"></span>
                         </ion-button>
-                        <ion-button fill="clear" color="dark" href="https://linkedin.com/" target="_blank">
-                            <span class="app-icon-linkedin"></span>
-                        </ion-button>
-                        <ion-button fill="clear" color="dark" href="https://facebook.com/" target="_blank">
+                        <ion-button size="large" fill="clear" color="dark" href="https://facebook.com/" target="_blank">
                             <span class="app-icon-facebook"></span>
                         </ion-button>
-                        <ion-button fill="clear" color="dark" href="https://x.com/" target="_blank">
-                            <span class="app-icon-twitter"></span>
-                        </ion-button>
-                        <ion-button fill="clear" color="dark" [href]="env.paths.SUPPORT_LINK" target="_blank">
-                            <span class="app-icon-whatsapp"></span>
-                        </ion-button>
-                    </div> -->
-                </div>
-
-                <div class="w-2 t-w-10 t-margin-bottom-50">
-                    <h2 class="font-weight-900 font-size-20">Informações</h2>
-                    <p>{{ env.infos.email }}</p>
-                    <p>
-                        Rua Araújo Leite, 40-33
-                        <br />17012-432, Bauru - SP
-                    </p>
+                    </div>
                 </div>
 
                 <div class="w-2 t-w-10 t-margin-bottom-50">
 
-                    <h2 class="font-weight-900 font-size-20">Navegue</h2>
+                    <h2 class="font-weight-900 font-size-20">Menu</h2>
 
                     <div>
                         <div>
@@ -178,6 +406,27 @@
                             <ion-button fill="clear" color="dark" class="margin-0 text-initial" size="small"
                                 (click)="scrollToBlock('rodape')">
                                 Atendimento
+                            </ion-button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="w-2 t-w-10 t-margin-bottom-50">
+
+                    <h2 class="font-weight-900 font-size-20">Canais</h2>
+
+                    <div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="margin-0 text-initial" size="small"
+                                href="https://google.com" target="_blank">
+                                Vendas
+                            </ion-button>
+                        </div>
+                        <div>
+                            <ion-button fill="clear" color="dark" class="margin-0 text-initial" size="small"
+                                href="https://google.com" target="_blank">
+                                Suporte
                             </ion-button>
                         </div>
                     </div>

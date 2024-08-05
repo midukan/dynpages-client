@@ -4,8 +4,8 @@
     font-size: 16px;
 
     .block-title {
-        font-size: 50px;
-        font-weight: 600;
+        font-size: 40px;
+        font-weight: 700;
     }
 
     .button-big {
@@ -15,8 +15,18 @@
 
     @media not screen and (min-width: 1100px) {
 
+        .fix-bg-top-mobile {
+            background-size: auto 100% !important;
+            background-position: center center !important;
+        }
+
+        .fix-bg-bottom-mobile {
+            padding-bottom: 600px;
+            background-image: url('../../../../assets/images/site/bg-bottom-mobile.png') !important;
+        }
+
         .block-title {
-            font-size: 35px;
+            font-size: 30px;
         }
 
     }

@@ -6,9 +6,7 @@ import { IonicModule } from '@ionic/angular'
 
 import { MaskitoDirective } from '@maskito/angular'
 import { ActionButtonsComponent } from './components/action-buttons/action-buttons.component'
-import { AnexoComponent } from './components/app/anexo/anexo.component'
 import { PlanosComponent } from './components/app/planos/planos.component'
-import { ResumoPgtoComponent } from './components/app/resumo-pgto/resumo-pgto.component'
 import { BugReportComponent } from './components/bug-reporter/bug-reporter.component'
 import { BulkWarningComponent } from './components/bulk-warning/bulk-warning.component'
 import { DatetimeGroupComponent } from './components/datetime-group/datetime-group.component'
@@ -64,8 +62,6 @@ import { TrustHTMLPipe } from './pipes/trust-html.pipe'
 		ListSummaryComponent,
 		FormButtonsComponent,
 		TooltipComponent,
-		AnexoComponent,
-		ResumoPgtoComponent,
 		BugReportComponent,
 		PlanosComponent,
 		BrMaskDirective,
@@ -116,8 +112,6 @@ import { TrustHTMLPipe } from './pipes/trust-html.pipe'
 		ListSummaryComponent,
 		FormButtonsComponent,
 		TooltipComponent,
-		AnexoComponent,
-		ResumoPgtoComponent,
 		BugReportComponent,
 		PlanosComponent,
 		BrMaskDirective,

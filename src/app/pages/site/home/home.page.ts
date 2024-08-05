@@ -58,7 +58,7 @@ export class HomePage extends BasePage {
     this.content.scrollEvents = true
     this.content.ionScroll.subscribe(event => {
 
-      const topLimit = document.getElementById('planos')!.offsetTop;
+      const topLimit = document.getElementById('ferramenta')!.offsetTop;
       (this.buttonScrollToTop as any).el.classList[(event.detail.scrollTop > topLimit) ? 'remove' : 'add']('display-none')
 
     })

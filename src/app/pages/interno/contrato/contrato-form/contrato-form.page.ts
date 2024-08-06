@@ -140,7 +140,7 @@ export class ContratoFormPage extends FormPage {
 
   cartoes() {
 
-    this.perfilCartaoPageService.modalList({ perfilId: [this.contrato.licenca?.competencia?.perfilId] })
+    this.perfilCartaoPageService.modalList({ perfilId: [this.contrato.cleanfinId] })
 
   }
 

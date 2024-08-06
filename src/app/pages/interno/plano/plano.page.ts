@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { IonContent, LoadingController, ModalController, Platform } from '@ionic/angular'
+import { firstValueFrom } from 'rxjs'
 import { IBasicBodyData } from 'src/app/abstracts/backend-service.abstract'
 import { FormPage } from 'src/app/abstracts/form-page.abstract'
 import { AppUtil } from 'src/app/app-util'
@@ -9,6 +10,7 @@ import { AuthService } from 'src/app/providers/auth.service'
 import { ContratoService } from 'src/app/providers/contrato.service'
 import { DataService } from 'src/app/providers/data.service'
 import { MiscService } from 'src/app/providers/misc.service'
+import { PerfilCartaoService } from 'src/app/providers/perfil-cartao.service'
 import { SocketService } from 'src/app/providers/socket.service'
 import { environment } from 'src/environments/environment'
 import { ContratoPageService } from '../contrato/contrato-page.service'
@@ -23,6 +25,8 @@ export class PlanoPage extends FormPage {
 
   contratoDefault: any = {}
   contrato: any
+
+  perfilCartoes: any[]
 
   planoAtual: number | null = 0
   planoPeriodoAtual: PlanoPeriodo
@@ -53,6 +57,7 @@ export class PlanoPage extends FormPage {
     public perfilCartaoPageService: PerfilCartaoPageService,
     protected loadingCtrl: LoadingController,
     protected socketService: SocketService,
+    protected perfilCartaoService: PerfilCartaoService,
   ) {
 
     super(router, route, modalCtrl, loadingCtrl, authService, appUtil, element, socketService, contratoService, contratoPageService)
@@ -61,6 +66,7 @@ export class PlanoPage extends FormPage {
     // this.dataService.set('planoPeriodo.selected', 'TRIMESTRAL')
 
     this.setUpdateProps()
+    this.loadCartoes()
 
     this.contratoService.entityUpdated.subscribe(async () => {
 
@@ -68,6 +74,7 @@ export class PlanoPage extends FormPage {
         await this.authService.loadAuthContrato(true)
         this.contrato = this.appUtil.deepCopy(this.authService.getContrato())
         this.setUpdateProps(true)
+        this.loadCartoes()
       })
 
     })
@@ -90,6 +97,17 @@ export class PlanoPage extends FormPage {
 
   setFiltersSelectData() {
     throw new Error('Method not implemented.')
+  }
+
+  async loadCartoes() {
+
+    const perfilCartoesData = await firstValueFrom(this.perfilCartaoService.getMany({ perfilId: [this.authService.getContrato().cleanfinId], pager: { limit: 20 } }))
+      .catch(err => this.appUtil.alertError(err))
+
+    if (perfilCartoesData) {
+      this.perfilCartoes = perfilCartoesData.perfilCartoes
+    }
+
   }
 
   setUpdateProps(dontUpdateChangers = false) {
@@ -225,7 +243,7 @@ export class PlanoPage extends FormPage {
 
   cartoes() {
 
-    this.perfilCartaoPageService.modalList({ perfilId: [this.authService.getContrato().licenca?.competencia?.perfilId] })
+    this.perfilCartaoPageService.modalList({ perfilId: [this.authService.getContrato().cleanfinId] })
 
   }
 

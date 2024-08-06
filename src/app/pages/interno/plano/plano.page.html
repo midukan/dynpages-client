@@ -117,9 +117,9 @@
               </span>
               <span style="text-transform: lowercase;">{{ planoPeriodo }}mente</span>
             </p>
-            <p class="margin-top-0 color-medium">
+            <!-- <p class="margin-top-0 color-medium">
               (Relativo: {{ calculaPlanoProporcaoMensal() | dinheiro }} por mês)
-            </p>
+            </p> -->
 
             <div *ngIf="contrato.planoOpcaoSubstituto" class="warning-block">
 
@@ -184,14 +184,13 @@
                 <ion-col size="12"
                   *ngIf="planoFormaPgto === env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO">
 
-                  <div *ngIf="authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length">
+                  <div *ngIf="perfilCartoes?.length">
 
                     <ion-button class="text-initial" (click)="cartoes()">Gerenciar cartões</ion-button>
 
-                    <div class="font-size-11">
-                      {{ authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length }}
-                      {{ (authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length === 1) ?
-                      'cartão cadastrado' : 'cartões cadastrados' }}
+                    <div *ngIf="perfilCartoes" class="font-size-11">
+                      {{ perfilCartoes.length }}
+                      {{ (perfilCartoes.length === 1) ? 'cartão cadastrado' : 'cartões cadastrados' }}
                     </div>
 
                     <div *ngIf="cartaoAddInfo" class="warning-block margin-top-40">
@@ -200,9 +199,8 @@
 
                   </div>
 
-                  <app-perfil-cartao-form-page
-                    *ngIf="!authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length"
-                    context="embed-form" [state]="{perfilId: authService.getContrato().licenca?.competencia?.perfilId}"
+                  <app-perfil-cartao-form-page *ngIf="!perfilCartoes?.length" context="embed-form"
+                    [state]="{perfilId: authService.getContrato().cleanfinId}"
                     (appSave)="cartaoAdd($event)"></app-perfil-cartao-form-page>
 
                 </ion-col>

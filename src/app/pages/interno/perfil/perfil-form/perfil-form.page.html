@@ -138,52 +138,6 @@
               </ion-col>
 
               <ion-col size="12" sizeSm="12">
-                <h4>Dados fiscais</h4>
-              </ion-col>
-
-              <ion-col *ngIf="perfil.pessoa === env.enums.PerfilPessoa.PJ" size="12" sizeSm="2">
-                <ion-item lines="none" [display-errors]="{property: 'perfil.optanteSN', errors}">
-                  <ion-label>Optante do SN</ion-label>
-                  <ion-checkbox slot="start" [(ngModel)]="perfil.optanteSN"></ion-checkbox>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="12" sizeSm="2">
-                <ion-item [display-errors]="{property: 'perfil.tipo', errors}">
-                  <ion-label position="stacked">Indicador de IE</ion-label>
-                  <ion-select interface="popover" placeholder="Opcional" [(ngModel)]="perfil.indicadorInsEst">
-                    <ion-select-option [value]="null">Nenhum</ion-select-option>
-                    <ion-select-option *ngFor="let perfilIndicadorInsEst of perfilIndicadorInsEsts"
-                      [value]="perfilIndicadorInsEst.value">{{ perfilIndicadorInsEst.label }}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="12" sizeSm="3">
-                <ion-item [display-errors]="{property: 'perfil.inscricaoEstadual', errors}">
-                  <ion-label position="floating">Inscrição estadual</ion-label>
-                  <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
-                    [(ngModel)]="perfil.inscricaoEstadual"></ion-input>
-                </ion-item>
-              </ion-col>
-
-              <ion-col *ngIf="perfil.pessoa === env.enums.PerfilPessoa.PJ" size="12" sizeSm="2">
-                <ion-item [display-errors]="{property: 'perfil.inscricaoMunicipal', errors}">
-                  <ion-label position="floating">Inscrição municipal</ion-label>
-                  <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
-                    [(ngModel)]="perfil.inscricaoMunicipal"></ion-input>
-                </ion-item>
-              </ion-col>
-
-              <ion-col *ngIf="perfil.pessoa === env.enums.PerfilPessoa.PJ" size="12" sizeSm="3">
-                <ion-item [display-errors]="{property: 'perfil.inscricaoSuframa', errors}">
-                  <ion-label position="floating">Inscrição suframa</ion-label>
-                  <ion-input placeholder="Opcional" maxlength="15" ngDefaultControl
-                    [(ngModel)]="perfil.inscricaoSuframa"></ion-input>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="12" sizeSm="12">
                 <h4>
                   Outros contatos
                   <app-tooltip>Os contatos serão utilizados pelo sistema para envio de mensagens através de Email, SMS e

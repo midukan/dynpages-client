@@ -7,6 +7,7 @@ import { AppUtil } from 'src/app/app-util'
 import { AuthService } from 'src/app/providers/auth.service'
 import { MessageService } from 'src/app/providers/message.service'
 
+import { DataService } from 'src/app/providers/data.service'
 import { ContratoPageService } from '../interno/contrato/contrato-page.service'
 import { OTPModalPageService } from '../interno/otp/otp-page.service'
 import { UsuarioPageService } from '../usuario/usuario-page.service'
@@ -46,6 +47,7 @@ export class AuthPage extends BasePage {
     private usuarioPageService: UsuarioPageService,
     protected element: ElementRef,
     private otpModalPageService: OTPModalPageService,
+    private dataService: DataService,
   ) {
 
     super(router, route, modalCtrl, authService, appUtil, element)
@@ -177,6 +179,9 @@ export class AuthPage extends BasePage {
   }
 
   async criarConta() {
+
+    this.dataService.set('plano.selected', 1)
+    this.dataService.set('planoPeriodo.selected', 'MENSAL')
 
     this.usuarioPageService.navigate()
 

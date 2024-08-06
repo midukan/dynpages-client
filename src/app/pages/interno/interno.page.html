@@ -15,9 +15,9 @@
         <ion-menu-toggle autoHide="false" class="flex-center w-10 cursor-pointer"
           [routerLink]="'/painel/' + contratoId + '/home'" style="flex-direction: column; height: 70px;">
           <img src="assets/images/logo-branco.png" alt="Logo" class="display-block"
-            style="max-width: calc(100% - 40px); object-fit: contain; padding-top: 7px;">
+            style="max-width: calc(100% - 40px); max-height: calc(100% - 26px); object-fit: contain; padding-top: 0px;">
           <div class="display-flex justify-end w-10 text-right color-white font-visby-round font-weight-600"
-            style="margin-top: 3px; padding-right: 58px;">
+            style="padding-right: 42px; margin-top: -7px;">
             <div class="bg-color-primary color-dark border-radius-3" style="padding: 1px 5px;">
               {{ env.enums.ContratoPlanoOpcaoStr[authService.getContrato().planoOpcao] }}
             </div>

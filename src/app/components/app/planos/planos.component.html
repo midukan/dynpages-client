@@ -60,20 +60,20 @@
               <div class="display-flex margin-bottom-5 align-center">
                 <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
                 <div class="margin-left-10 font-size-14">
-                  <span class="font-weight-800">{{ env.planos['PLANO_' + idx + '_LIMITE_MES_NF']
-                    }}</span>
-                  emissões de NFs por mês
+                  Até <span class="font-weight-800">
+                    {{ env.planos['PLANO_' + idx + '_LIMITE_GERAL_FUNIS'] }}
+                  </span> funis
                 </div>
               </div>
               <div class="display-flex margin-bottom-5 align-center">
                 <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
                 <div class="margin-left-10 font-size-14">
-                  <span class="font-weight-800">
-                    {{ env.planos['PLANO_' + idx + '_TAXA_BOLETO_VALOR'] | dinheiro }}
-                  </span> por boleto
+                  Até <span class="font-weight-800">
+                    {{ env.planos['PLANO_' + idx + '_LIMITE_GERAL_PERFIS'] }}
+                  </span> leads
                 </div>
               </div>
-              <div class="display-flex margin-bottom-5 align-center">
+              <!-- <div class="display-flex margin-bottom-5 align-center">
                 <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
                 <div class="margin-left-10 font-size-14">
                   <span class="font-weight-800">
@@ -82,27 +82,47 @@
                   </span>
                   de armazenamento total
                 </div>
+              </div> -->
+              <div class="display-flex margin-bottom-5 align-center">
+                <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div class="margin-left-10 font-size-14">
+                  Componentes interativos
+                </div>
               </div>
               <div class="display-flex margin-bottom-5 align-center">
-                <img *ngIf="![0].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-                <div *ngIf="[0].includes(idx)"
+                <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div class="margin-left-10 font-size-14">
+                  Pixel e Scripts de trackeamento
+                </div>
+              </div>
+              <div class="display-flex margin-bottom-5 align-center">
+                <img src="assets/images/site/icon-plano-item.png" alt="Icon plano">
+                <div class="margin-left-10 font-size-14">
+                  Gestão e downloads dos leads
+                </div>
+              </div>
+              <div class="display-flex margin-bottom-5 align-center">
+                <img *ngIf="env.planos['PLANO_' + idx + '_DOMINIO']" src="assets/images/site/icon-plano-item.png"
+                  alt="Icon plano">
+                <div *ngIf="!env.planos['PLANO_' + idx + '_DOMINIO']"
                   class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
                   style="width: 29px; aspect-ratio: 1/1;">
                   <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
                 </div>
                 <div class="margin-left-10 font-size-14">
-                  Emails de cobranças automatizados
+                  Domínio próprio
                 </div>
               </div>
               <div class="display-flex margin-bottom-5 align-center">
-                <img *ngIf="![0, 1].includes(idx)" src="assets/images/site/icon-plano-item.png" alt="Icon plano">
-                <div *ngIf="[0, 1].includes(idx)"
+                <img *ngIf="env.planos['PLANO_' + idx + '_WEBHOOK']" src="assets/images/site/icon-plano-item.png"
+                  alt="Icon plano">
+                <div *ngIf="!env.planos['PLANO_' + idx + '_WEBHOOK']"
                   class="dark-mode-off flex-center border-radius-50 bg-color-light-tint color-danger"
                   style="width: 29px; aspect-ratio: 1/1;">
                   <span class="app-icon-cancel-1 font-size-18" style="margin-top: 3px;"></span>
                 </div>
                 <div class="margin-left-10 font-size-14">
-                  Integração com outros sistemas (API)
+                  Webhook
                 </div>
               </div>
             </div>

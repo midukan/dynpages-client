@@ -9,9 +9,9 @@
 
         <ion-toolbar color="tertiary">
           <ion-menu-toggle autoHide="false" class="flex-center w-10 cursor-pointer" [routerLink]="'/'"
-            style="height: 70px; padding: 15px 0;">
+            style="height: 70px; padding: 7px 0;">
             <img src="assets/images/logo-branco.png" alt="Logo" class="display-block h-10"
-              style="max-width: calc(100% - 40px); object-fit: contain;">
+              style="max-width: calc(100% - 40px); max-height: calc(100% - 15px); object-fit: contain;">
           </ion-menu-toggle>
         </ion-toolbar>
 
@@ -33,8 +33,9 @@
           <ion-item button lines="none"
             (click)="messageService.get('site.scrollToBlock').next('recursos')">Recursos</ion-item>
 
-          <ion-item button lines="none" (click)="messageService.get('site.scrollToBlock').next('conheca')">Conheça
-            melhor</ion-item>
+          <ion-item button lines="none" (click)="messageService.get('site.scrollToBlock').next('conheca')">
+            Conheça melhor
+          </ion-item>
 
           <ion-item button lines="none"
             (click)="messageService.get('site.scrollToBlock').next('planos')">Planos</ion-item>

@@ -25,7 +25,7 @@ export const internoMenuData: (restritoPage: InternoPage) => MenuItem[] = restri
     icon: 'app-icon-clipboard-1',
     children: [{
       title: 'Clientes',
-      show: restritoPage.authService.hasPermission(restritoPage.env.roles.contratoUsuarioCargoGrupo.FUNCIONARIO),
+      show: restritoPage.authService.hasPermission(restritoPage.env.roles.contratoUsuarioCargoGrupo.EDITOR),
       routerLink: '/painel/' + restritoPage.contratoId + '/cliente/list',
       queryParams: undefined
     }]

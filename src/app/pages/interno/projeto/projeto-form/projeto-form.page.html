@@ -1,0 +1,43 @@
+<app-header appType="modal" [appTitle]="title" [appSubtitle]="subtitle" (appConfirm)="salvar()"
+  (appDismiss)="dismiss()"></app-header>
+
+<ion-content>
+
+  <div class="main-block_">
+
+    <app-form-buttons [id]="this[key]?.id" [service]="service" (appPrint)="print($event)"
+      [show]="{prev: !appSelect, next: !appSelect}"></app-form-buttons>
+
+    <div class="form-default">
+
+      <div *ngIf="projeto" class="form-default-body">
+
+        <ng-container *ngIf="projeto">
+
+          <ion-grid>
+
+            <ion-row>
+
+              <ion-col size="12" sizeSm="12">
+                <h4>Dados</h4>
+              </ion-col>
+
+              <ion-col size="12" sizeSm="6" [display-errors]="{property: 'projeto.dataBloqueio', errors}">
+                <app-datetime label="Data de bloqueio" placeholder="Opcional" ngDefaultControl
+                  [(appModel)]="projeto.dataBloqueio"
+                  tooltip="Esta data poderá ser gerenciada através de um contrato de recorrência, se configurado."></app-datetime>
+              </ion-col>
+
+            </ion-row>
+
+          </ion-grid>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

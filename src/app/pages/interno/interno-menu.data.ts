@@ -24,7 +24,12 @@ export const internoMenuData: (restritoPage: InternoPage) => MenuItem[] = restri
     title: 'Cadastros',
     icon: 'app-icon-clipboard-1',
     children: [{
-      title: 'Clientes',
+      title: 'Projetos',
+      show: restritoPage.authService.hasPermission(restritoPage.env.roles.contratoUsuarioCargoGrupo.EDITOR),
+      routerLink: '/painel/' + restritoPage.contratoId + '/projeto/list',
+      queryParams: undefined
+    }, {
+      title: 'Leads',
       show: restritoPage.authService.hasPermission(restritoPage.env.roles.contratoUsuarioCargoGrupo.EDITOR),
       routerLink: '/painel/' + restritoPage.contratoId + '/cliente/list',
       queryParams: undefined

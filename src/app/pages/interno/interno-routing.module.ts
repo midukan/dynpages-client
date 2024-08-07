@@ -58,18 +58,13 @@ const routes: Routes = [
           },
           {
             path: 'cliente',
-            data: { cargos: 'FUNCIONARIO', tipo: ['CLIENTE'] }, // NÃO ACEITA ENV
+            data: { cargos: 'EDITOR', tipo: ['CLIENTE'] }, // NÃO ACEITA ENV
             loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule)
           },
           {
-            path: 'fornecedor',
-            data: { cargos: 'FUNCIONARIO', tipo: ['FORNECEDOR'] }, // NÃO ACEITA ENV
-            loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule)
-          },
-          {
-            path: 'transportadora',
-            data: { cargos: 'FUNCIONARIO', tipo: ['TRANSPORTADORA'] }, // NÃO ACEITA ENV
-            loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule)
+            path: 'projeto',
+            data: { cargos: 'EDITOR' }, // NÃO ACEITA ENV
+            loadChildren: () => import('./projeto/projeto.module').then(m => m.ProjetoModule)
           },
           {
             path: 'configuracao',

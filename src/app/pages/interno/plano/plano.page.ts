@@ -136,7 +136,7 @@ export class PlanoPage extends FormPage {
 
   async beforeSave(): Promise<boolean | void> {
 
-    if (this.planoFormaPgto === this.env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO && !this.authService.getContrato().licenca?.competencia?.perfil.perfilCartoes.length) {
+    if (this.planoFormaPgto === this.env.enums.ContratoFormaPgto.CARTAO_DE_CREDITO_AUTOMATIZADO && !this.perfilCartoes?.length) {
       this.appUtil.alertError('Você precisa informar um cartão de crédito para continuar.')
       return false
     }
